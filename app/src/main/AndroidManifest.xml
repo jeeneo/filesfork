@@ -298,6 +298,11 @@
             android:theme="@style/Theme.MaterialFiles.Translucent" />
 
         <activity
+            android:name="me.zhanghai.android.filesfork.storage.SftpHostKeyChangedDialogActivity"
+            android:autoRemoveFromRecents="true"
+            android:theme="@style/Theme.MaterialFiles.Translucent" />
+
+        <activity
             android:name="me.zhanghai.android.filesfork.viewer.saveas.SaveAsActivity"
             android:autoRemoveFromRecents="true"
             android:exported="true"
