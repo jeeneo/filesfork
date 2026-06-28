@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.ftp
+package me.zhanghai.android.filesfork.provider.ftp
 
 import android.os.Parcelable
 import java.time.Instant
 import java8.nio.file.attribute.FileTime
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.provider.common.AbstractBasicFileAttributes
-import me.zhanghai.android.files.provider.common.BasicFileType
-import me.zhanghai.android.files.provider.common.FileTimeParceler
+import me.zhanghai.android.filesfork.provider.common.AbstractBasicFileAttributes
+import me.zhanghai.android.filesfork.provider.common.BasicFileType
+import me.zhanghai.android.filesfork.provider.common.FileTimeParceler
 import org.apache.commons.net.ftp.FTPFile
 
 @Parcelize

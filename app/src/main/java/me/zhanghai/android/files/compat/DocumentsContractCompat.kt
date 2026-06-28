@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.content.ContentResolver
 import android.net.Uri
 import android.os.Build
 import android.provider.DocumentsContract
-import me.zhanghai.android.files.app.packageManager
+import me.zhanghai.android.filesfork.app.packageManager
 
 object DocumentsContractCompat {
     const val EXTRA_INITIAL_URI = "android.provider.extra.INITIAL_URI"

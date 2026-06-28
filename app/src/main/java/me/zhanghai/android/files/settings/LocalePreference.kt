@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.content.Context
 import android.content.Intent
@@ -17,10 +17,10 @@ import androidx.core.app.LocaleManagerCompat
 import androidx.core.os.LocaleListCompat
 import androidx.preference.ListPreference
 import androidx.preference.Preference.SummaryProvider
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.compat.LocaleConfigCompat
-import me.zhanghai.android.files.util.toList
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.compat.LocaleConfigCompat
+import me.zhanghai.android.filesfork.util.toList
 import java.util.Locale
 
 class LocalePreference : ListPreference {

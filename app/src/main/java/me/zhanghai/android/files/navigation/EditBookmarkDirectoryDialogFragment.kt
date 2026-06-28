@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -14,20 +14,20 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.databinding.EditBookmarkDirectoryDialogBinding
-import me.zhanghai.android.files.filelist.FileListActivity
-import me.zhanghai.android.files.filelist.toUserFriendlyString
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.ParcelableParceler
-import me.zhanghai.android.files.util.ParcelableState
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.getState
-import me.zhanghai.android.files.util.launchSafe
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.putState
-import me.zhanghai.android.files.util.setTextWithSelection
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.databinding.EditBookmarkDirectoryDialogBinding
+import me.zhanghai.android.filesfork.filelist.FileListActivity
+import me.zhanghai.android.filesfork.filelist.toUserFriendlyString
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.ParcelableState
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.getState
+import me.zhanghai.android.filesfork.util.launchSafe
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.putState
+import me.zhanghai.android.filesfork.util.setTextWithSelection
 
 class EditBookmarkDirectoryDialogFragment : AppCompatDialogFragment() {
     private val openPathLauncher =
@@ -64,7 +64,7 @@ class EditBookmarkDirectoryDialogFragment : AppCompatDialogFragment() {
             .setNeutralButton(R.string.remove) { _, _ -> remove() }
             .create()
             .apply {
-                window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+                window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
             }
 
     override fun onSaveInstanceState(outState: Bundle) {

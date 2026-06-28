@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.system.ErrnoException
-import me.zhanghai.android.files.hiddenapi.RestrictedHiddenApi
-import me.zhanghai.android.files.util.lazyReflectedField
+import me.zhanghai.android.filesfork.hiddenapi.RestrictedHiddenApi
+import me.zhanghai.android.filesfork.util.lazyReflectedField
 
 @RestrictedHiddenApi
 private val functionNameField by lazyReflectedField(ErrnoException::class.java, "functionName")

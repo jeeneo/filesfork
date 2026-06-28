@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive
+package me.zhanghai.android.filesfork.provider.archive
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -12,11 +12,11 @@ import java8.nio.file.Path
 import java8.nio.file.WatchEvent
 import java8.nio.file.WatchKey
 import java8.nio.file.WatchService
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringListPath
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.provider.root.RootablePath
-import me.zhanghai.android.files.util.readParcelable
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringListPath
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.root.RootablePath
+import me.zhanghai.android.filesfork.util.readParcelable
 import java.io.File
 import java.io.IOException
 

@@ -3,21 +3,21 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import java8.nio.file.Path
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.filejob.FileJobService
-import me.zhanghai.android.files.provider.common.PosixFileAttributes
-import me.zhanghai.android.files.provider.common.PosixGroup
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.util.SelectionLiveData
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.show
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.filejob.FileJobService
+import me.zhanghai.android.filesfork.provider.common.PosixFileAttributes
+import me.zhanghai.android.filesfork.provider.common.PosixGroup
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.util.SelectionLiveData
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.show
+import me.zhanghai.android.filesfork.util.viewModels
 
 class SetGroupDialogFragment : SetPrincipalDialogFragment() {
     override val viewModel: SetPrincipalViewModel by viewModels { { SetGroupViewModel() } }

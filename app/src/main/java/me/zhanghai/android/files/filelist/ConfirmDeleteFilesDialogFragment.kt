@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.app.Dialog
 import android.os.Bundle
@@ -11,12 +11,12 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.getQuantityString
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.show
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.getQuantityString
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.show
 
 class ConfirmDeleteFilesDialogFragment : AppCompatDialogFragment() {
     private val args by args<Args>()

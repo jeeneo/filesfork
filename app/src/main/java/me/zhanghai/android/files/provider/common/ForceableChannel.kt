@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import java.io.IOException
 import java.nio.channels.Channel

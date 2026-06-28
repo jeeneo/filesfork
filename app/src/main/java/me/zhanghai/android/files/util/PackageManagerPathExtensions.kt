@@ -3,15 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import java8.nio.file.Path
-import me.zhanghai.android.files.compat.getPackageArchiveInfoCompat
-import me.zhanghai.android.files.provider.document.isDocumentPath
-import me.zhanghai.android.files.provider.document.resolver.DocumentResolver
-import me.zhanghai.android.files.provider.linux.isLinuxPath
+import me.zhanghai.android.filesfork.compat.getPackageArchiveInfoCompat
+import me.zhanghai.android.filesfork.provider.document.isDocumentPath
+import me.zhanghai.android.filesfork.provider.document.resolver.DocumentResolver
+import me.zhanghai.android.filesfork.provider.linux.isLinuxPath
 import java.io.Closeable
 
 val Path.isGetPackageArchiveInfoCompatible: Boolean

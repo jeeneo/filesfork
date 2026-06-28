@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filejob
+package me.zhanghai.android.filesfork.filejob
 
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.NotificationChannelTemplate
-import me.zhanghai.android.files.util.NotificationTemplate
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.NotificationChannelTemplate
+import me.zhanghai.android.filesfork.util.NotificationTemplate
 
 val fileJobNotificationTemplate =
     NotificationTemplate(

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,12 +13,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runInterruptible
-import me.zhanghai.android.files.provider.common.newDirectoryStream
-import me.zhanghai.android.files.provider.common.readAllBytes
-import me.zhanghai.android.files.provider.common.size
-import me.zhanghai.android.files.util.ActionState
-import me.zhanghai.android.files.util.isFinished
-import me.zhanghai.android.files.util.isReady
+import me.zhanghai.android.filesfork.provider.common.newDirectoryStream
+import me.zhanghai.android.filesfork.provider.common.readAllBytes
+import me.zhanghai.android.filesfork.provider.common.size
+import me.zhanghai.android.filesfork.util.ActionState
+import me.zhanghai.android.filesfork.util.isFinished
+import me.zhanghai.android.filesfork.util.isReady
 import java.io.IOException
 
 class EditSftpServerViewModel : ViewModel() {

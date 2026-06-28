@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -16,13 +16,13 @@ import androidx.annotation.StyleRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import java8.nio.file.Path
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.databinding.BreadcrumbItemBinding
-import me.zhanghai.android.files.util.getColorByAttr
-import me.zhanghai.android.files.util.getDimensionPixelSize
-import me.zhanghai.android.files.util.getResourceIdByAttr
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.withTheme
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.databinding.BreadcrumbItemBinding
+import me.zhanghai.android.filesfork.util.getColorByAttr
+import me.zhanghai.android.filesfork.util.getDimensionPixelSize
+import me.zhanghai.android.filesfork.util.getResourceIdByAttr
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.withTheme
 
 class BreadcrumbLayout : HorizontalScrollView {
     private val tabLayoutHeight = context.getDimensionPixelSize(R.dimen.tab_layout_height)

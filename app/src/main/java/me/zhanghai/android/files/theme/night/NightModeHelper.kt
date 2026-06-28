@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.theme.night
+package me.zhanghai.android.filesfork.theme.night
 
 import android.app.Activity
 import android.app.Application
@@ -12,10 +12,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegateCompat
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.SimpleActivityLifecycleCallbacks
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.SimpleActivityLifecycleCallbacks
+import me.zhanghai.android.filesfork.util.valueCompat
 
 // We take over the activity creation when setting the default night mode from AppCompat so that:
 // 1. We can recreate all activities upon change, instead of only started activities.

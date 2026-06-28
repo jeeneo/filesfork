@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.content.Context
 import android.content.Intent
@@ -12,13 +12,13 @@ import androidx.annotation.DrawableRes
 import java8.nio.file.Path
 import java8.nio.file.Paths
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.getDescriptionCompat
-import me.zhanghai.android.files.compat.isPrimaryCompat
-import me.zhanghai.android.files.compat.pathCompat
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.getDescriptionCompat
+import me.zhanghai.android.filesfork.compat.isPrimaryCompat
+import me.zhanghai.android.filesfork.compat.pathCompat
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.valueCompat
 
 sealed class DeviceStorage : Storage() {
     override val description: String

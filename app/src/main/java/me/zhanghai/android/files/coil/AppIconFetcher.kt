@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.coil
+package me.zhanghai.android.filesfork.coil
 
 import android.content.Context
 import android.content.pm.ApplicationInfo

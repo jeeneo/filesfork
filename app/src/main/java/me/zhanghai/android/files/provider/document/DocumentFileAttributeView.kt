@@ -3,20 +3,20 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.document
+package me.zhanghai.android.filesfork.provider.document
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.provider.DocumentsContract
 import java8.nio.file.attribute.BasicFileAttributeView
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.provider.content.resolver.ResolverException
-import me.zhanghai.android.files.provider.content.resolver.getInt
-import me.zhanghai.android.files.provider.content.resolver.getLong
-import me.zhanghai.android.files.provider.content.resolver.getString
-import me.zhanghai.android.files.provider.content.resolver.moveToFirstOrThrow
-import me.zhanghai.android.files.provider.document.resolver.DocumentResolver
-import me.zhanghai.android.files.util.readParcelable
+import me.zhanghai.android.filesfork.provider.content.resolver.ResolverException
+import me.zhanghai.android.filesfork.provider.content.resolver.getInt
+import me.zhanghai.android.filesfork.provider.content.resolver.getLong
+import me.zhanghai.android.filesfork.provider.content.resolver.getString
+import me.zhanghai.android.filesfork.provider.content.resolver.moveToFirstOrThrow
+import me.zhanghai.android.filesfork.provider.document.resolver.DocumentResolver
+import me.zhanghai.android.filesfork.util.readParcelable
 import java.io.IOException
 
 internal class DocumentFileAttributeView(

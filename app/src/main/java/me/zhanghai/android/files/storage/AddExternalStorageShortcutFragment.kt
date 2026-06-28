@@ -3,20 +3,20 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.app.packageManager
-import me.zhanghai.android.files.file.ExternalStorageUri
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.createDocumentsUiViewDirectoryIntent
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.showToast
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.app.packageManager
+import me.zhanghai.android.filesfork.file.ExternalStorageUri
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.createDocumentsUiViewDirectoryIntent
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.showToast
 
 class AddExternalStorageShortcutFragment : Fragment() {
     private val args by args<Args>()

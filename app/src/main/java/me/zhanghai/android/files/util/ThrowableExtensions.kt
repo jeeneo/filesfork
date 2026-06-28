@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 inline fun <reified T : Throwable> Throwable.findCauseByClass(): T? {
     var current: Throwable? = this

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.colorpicker
+package me.zhanghai.android.filesfork.colorpicker
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
@@ -13,8 +13,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import androidx.preference.DialogPreference
 import androidx.preference.PreferenceViewHolder
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.getFloatByAttr
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.getFloatByAttr
 import kotlin.math.roundToInt
 
 abstract class BaseColorPreference : DialogPreference {

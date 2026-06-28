@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.coil
+package me.zhanghai.android.filesfork.coil
 
 import android.graphics.Paint
 import android.media.MediaMetadataRetriever
@@ -20,9 +20,9 @@ import coil.fetch.Fetcher
 import coil.request.Options
 import coil.request.videoFrameOption
 import coil.request.videoFramePercent
-import me.zhanghai.android.files.compat.getFrameAtTimeCompat
-import me.zhanghai.android.files.compat.getScaledFrameAtTimeCompat
-import me.zhanghai.android.files.compat.use
+import me.zhanghai.android.filesfork.compat.getFrameAtTimeCompat
+import me.zhanghai.android.filesfork.compat.getScaledFrameAtTimeCompat
+import me.zhanghai.android.filesfork.compat.use
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong

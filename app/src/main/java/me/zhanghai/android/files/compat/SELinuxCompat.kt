@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import me.zhanghai.android.files.hiddenapi.RestrictedHiddenApi
-import me.zhanghai.android.files.util.lazyReflectedClass
-import me.zhanghai.android.files.util.lazyReflectedMethod
+import me.zhanghai.android.filesfork.hiddenapi.RestrictedHiddenApi
+import me.zhanghai.android.filesfork.util.lazyReflectedClass
+import me.zhanghai.android.filesfork.util.lazyReflectedMethod
 import java.io.File
 import java.io.FileDescriptor
 

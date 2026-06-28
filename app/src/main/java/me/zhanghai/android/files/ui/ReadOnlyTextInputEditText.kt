@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.content.Context
 import android.graphics.Color
@@ -16,7 +16,7 @@ import android.view.View
 import androidx.annotation.AttrRes
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.textfield.TextInputEditText
-import me.zhanghai.android.files.util.getColorStateListByAttr
+import me.zhanghai.android.filesfork.util.getColorStateListByAttr
 
 class ReadOnlyTextInputEditText : TextInputEditText {
     constructor(context: Context) : super(context)

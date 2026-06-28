@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.coil
+package me.zhanghai.android.filesfork.coil
 
 import android.graphics.Bitmap
 import android.os.Build
@@ -14,7 +14,7 @@ import coil.size.Size
 import coil.size.isOriginal
 import coil.size.pxOrElse
 import java8.nio.file.Path
-import me.zhanghai.android.files.filelist.isRemotePath
+import me.zhanghai.android.filesfork.filelist.isRemotePath
 
 val Bitmap.Config.isHardware: Boolean
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && this == Bitmap.Config.HARDWARE

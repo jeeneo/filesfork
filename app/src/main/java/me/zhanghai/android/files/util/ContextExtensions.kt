@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -38,12 +38,12 @@ import androidx.annotation.StyleRes
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.util.TypedValueCompat
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.complexUnitCompat
-import me.zhanghai.android.files.compat.getFloatCompat
-import me.zhanghai.android.files.compat.mainExecutorCompat
-import me.zhanghai.android.files.compat.obtainStyledAttributesCompat
-import me.zhanghai.android.files.compat.use
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.complexUnitCompat
+import me.zhanghai.android.filesfork.compat.getFloatCompat
+import me.zhanghai.android.filesfork.compat.mainExecutorCompat
+import me.zhanghai.android.filesfork.compat.obtainStyledAttributesCompat
+import me.zhanghai.android.filesfork.compat.use
 
 val Context.activity: Activity?
     get() {

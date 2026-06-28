@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.hiddenapi
+package me.zhanghai.android.filesfork.hiddenapi
 
 import android.os.Build
 

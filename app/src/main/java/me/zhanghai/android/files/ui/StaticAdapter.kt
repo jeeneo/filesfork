@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
-import me.zhanghai.android.files.util.layoutInflater
+import me.zhanghai.android.filesfork.util.layoutInflater
 
 class StaticAdapter(
     @LayoutRes val layoutRes: Int,

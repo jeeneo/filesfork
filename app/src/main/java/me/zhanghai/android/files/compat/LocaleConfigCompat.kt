@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.app.LocaleConfig
 import android.content.Context

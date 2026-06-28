@@ -3,6 +3,6 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 class SetGroupViewModel : SetPrincipalViewModel(GroupListLiveData())

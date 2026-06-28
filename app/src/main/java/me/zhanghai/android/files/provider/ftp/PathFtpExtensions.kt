@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.ftp
+package me.zhanghai.android.filesfork.provider.ftp
 
 import java8.nio.file.Path
-import me.zhanghai.android.files.provider.ftp.client.Authority
+import me.zhanghai.android.filesfork.provider.ftp.client.Authority
 
 fun Authority.createFtpRootPath(): Path =
     FtpFileSystemProvider.getOrNewFileSystem(this).rootDirectory

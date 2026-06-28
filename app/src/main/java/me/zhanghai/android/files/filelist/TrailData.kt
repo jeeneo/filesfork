@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.os.Parcelable
 import java8.nio.file.Path
-import me.zhanghai.android.files.provider.archive.archiveFile
-import me.zhanghai.android.files.provider.archive.isArchivePath
+import me.zhanghai.android.filesfork.provider.archive.archiveFile
+import me.zhanghai.android.filesfork.provider.archive.isArchivePath
 
 class TrailData private constructor(
     val trail: List<Path>,

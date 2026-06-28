@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.sftp.client
+package me.zhanghai.android.filesfork.provider.sftp.client
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

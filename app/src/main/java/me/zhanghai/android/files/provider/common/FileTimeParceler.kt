@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.os.Parcel
 import java.time.Instant
 import java8.nio.file.attribute.FileTime
 import kotlinx.parcelize.Parceler
-import me.zhanghai.android.files.compat.readSerializableCompat
+import me.zhanghai.android.filesfork.compat.readSerializableCompat
 
 object FileTimeParceler : Parceler<FileTime?> {
     override fun create(parcel: Parcel): FileTime? =

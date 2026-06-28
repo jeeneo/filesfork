@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux.media
+package me.zhanghai.android.filesfork.provider.linux.media
 
 import android.media.MediaScannerConnection
 import android.mtp.MtpConstants
@@ -13,12 +13,12 @@ import android.os.HandlerThread
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import java8.nio.channels.FileChannel
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.app.contentResolver
-import me.zhanghai.android.files.hiddenapi.RestrictedHiddenApi
-import me.zhanghai.android.files.provider.common.DelegateFileChannel
-import me.zhanghai.android.files.provider.root.isRunningAsRoot
-import me.zhanghai.android.files.util.lazyReflectedMethod
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.app.contentResolver
+import me.zhanghai.android.filesfork.hiddenapi.RestrictedHiddenApi
+import me.zhanghai.android.filesfork.provider.common.DelegateFileChannel
+import me.zhanghai.android.filesfork.provider.root.isRunningAsRoot
+import me.zhanghai.android.filesfork.util.lazyReflectedMethod
 import java.io.File
 import java.io.IOException
 

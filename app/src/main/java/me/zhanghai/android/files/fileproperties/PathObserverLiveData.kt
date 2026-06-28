@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties
+package me.zhanghai.android.filesfork.fileproperties
 
 import java8.nio.file.Path
-import me.zhanghai.android.files.filelist.PathObserver
-import me.zhanghai.android.files.util.CloseableLiveData
+import me.zhanghai.android.filesfork.filelist.PathObserver
+import me.zhanghai.android.filesfork.util.CloseableLiveData
 
 abstract class PathObserverLiveData<T>(protected val path: Path) : CloseableLiveData<T>() {
     private lateinit var observer: PathObserver

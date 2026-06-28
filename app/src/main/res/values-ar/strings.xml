@@ -50,8 +50,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">لم يتم العثور على تطبيق للتعامل مع هذا الإجراء</string>
     <string name="open_settings">أفتح الإعدادات</string>
-    <string name="shortcut_created">تم إنشاء الاختصار</string>
-
     <plurals name="size_in_bytes_format">
         <item quantity="zero">%1$,d بايت</item>
         <item quantity="one">%1$,d بايت</item>
@@ -300,9 +298,7 @@
     <string name="file_job_restore_selinux_context_error_message_format">حدث خطأ أثناء استعادة سياق SELinux إلى ”%1$s“.\n%2$s</string>
     <string name="file_job_write_error_title">خطأ أثناء الكتابة</string>
     <string name="file_job_write_error_message_format">حدث خطأ في كتابة ”%1$s“.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">حدث خطأ أثناء الحصول على معلومات حول ”%1$s“.</string>
     <string name="file_job_remount_format">أعد تحميل ”%1$s“ في وضع قراءة-كتابة</string>
-    <string name="file_job_remount_loading_format">جاري إعادة تحميل ”%1$s“ في وضع قراءة-كتابة…</string>
     <string name="file_job_remount_success_format">تمت إعادة تحميل ”%1$s“ في وضع قراءة-كتابة</string>
     <string name="file_job_action_all">قم بتطبيق هذا الإجراء على جميع الملفات</string>
 
@@ -453,10 +449,8 @@
     <string name="file_properties_basic_parent_directory">المجلد الأصلي</string>
     <string name="file_properties_basic_archive_file">ملف الأرشيف</string>
     <string name="file_properties_basic_archive_entry">إدخال الأرشيف</string>
-    <string name="file_properties_basic_free_space">مساحة فارغة</string>
     <string name="file_properties_permission">الصلاحيات</string>
     <string name="file_properties_permission_owner">المالك</string>
-    <string name="file_properties_permission_group">المجموعة</string>
     <string name="file_properties_permission_principal_format">%1$s (%2$d)</string>
     <string name="file_properties_permission_set_owner_title">تغيير المالك</string>
     <string name="file_properties_permission_set_group_title">تغيير المجموعة</string>
@@ -705,18 +699,10 @@
     <string name="save_as_error">خطأ أثناء حفظ الملف</string>
     <string name="save_as_success_format">تم حفظ ”%1$s“ إلى ”%2$s“</string>
     <string name="text_editor_title">محرر النص</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">تم الحفظ</string>
     <string name="text_editor_reload_message">هل أنت متأكد أنك تريد إعادة التحميل؟ ستفقد التغييرات غير المحفوظة على هذا المستند.</string>
-    <string name="text_editor_encoding">ترميز</string>
     <string name="text_editor_close_message">هل أنت متأكد أنك تريد تجاهل التغييرات غير المحفوظة في هذا المستند؟</string>
 
-    <string name="ftp_server_title">خادم FTP </string>
-    <string name="ftp_server_state_title">الحالة</string>
-    <string name="ftp_server_state_summary_starting">جاري البدء …</string>
     <string name="ftp_server_state_summary_running">قيد التشغيل</string>
-    <string name="ftp_server_state_summary_stopping">جاري الإيقاف…</string>
     <string name="ftp_server_state_summary_stopped">لم يبدأ</string>
     <string name="ftp_server_url_title">الرابط</string>
     <string name="ftp_server_url_summary_no_local_inet_address">عنوان IP المحلي غير معروف</string>

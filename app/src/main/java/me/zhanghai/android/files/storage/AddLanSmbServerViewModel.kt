@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import me.zhanghai.android.files.util.Stateful
+import me.zhanghai.android.filesfork.util.Stateful
 
 class AddLanSmbServerViewModel : ViewModel() {
     private val _lanSmbServerListLiveData = LanSmbServerListLiveData()

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb.client
+package me.zhanghai.android.filesfork.provider.smb.client
 
 // @see https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-srvs/6069f8c0-c93f-43a0-a5b4-7ed447eb4b84
 enum class ShareTypes(val value: Int) {

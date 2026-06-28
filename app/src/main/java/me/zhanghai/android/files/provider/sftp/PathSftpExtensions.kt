@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.sftp
+package me.zhanghai.android.filesfork.provider.sftp
 
 import java8.nio.file.Path
-import me.zhanghai.android.files.provider.sftp.client.Authority
+import me.zhanghai.android.filesfork.provider.sftp.client.Authority
 
 fun Authority.createSftpRootPath(): Path =
     SftpFileSystemProvider.getOrNewFileSystem(this).rootDirectory

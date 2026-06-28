@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.app.Dialog
 import android.os.Bundle
@@ -16,11 +16,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import me.zhanghai.android.files.databinding.NameDialogBinding
-import me.zhanghai.android.files.databinding.NameDialogNameIncludeBinding
-import me.zhanghai.android.files.util.hideTextInputLayoutErrorOnTextChange
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.setOnEditorConfirmActionListener
+import me.zhanghai.android.filesfork.databinding.NameDialogBinding
+import me.zhanghai.android.filesfork.databinding.NameDialogNameIncludeBinding
+import me.zhanghai.android.filesfork.util.hideTextInputLayoutErrorOnTextChange
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.setOnEditorConfirmActionListener
 
 abstract class NameDialogFragment : AppCompatDialogFragment() {
     private lateinit var _binding: Binding
@@ -50,7 +50,7 @@ abstract class NameDialogFragment : AppCompatDialogFragment() {
             .setNegativeButton(android.R.string.cancel, null)
             .create()
             .apply {
-                window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+                window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                 // Override the listener here so that we have control over when to close the dialog.
                 setOnShowListener {
                     getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { onOk() }

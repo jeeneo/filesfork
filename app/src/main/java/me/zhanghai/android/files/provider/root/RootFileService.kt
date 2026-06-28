@@ -3,17 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.root
+package me.zhanghai.android.filesfork.provider.root
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Process
 import android.util.Log
-import me.zhanghai.android.files.BuildConfig
-import me.zhanghai.android.files.provider.FileSystemProviders
-import me.zhanghai.android.files.provider.remote.RemoteFileService
-import me.zhanghai.android.files.provider.remote.RemoteInterface
-import me.zhanghai.android.files.util.lazyReflectedMethod
+import me.zhanghai.android.filesfork.BuildConfig
+import me.zhanghai.android.filesfork.provider.FileSystemProviders
+import me.zhanghai.android.filesfork.provider.remote.RemoteFileService
+import me.zhanghai.android.filesfork.provider.remote.RemoteInterface
+import me.zhanghai.android.filesfork.util.lazyReflectedMethod
 
 val isRunningAsRoot = Process.myUid() == 0
 

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -17,7 +17,7 @@ import androidx.core.content.res.use
 import androidx.core.view.children
 import androidx.core.view.isInvisible
 import androidx.customview.widget.ViewDragHelper
-import me.zhanghai.android.files.util.layoutInStatusBar
+import me.zhanghai.android.filesfork.util.layoutInStatusBar
 
 /**
  * @see PersistentDrawerLayout

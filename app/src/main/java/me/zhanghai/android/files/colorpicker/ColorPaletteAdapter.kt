@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.colorpicker
+package me.zhanghai.android.filesfork.colorpicker
 
 import android.view.View
 import android.view.ViewGroup

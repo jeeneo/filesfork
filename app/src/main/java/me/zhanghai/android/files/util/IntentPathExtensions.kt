@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import java8.nio.file.Path
 import java8.nio.file.Paths
-import me.zhanghai.android.files.BuildConfig
-import me.zhanghai.android.files.compat.DocumentsContractCompat
-import me.zhanghai.android.files.storage.createOrLog
+import me.zhanghai.android.filesfork.BuildConfig
+import me.zhanghai.android.filesfork.compat.DocumentsContractCompat
+import me.zhanghai.android.filesfork.storage.createOrLog
 import java.io.Serializable
 import java.net.URI
 

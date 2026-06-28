@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.net.Uri
-import me.zhanghai.android.files.app.contentResolver
+import me.zhanghai.android.filesfork.app.contentResolver
 
 fun Uri.takePersistablePermission(modeFlags: Int): Boolean =
     try {

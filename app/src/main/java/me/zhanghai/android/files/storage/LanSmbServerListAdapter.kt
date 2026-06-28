@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import me.zhanghai.android.files.databinding.LanSmbServerItemBinding
-import me.zhanghai.android.files.ui.SimpleAdapter
-import me.zhanghai.android.files.util.layoutInflater
+import me.zhanghai.android.filesfork.databinding.LanSmbServerItemBinding
+import me.zhanghai.android.filesfork.ui.SimpleAdapter
+import me.zhanghai.android.filesfork.util.layoutInflater
 
 class LanSmbServerListAdapter(
     val listener: (LanSmbServer) -> Unit

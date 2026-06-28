@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.content.SharedPreferences
 import android.os.Parcel
@@ -15,17 +15,18 @@ import androidx.annotation.IntegerRes
 import androidx.annotation.StringRes
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
-import me.zhanghai.android.files.app.appClassLoader
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.util.Base64
-import me.zhanghai.android.files.util.asBase64
-import me.zhanghai.android.files.util.getBoolean
-import me.zhanghai.android.files.util.getFloat
-import me.zhanghai.android.files.util.getInteger
-import me.zhanghai.android.files.util.getStringArray
-import me.zhanghai.android.files.util.toBase64
-import me.zhanghai.android.files.util.toByteArray
-import me.zhanghai.android.files.util.use
+import me.zhanghai.android.filesfork.app.appClassLoader
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.filelist.ArchiveType
+import me.zhanghai.android.filesfork.util.Base64
+import me.zhanghai.android.filesfork.util.asBase64
+import me.zhanghai.android.filesfork.util.getBoolean
+import me.zhanghai.android.filesfork.util.getFloat
+import me.zhanghai.android.filesfork.util.getInteger
+import me.zhanghai.android.filesfork.util.getStringArray
+import me.zhanghai.android.filesfork.util.toBase64
+import me.zhanghai.android.filesfork.util.toByteArray
+import me.zhanghai.android.filesfork.util.use
 
 class StringSettingLiveData(
     nameSuffix: String?,
@@ -270,6 +271,41 @@ class ResourceIdSettingLiveData(
 
     override fun putValue(sharedPreferences: SharedPreferences, key: String, @AnyRes value: Int) {
         sharedPreferences.edit { putString(key, application.resources.getResourceName(value)) }
+    }
+}
+
+class ArchiveTypeSettingLiveData(
+    nameSuffix: String?,
+    @StringRes keyRes: Int,
+    keySuffix: String?,
+    @StringRes defaultValueRes: Int
+) : SettingLiveData<ArchiveType>(nameSuffix, keyRes, keySuffix, defaultValueRes) {
+    constructor(@StringRes keyRes: Int, @StringRes defaultValueRes: Int) : this(
+        null, keyRes, null, defaultValueRes
+    )
+
+    init {
+        init()
+    }
+
+    override fun getDefaultValue(@StringRes defaultValueRes: Int): ArchiveType =
+        ArchiveType.fromStoredValue(application.getString(defaultValueRes)) ?: ArchiveType.DEFAULT
+
+    override fun getValue(
+        sharedPreferences: SharedPreferences,
+        key: String,
+        defaultValue: ArchiveType
+    ): ArchiveType {
+        val storedValue = sharedPreferences.getString(key, null)
+        val value = ArchiveType.fromStoredValue(storedValue) ?: defaultValue
+        if (storedValue != value.label) {
+            sharedPreferences.edit { putString(key, value.label) }
+        }
+        return value
+    }
+
+    override fun putValue(sharedPreferences: SharedPreferences, key: String, value: ArchiveType) {
+        sharedPreferences.edit { putString(key, value.label) }
     }
 }
 

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -15,7 +15,7 @@ import android.view.View
 import androidx.annotation.AttrRes
 import androidx.core.graphics.ColorUtils
 import com.google.android.material.shape.MaterialShapeDrawable
-import me.zhanghai.android.files.util.activity
+import me.zhanghai.android.filesfork.util.activity
 
 class CoordinatorAppBarLayout : FitsSystemWindowsAppBarLayout {
     private val syncBackgroundColorViews = mutableListOf<View>()

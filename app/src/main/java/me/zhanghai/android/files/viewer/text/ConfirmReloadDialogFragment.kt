@@ -3,15 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.viewer.text
+package me.zhanghai.android.filesfork.viewer.text
 
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.show
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.show
 
 class ConfirmReloadDialogFragment : AppCompatDialogFragment() {
     private val listener: Listener

@@ -3,15 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import android.os.Parcelable
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.filelist.name
-import me.zhanghai.android.files.util.ParcelableParceler
-import me.zhanghai.android.files.util.takeIfNotEmpty
+import me.zhanghai.android.filesfork.filelist.name
+import me.zhanghai.android.filesfork.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.takeIfNotEmpty
 import java.util.Random
 
 @Parcelize

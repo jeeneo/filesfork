@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.sftp.client
+package me.zhanghai.android.filesfork.provider.sftp.client
 
-import me.zhanghai.android.files.provider.common.AbstractFileByteChannel
-import me.zhanghai.android.files.provider.common.EMPTY
-import me.zhanghai.android.files.provider.common.asFuture
-import me.zhanghai.android.files.provider.common.map
-import me.zhanghai.android.files.util.closeSafe
-import me.zhanghai.android.files.util.findCauseByClass
+import me.zhanghai.android.filesfork.provider.common.AbstractFileByteChannel
+import me.zhanghai.android.filesfork.provider.common.EMPTY
+import me.zhanghai.android.filesfork.provider.common.asFuture
+import me.zhanghai.android.filesfork.provider.common.map
+import me.zhanghai.android.filesfork.util.closeSafe
+import me.zhanghai.android.filesfork.util.findCauseByClass
 import net.schmizz.sshj.sftp.PacketType
 import net.schmizz.sshj.sftp.RemoteFile
 import net.schmizz.sshj.sftp.RemoteFileAccessor

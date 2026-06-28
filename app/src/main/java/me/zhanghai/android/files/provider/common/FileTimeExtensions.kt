@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import java.time.Instant
 import java8.nio.file.attribute.FileTime

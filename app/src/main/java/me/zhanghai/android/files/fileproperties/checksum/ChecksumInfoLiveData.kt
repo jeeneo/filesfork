@@ -3,18 +3,18 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.checksum
+package me.zhanghai.android.filesfork.fileproperties.checksum
 
 import android.os.AsyncTask
 import java8.nio.file.Path
-import me.zhanghai.android.files.fileproperties.PathObserverLiveData
-import me.zhanghai.android.files.provider.common.newInputStream
-import me.zhanghai.android.files.util.Failure
-import me.zhanghai.android.files.util.Loading
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.Success
-import me.zhanghai.android.files.util.toHexString
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.fileproperties.PathObserverLiveData
+import me.zhanghai.android.filesfork.provider.common.newInputStream
+import me.zhanghai.android.filesfork.util.Failure
+import me.zhanghai.android.filesfork.util.Loading
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.Success
+import me.zhanghai.android.filesfork.util.toHexString
+import me.zhanghai.android.filesfork.util.valueCompat
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Future
 

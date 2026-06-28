@@ -3,17 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.RuntimeBroadcastReceiver
-import me.zhanghai.android.files.util.getLocalAddress
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.RuntimeBroadcastReceiver
+import me.zhanghai.android.filesfork.util.getLocalAddress
+import me.zhanghai.android.filesfork.util.valueCompat
 import java.net.InetAddress
 
 object FtpServerUrl {

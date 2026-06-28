@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.colorpicker
+package me.zhanghai.android.filesfork.colorpicker
 
 import android.app.Dialog
 import android.content.Context
@@ -13,12 +13,12 @@ import android.widget.GridView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.ui.MaterialPreferenceDialogFragmentCompat
-import me.zhanghai.android.files.util.ParcelableState
-import me.zhanghai.android.files.util.getState
-import me.zhanghai.android.files.util.putState
-import me.zhanghai.android.files.util.withTheme
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.ui.MaterialPreferenceDialogFragmentCompat
+import me.zhanghai.android.filesfork.util.ParcelableState
+import me.zhanghai.android.filesfork.util.getState
+import me.zhanghai.android.filesfork.util.putState
+import me.zhanghai.android.filesfork.util.withTheme
 
 class ColorPreferenceDialogFragment : MaterialPreferenceDialogFragmentCompat() {
     override val preference: BaseColorPreference

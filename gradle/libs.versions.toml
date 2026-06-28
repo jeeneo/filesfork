@@ -1,0 +1,151 @@
+[versions]
+agp = "9.2.1"
+kotlin = "2.4.0"
+coreLibraryDesugaring = "2.1.5"
+kotlinxCoroutines = "1.11.0"
+activityKtx = "1.13.0"
+activityCompose = "1.13.0"
+appcompat = "1.7.1"
+coreKtx = "1.19.0"
+drawerlayout = "1.2.0"
+exifinterface = "1.4.2"
+fragmentKtx = "1.8.9"
+lifecycle = "2.11.0"
+preference = "1.2.1"
+recyclerview = "1.4.0"
+swiperefreshlayout = "1.2.0"
+material = "1.14.0"
+composeBom = "2026.06.00"
+lifecycleViewmodelCompose = "2.11.0"
+bouncyCastle = "1.84"
+coil = "2.7.0"
+soraEditor = "0.24.6"
+androidsvg = "1.4"
+drakeetDrawer = "1.0.3"
+materialShadow = "1.0.0"
+advRecyclerview = "1.0.0"
+
+# SMBJ 0.12.0 broke anonymous authentication: https://github.com/hierynomus/smbj/issues/792 ,
+# and it's still an issue in 0.14.0 according to
+# https://github.com/hierynomus/smbj/issues/792#issuecomment-2548018378 .
+#noinspection NewerVersionAvailable
+smbj = "0.11.5"
+
+sshj = "0.40.0"
+speedDial = "3.3.0"
+dcerpc = "0.12.13"
+guava = "33.6.0-android"
+preferencex = "1.1.0"
+commonsNet = "3.13.0"
+#noinspection NewerVersionAvailable
+licensesDialog = "2.1.0"
+insetter = "0.3.1"
+simpleMenuPreference = "1.0.3"
+shizuku = "13.1.5"
+jcifsNg = "2.1.10"
+appIconLoader = "1.5.0"
+fastScroll = "1.3.0"
+foregroundCompat = "1.0.2"
+libarchive = "1.1.6"
+libselinux = "2.1.1"
+retrofile = "1.2.0"
+systemUiHelper = "1.0.0"
+ftpserver = "1.2.1"
+
+#This is a dependency of org.apache.ftpserver:ftpserver-core but org.apache.mina:mina-core
+#2.1.4+ became incompatible before API 24 due to dependency on StandardSocketOptions
+#(DIRMINA-1123) and NetworkChannel.supportedOptions() (DIRMINA-1130)
+#noinspection NewerVersionAvailable
+mina = "2.1.3"
+
+slf4j = "1.7.36"
+libsu = "5.2.2"
+#noinspection GradleDependency
+dav4jvm = "02fe1a95e6b86e323bec3784d7d2fe2d4081dde6"
+material3 = "1.5.0-alpha22"
+xkoma = "1.2.0"
+zoomableImageCoil = "0.19.0"
+
+[libraries]
+desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "coreLibraryDesugaring" }
+
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version.ref = "drawerlayout" }
+androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "exifinterface" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+androidx-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preference" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
+
+material = { module = "com.google.android.material:material", version.ref = "material" }
+
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
+bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk15to18", version.ref = "bouncyCastle" }
+bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk15to18", version.ref = "bouncyCastle" }
+
+coil-bom = { group = "io.coil-kt", name = "coil-bom", version.ref = "coil" }
+coil = { group = "io.coil-kt", name = "coil" }
+coil-gif = { group = "io.coil-kt", name = "coil-gif" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg" }
+coil-video = { group = "io.coil-kt", name = "coil-video" }
+
+sora-editor-bom = { group = "io.github.rosemoe", name = "editor-bom", version.ref = "soraEditor" }
+sora-editor = { group = "io.github.rosemoe", name = "editor" }
+sora-language-textmate = { group = "io.github.rosemoe", name = "language-textmate" }
+
+androidsvg = { module = "com.caverock:androidsvg-aar", version.ref = "androidsvg" }
+drakeet-drawer = { module = "com.drakeet.drawer:drawer", version.ref = "drakeetDrawer" }
+material-shadow-ninepatch = { module = "com.h6ah4i.android.materialshadowninepatch:materialshadowninepatch", version.ref = "materialShadow" }
+adv-recyclerview = { module = "com.h6ah4i.android.widget.advrecyclerview:advrecyclerview", version.ref = "advRecyclerview" }
+smbj = { module = "com.hierynomus:smbj", version.ref = "smbj" }
+sshj = { module = "com.hierynomus:sshj", version.ref = "sshj" }
+speed-dial = { module = "com.leinardi.android:speed-dial", version.ref = "speedDial" }
+dcerpc = { module = "com.rapid7.client:dcerpc", version.ref = "dcerpc" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+guava-listenablefuture = { module = "com.google.guava:listenablefuture", version = "9999.0-empty-to-avoid-conflict-with-guava" }
+preferencex = { module = "com.takisoft.preferencex:preferencex", version.ref = "preferencex" }
+commons-net = { module = "commons-net:commons-net", version.ref = "commonsNet" }
+licenses-dialog = { module = "de.psdev.licensesdialog:licensesdialog", version.ref = "licensesDialog" }
+insetter-ktx = { module = "dev.chrisbanes:insetter-ktx", version.ref = "insetter" }
+simple-menu-preference = { module = "dev.rikka.rikkax.preference:simplemenu-preference", version.ref = "simpleMenuPreference" }
+shizuku-api = { module = "dev.rikka.shizuku:api", version.ref = "shizuku" }
+jcifs-ng = { module = "eu.agno3.jcifs:jcifs-ng", version.ref = "jcifsNg" }
+appiconloader = { module = "me.zhanghai.android.appiconloader:appiconloader", version.ref = "appIconLoader" }
+fastscroll = { module = "me.zhanghai.android.fastscroll:library", version.ref = "fastScroll" }
+foreground-compat = { module = "me.zhanghai.android.foregroundcompat:library", version.ref = "foregroundCompat" }
+libarchive = { module = "me.zhanghai.android.libarchive:library", version.ref = "libarchive" }
+libselinux = { module = "me.zhanghai.android.libselinux:library", version.ref = "libselinux" }
+retrofile = { module = "me.zhanghai.android.retrofile:library", version.ref = "retrofile" }
+systemuihelper = { module = "me.zhanghai.android.systemuihelper:library", version.ref = "systemUiHelper" }
+ftpserver-core = { module = "org.apache.ftpserver:ftpserver-core", version.ref = "ftpserver" }
+mina-core = { module = "org.apache.mina:mina-core", version.ref = "mina" }
+slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j" }
+libsu-service = { module = "com.github.topjohnwu.libsu:service", version.ref = "libsu" }
+dav4jvm = { module = "com.github.bitfireAT:dav4jvm", version.ref = "dav4jvm" }
+xkoma = { module = "cc.ekblad:4koma", version.ref = "xkoma" }
+zoomable-image-coil = { module = "me.saket.telephoto:zoomable-image-coil", version.ref = "zoomableImageCoil" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

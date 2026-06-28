@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import com.google.android.material.imageview.ShapeableImageView
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.obtainStyledAttributesCompat
-import me.zhanghai.android.files.compat.use
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.obtainStyledAttributesCompat
+import me.zhanghai.android.filesfork.compat.use
 import kotlin.math.roundToInt
 
 open class AspectRatioImageView @JvmOverloads constructor(

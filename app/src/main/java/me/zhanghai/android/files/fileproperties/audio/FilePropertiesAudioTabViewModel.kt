@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.audio
+package me.zhanghai.android.filesfork.fileproperties.audio
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import java8.nio.file.Path
-import me.zhanghai.android.files.util.Stateful
+import me.zhanghai.android.filesfork.util.Stateful
 
 class FilePropertiesAudioTabViewModel(path: Path) : ViewModel() {
     private val _audioInfoLiveData = AudioInfoLiveData(path)

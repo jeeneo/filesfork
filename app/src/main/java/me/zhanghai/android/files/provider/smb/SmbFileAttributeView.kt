@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb
+package me.zhanghai.android.filesfork.provider.smb
 
 import com.hierynomus.msfscc.fileinformation.FileBasicInformation
 import java8.nio.file.attribute.BasicFileAttributeView
 import java8.nio.file.attribute.BasicFileAttributes
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.provider.smb.client.Client
-import me.zhanghai.android.files.provider.smb.client.ClientException
-import me.zhanghai.android.files.provider.smb.client.FileInformation
-import me.zhanghai.android.files.provider.smb.client.ShareInformation
+import me.zhanghai.android.filesfork.provider.smb.client.Client
+import me.zhanghai.android.filesfork.provider.smb.client.ClientException
+import me.zhanghai.android.filesfork.provider.smb.client.FileInformation
+import me.zhanghai.android.filesfork.provider.smb.client.ShareInformation
 import java.io.IOException
 import com.hierynomus.msdtyp.FileTime as SmbFileTime
 

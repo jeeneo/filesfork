@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb
+package me.zhanghai.android.filesfork.provider.smb
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.util.hash
+import me.zhanghai.android.filesfork.util.hash
 
 @Parcelize
 internal class SmbFileKey(

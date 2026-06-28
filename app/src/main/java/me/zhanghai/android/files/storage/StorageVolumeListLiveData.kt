@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.content.BroadcastReceiver
 import android.content.ContentResolver
@@ -13,10 +13,10 @@ import android.content.IntentFilter
 import android.os.storage.StorageVolume
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.app.storageManager
-import me.zhanghai.android.files.compat.registerReceiverCompat
-import me.zhanghai.android.files.compat.storageVolumesCompat
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.app.storageManager
+import me.zhanghai.android.filesfork.compat.registerReceiverCompat
+import me.zhanghai.android.filesfork.compat.storageVolumesCompat
 
 object StorageVolumeListLiveData : LiveData<List<StorageVolume>>() {
     init {

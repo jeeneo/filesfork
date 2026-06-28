@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb
+package me.zhanghai.android.filesfork.provider.smb
 
 import com.hierynomus.mserref.NtStatus
 import com.hierynomus.msfscc.FileNotifyAction
@@ -14,11 +14,11 @@ import com.hierynomus.smbj.share.Directory
 import java8.nio.file.Path
 import java8.nio.file.StandardWatchEventKinds
 import java8.nio.file.WatchEvent
-import me.zhanghai.android.files.provider.FileSystemProviders
-import me.zhanghai.android.files.provider.common.AbstractWatchService
-import me.zhanghai.android.files.provider.smb.client.Client
-import me.zhanghai.android.files.provider.smb.client.ClientException
-import me.zhanghai.android.files.util.closeSafe
+import me.zhanghai.android.filesfork.provider.FileSystemProviders
+import me.zhanghai.android.filesfork.provider.common.AbstractWatchService
+import me.zhanghai.android.filesfork.provider.smb.client.Client
+import me.zhanghai.android.filesfork.provider.smb.client.ClientException
+import me.zhanghai.android.filesfork.util.closeSafe
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.util.concurrent.Future

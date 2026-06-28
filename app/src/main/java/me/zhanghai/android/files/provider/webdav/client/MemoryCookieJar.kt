@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.webdav.client
+package me.zhanghai.android.filesfork.provider.webdav.client
 
 import okhttp3.Cookie
 import okhttp3.CookieJar

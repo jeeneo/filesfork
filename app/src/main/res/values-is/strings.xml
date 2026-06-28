@@ -52,7 +52,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">Ekkert forrit fannst sem getur meðhöndlað þessa aðgerð</string>
     <string name="open_settings">Opna stillingar</string>
-    <string name="shortcut_created">Útbjó flýtileið</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="one">%1$,d bæti</item>
@@ -218,7 +217,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">Villa kom upp við að endurheimta SELinux-samhengi fyrir “%1$s”.\n%2$s</string>
     <string name="file_job_write_error_title">Villa kom upp við að skrifa</string>
     <string name="file_job_write_error_message_format">Villa kom upp við að skrifa “%1$s”.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">Villa kom upp við að nálgast upplýsingar um “%1$s”.</string>
     <string name="file_job_remount_format">Endurtengja “%1$s” sem les-skrifanlegt</string>
     <string name="file_job_remount_loading_format">Endurtengi “%1$s” sem les-skrifanlegt</string>
     <string name="file_job_remount_success_format">“%1$s” hefur verið endurtengt sem les-skrifanlegt</string>
@@ -339,7 +337,6 @@
     <string name="file_properties_basic_parent_directory">Yfirmappa</string>
     <string name="file_properties_basic_archive_file">Setja skrá í geymslu</string>
     <string name="file_properties_basic_archive_entry">Setja færslu í geymslu</string>
-    <string name="file_properties_basic_free_space">Laust pláss</string>
     <string name="file_properties_permission">Heimildir</string>
     <string name="file_properties_permission_owner">Eigandi</string>
     <string name="file_properties_permission_group">Hópur</string>
@@ -587,11 +584,7 @@
     <string name="save_as_error">Villa kom upp við að vista skrá</string>
     <string name="save_as_success_format">“%1$s” hefur verið vistuð í “%2$s”</string>
     <string name="text_editor_title">Textaritill</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">Vistað</string>
     <string name="text_editor_reload_message">Ertu viss um að þú viljir endurhlaða? Óvistaðar breytingar á þessu skjali munu tapast.</string>
-    <string name="text_editor_encoding">Kóðun</string>
     <string name="text_editor_close_message">Ertu viss um að þú viljir henda óvistuðum breytingum á þessu skjali?</string>
 
     <string name="ftp_server_title">FTP-netþjónn</string>

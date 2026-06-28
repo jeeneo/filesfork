@@ -48,7 +48,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">Toiminnalle ei löytynyt sovellusta</string>
     <string name="open_settings">Avaa asetukset</string>
-    <string name="shortcut_created">Pikakuvake luotu</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="one">%1$,d tavu</item>
@@ -199,7 +198,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">Tapahtui virhe palauttaessa SELinux-kontekstia kohteelle “%1$s”.\n%2$s</string>
     <string name="file_job_write_error_title">Virhe kirjoittamisessa</string>
     <string name="file_job_write_error_message_format">Tapahtui virhe kirjoittaessa “%1$s”.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">Tapahtui virhe hakiessa tietoa kohteesta “%1$s”.</string>
     <string name="file_job_action_all">Suorita toiminto kaikille tiedostoille</string>
 
     <string name="file_open_apk_message">Tämä tiedosto on Android-asennustiedosto. Haluatko asentaa sen vai nähdä sen sisällön?</string>
@@ -302,7 +300,6 @@
     </plurals>
     <string name="file_properties_basic_last_modification_time">Viimeksi muokattu</string>
     <string name="file_properties_basic_parent_directory">Ylähakemisto</string>
-    <string name="file_properties_basic_free_space">Vapaata tilaa</string>
     <string name="file_properties_image">Kuva</string>
     <string name="file_properties_media_dimensions">Mitat</string>
     <string name="file_properties_media_dimensions_format">%1$d \u00d7 %2$d</string>
@@ -473,11 +470,7 @@
     <string name="image_viewer_title">Kuvan katselija</string>
     <string name="image_viewer_subtitle_format">%1$,d/%2$,d</string>
     <string name="text_editor_title">Tekstieditori</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">Tallennettu</string>
     <string name="text_editor_reload_message">Haluatko varmasti ladata tiedoston uudelleen? Tallentamattomat muutokset häviävät.</string>
-    <string name="text_editor_encoding">Merkistökoodaus</string>
     <string name="text_editor_close_message">Haluatko varmasti hylätä tiedoston tallentamattomat muutokset?</string>
 
     <string name="ftp_server_title">FTP-palvelin</string>

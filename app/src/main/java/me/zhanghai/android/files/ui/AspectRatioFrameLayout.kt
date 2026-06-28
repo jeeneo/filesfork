@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,9 +11,9 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.obtainStyledAttributesCompat
-import me.zhanghai.android.files.compat.use
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.obtainStyledAttributesCompat
+import me.zhanghai.android.filesfork.compat.use
 import kotlin.math.roundToInt
 
 class AspectRatioFrameLayout @JvmOverloads constructor(

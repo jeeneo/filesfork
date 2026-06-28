@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.sftp.client
+package me.zhanghai.android.filesfork.provider.sftp.client
 
 import java8.nio.channels.SeekableByteChannel
-import me.zhanghai.android.files.provider.common.LocalWatchService
-import me.zhanghai.android.files.provider.common.NotifyEntryModifiedSeekableByteChannel
-import me.zhanghai.android.files.util.closeSafe
+import me.zhanghai.android.filesfork.provider.common.LocalWatchService
+import me.zhanghai.android.filesfork.provider.common.NotifyEntryModifiedSeekableByteChannel
+import me.zhanghai.android.filesfork.util.closeSafe
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.sftp.FileAttributes
 import net.schmizz.sshj.sftp.FileMode

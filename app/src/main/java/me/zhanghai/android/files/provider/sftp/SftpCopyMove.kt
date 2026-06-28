@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.sftp
+package me.zhanghai.android.filesfork.provider.sftp
 
 import java.io.IOException
 import java.time.Instant
@@ -11,13 +11,13 @@ import java8.nio.file.FileAlreadyExistsException
 import java8.nio.file.FileSystemException
 import java8.nio.file.NoSuchFileException
 import java8.nio.file.StandardCopyOption
-import me.zhanghai.android.files.provider.common.CopyOptions
-import me.zhanghai.android.files.provider.common.copyTo
-import me.zhanghai.android.files.provider.common.newInputStream
-import me.zhanghai.android.files.provider.common.newOutputStream
-import me.zhanghai.android.files.provider.sftp.client.Client
-import me.zhanghai.android.files.provider.sftp.client.ClientException
-import me.zhanghai.android.files.util.enumSetOf
+import me.zhanghai.android.filesfork.provider.common.CopyOptions
+import me.zhanghai.android.filesfork.provider.common.copyTo
+import me.zhanghai.android.filesfork.provider.common.newInputStream
+import me.zhanghai.android.filesfork.provider.common.newOutputStream
+import me.zhanghai.android.filesfork.provider.sftp.client.Client
+import me.zhanghai.android.filesfork.provider.sftp.client.ClientException
+import me.zhanghai.android.filesfork.util.enumSetOf
 import net.schmizz.sshj.sftp.FileAttributes
 import net.schmizz.sshj.sftp.FileMode
 import net.schmizz.sshj.sftp.OpenMode

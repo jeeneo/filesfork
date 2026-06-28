@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.os.Parcelable
 import java8.nio.file.attribute.BasicFileAttributes

@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import java8.nio.file.attribute.FileAttributeView
-import me.zhanghai.android.files.provider.common.PosixFileStore
+import me.zhanghai.android.filesfork.provider.common.PosixFileStore
 import java.io.IOException
 
 abstract class RemotePosixFileStore(

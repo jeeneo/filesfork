@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filejob
+package me.zhanghai.android.filesfork.filejob
 
 enum class FileJobConflictAction {
     MERGE_OR_REPLACE,

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.basic
+package me.zhanghai.android.filesfork.fileproperties.basic
 
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
@@ -18,22 +18,22 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.file.asFileSize
-import me.zhanghai.android.files.file.fileSize
-import me.zhanghai.android.files.file.formatLong
-import me.zhanghai.android.files.filelist.getMimeTypeName
-import me.zhanghai.android.files.filelist.name
-import me.zhanghai.android.files.filelist.toUserFriendlyString
-import me.zhanghai.android.files.fileproperties.FilePropertiesFileViewModel
-import me.zhanghai.android.files.fileproperties.FilePropertiesTabFragment
-import me.zhanghai.android.files.provider.archive.ArchiveFileAttributes
-import me.zhanghai.android.files.provider.archive.archiveFile
-import me.zhanghai.android.files.provider.archive.isArchivePath
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.getQuantityString
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.file.asFileSize
+import me.zhanghai.android.filesfork.file.fileSize
+import me.zhanghai.android.filesfork.file.formatLong
+import me.zhanghai.android.filesfork.filelist.getMimeTypeName
+import me.zhanghai.android.filesfork.filelist.name
+import me.zhanghai.android.filesfork.filelist.toUserFriendlyString
+import me.zhanghai.android.filesfork.fileproperties.FilePropertiesFileViewModel
+import me.zhanghai.android.filesfork.fileproperties.FilePropertiesTabFragment
+import me.zhanghai.android.filesfork.provider.archive.ArchiveFileAttributes
+import me.zhanghai.android.filesfork.provider.archive.archiveFile
+import me.zhanghai.android.filesfork.provider.archive.isArchivePath
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.getQuantityString
+import me.zhanghai.android.filesfork.util.viewModels
 import java.io.IOException
 
 class FilePropertiesBasicTabFragment : FilePropertiesTabFragment() {

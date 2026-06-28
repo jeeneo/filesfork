@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import java8.nio.file.Path
-import me.zhanghai.android.files.compat.getDrawableCompat
+import me.zhanghai.android.filesfork.compat.getDrawableCompat
 
 abstract class NavigationItem {
     abstract val id: Long

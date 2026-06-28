@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import java8.nio.file.FileSystem
 

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -14,8 +14,8 @@ import androidx.annotation.StyleRes
 import androidx.preference.EditTextPreference.OnBindEditTextListener
 import com.takisoft.preferencex.EditTextPreference
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.compat.DigitsKeyListenerCompat
-import me.zhanghai.android.files.util.ParcelableState
+import me.zhanghai.android.filesfork.compat.DigitsKeyListenerCompat
+import me.zhanghai.android.filesfork.util.ParcelableState
 
 class NonNegativeIntegerPreference : EditTextPreference {
     private var isIntegerSet = false

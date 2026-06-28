@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.theme.custom
+package me.zhanghai.android.filesfork.theme.custom
 
 import android.app.Activity
 import android.app.Application
@@ -11,14 +11,14 @@ import android.content.Context
 import android.os.Bundle
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.recreateCompat
-import me.zhanghai.android.files.compat.setThemeCompat
-import me.zhanghai.android.files.compat.themeResIdCompat
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.theme.night.NightModeHelper
-import me.zhanghai.android.files.util.SimpleActivityLifecycleCallbacks
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.recreateCompat
+import me.zhanghai.android.filesfork.compat.setThemeCompat
+import me.zhanghai.android.filesfork.compat.themeResIdCompat
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.theme.night.NightModeHelper
+import me.zhanghai.android.filesfork.util.SimpleActivityLifecycleCallbacks
+import me.zhanghai.android.filesfork.util.valueCompat
 
 object CustomThemeHelper {
     private val activityBaseThemes = mutableMapOf<Activity, Int>()

@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import android.os.Parcel
 import android.os.Parcelable
-import me.zhanghai.android.files.provider.root.RootPosixFileStore
-import me.zhanghai.android.files.provider.root.RootablePosixFileStore
-import me.zhanghai.android.files.util.readParcelable
+import me.zhanghai.android.filesfork.provider.root.RootPosixFileStore
+import me.zhanghai.android.filesfork.provider.root.RootablePosixFileStore
+import me.zhanghai.android.filesfork.util.readParcelable
 
 internal class LinuxFileStore private constructor(
     private val path: LinuxPath,

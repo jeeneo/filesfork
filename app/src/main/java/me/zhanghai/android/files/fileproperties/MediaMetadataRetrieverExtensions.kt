@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties
+package me.zhanghai.android.filesfork.fileproperties
 
 import android.media.MediaMetadataRetriever
 import java.text.ParsePosition
@@ -12,7 +12,7 @@ import java.time.Instant
 import java.util.Locale
 import java.util.TimeZone
 import kotlin.math.max
-import me.zhanghai.android.files.util.takeIfNotBlank
+import me.zhanghai.android.filesfork.util.takeIfNotBlank
 
 fun MediaMetadataRetriever.extractMetadataNotBlank(keyCode: Int): String? =
     extractMetadata(keyCode)?.takeIfNotBlank()

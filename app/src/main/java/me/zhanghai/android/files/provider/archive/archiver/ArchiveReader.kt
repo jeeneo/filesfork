@@ -3,25 +3,25 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive.archiver
+package me.zhanghai.android.filesfork.provider.archive.archiver
 
 import androidx.preference.PreferenceManager
 import java8.nio.channels.SeekableByteChannel
 import java8.nio.charset.StandardCharsets
 import java8.nio.file.Path
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.provider.common.DelegateForceableSeekableByteChannel
-import me.zhanghai.android.files.provider.common.DelegateInputStream
-import me.zhanghai.android.files.provider.common.DelegateNonForceableSeekableByteChannel
-import me.zhanghai.android.files.provider.common.ForceableChannel
-import me.zhanghai.android.files.provider.common.PosixFileMode
-import me.zhanghai.android.files.provider.common.PosixFileType
-import me.zhanghai.android.files.provider.common.newByteChannel
-import me.zhanghai.android.files.provider.common.newInputStream
-import me.zhanghai.android.files.provider.root.isRunningAsRoot
-import me.zhanghai.android.files.provider.root.rootContext
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.provider.common.DelegateForceableSeekableByteChannel
+import me.zhanghai.android.filesfork.provider.common.DelegateInputStream
+import me.zhanghai.android.filesfork.provider.common.DelegateNonForceableSeekableByteChannel
+import me.zhanghai.android.filesfork.provider.common.ForceableChannel
+import me.zhanghai.android.filesfork.provider.common.PosixFileMode
+import me.zhanghai.android.filesfork.provider.common.PosixFileType
+import me.zhanghai.android.filesfork.provider.common.newByteChannel
+import me.zhanghai.android.filesfork.provider.common.newInputStream
+import me.zhanghai.android.filesfork.provider.root.isRunningAsRoot
+import me.zhanghai.android.filesfork.provider.root.rootContext
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.valueCompat
 import java.io.Closeable
 import java.io.IOException
 import java.io.InputStream
@@ -37,24 +37,7 @@ object ArchiveReader {
         val entries = mutableMapOf<Path, ReadArchive.Entry>()
         val rawEntries = readEntries(file, passwords)
         for (entry in rawEntries) {
-            var path = rootPath.resolve(entry.name)
-            // Normalize an absolute path to prevent path traversal attack.
-            if (!path.isAbsolute) {
-                // TODO: Will this actually happen?
-                throw AssertionError("Path must be absolute: $path")
-            }
-            if (path.nameCount > 0) {
-                path = path.normalize()
-                if (path.nameCount == 0) {
-                    // Don't allow a path to become the root path only after normalization.
-                    continue
-                }
-            } else {
-                if (!entry.isDirectory) {
-                    // Ignore a root path that's not a directory
-                    continue
-                }
-            }
+            val path = getPathForEntry(rootPath, entry) ?: continue
             entries.getOrPut(path) { entry }
         }
         entries.getOrPut(rootPath) { createDirectoryEntry("") }
@@ -125,6 +108,54 @@ object ArchiveReader {
                 closeable.close()
             }
         }
+    }
+
+    @Throws(IOException::class)
+    fun copyEntries(
+        file: Path,
+        passwords: List<String>,
+        rootPath: Path,
+        shouldCopy: (Path) -> Boolean,
+        writer: ArchiveWriter,
+        listener: ((Long) -> Unit)?
+    ) {
+        val charset = archiveFileNameCharset
+        val (archive, closeable) = openArchive(file, passwords)
+        closeable.use {
+            while (true) {
+                val entry = archive.readEntry(charset) ?: break
+                val path = getPathForEntry(rootPath, entry) ?: continue
+                if (!shouldCopy(path)) {
+                    continue
+                }
+                val inputStream = if (entry.type == PosixFileType.REGULAR_FILE) {
+                    archive.newDataInputStream()
+                } else {
+                    null
+                }
+                writer.write(entry, inputStream, listener)
+            }
+        }
+    }
+
+    private fun getPathForEntry(rootPath: Path, entry: ReadArchive.Entry): Path? {
+        var path = rootPath.resolve(entry.name)
+        // Normalize an absolute path to prevent path traversal attack.
+        if (!path.isAbsolute) {
+            // TODO: Will this actually happen?
+            throw AssertionError("Path must be absolute: $path")
+        }
+        if (path.nameCount > 0) {
+            path = path.normalize()
+            if (path.nameCount == 0) {
+                // Don't allow a path to become the root path only after normalization.
+                return null
+            }
+        } else if (!entry.isDirectory) {
+            // Ignore a root path that's not a directory
+            return null
+        }
+        return path
     }
 
     @Throws(IOException::class)

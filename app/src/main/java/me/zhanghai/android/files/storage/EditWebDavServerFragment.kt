@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.app.Activity
 import android.os.Bundle
@@ -19,26 +19,26 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.databinding.EditWebdavServerFragmentBinding
-import me.zhanghai.android.files.provider.webdav.client.AccessTokenAuthentication
-import me.zhanghai.android.files.provider.webdav.client.Authority
-import me.zhanghai.android.files.provider.webdav.client.NoneAuthentication
-import me.zhanghai.android.files.provider.webdav.client.PasswordAuthentication
-import me.zhanghai.android.files.provider.webdav.client.Protocol
-import me.zhanghai.android.files.ui.UnfilteredArrayAdapter
-import me.zhanghai.android.files.util.ActionState
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.fadeToVisibilityUnsafe
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.getTextArray
-import me.zhanghai.android.files.util.hideTextInputLayoutErrorOnTextChange
-import me.zhanghai.android.files.util.isReady
-import me.zhanghai.android.files.util.setResult
-import me.zhanghai.android.files.util.showToast
-import me.zhanghai.android.files.util.takeIfNotEmpty
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.databinding.EditWebdavServerFragmentBinding
+import me.zhanghai.android.filesfork.provider.webdav.client.AccessTokenAuthentication
+import me.zhanghai.android.filesfork.provider.webdav.client.Authority
+import me.zhanghai.android.filesfork.provider.webdav.client.NoneAuthentication
+import me.zhanghai.android.filesfork.provider.webdav.client.PasswordAuthentication
+import me.zhanghai.android.filesfork.provider.webdav.client.Protocol
+import me.zhanghai.android.filesfork.ui.UnfilteredArrayAdapter
+import me.zhanghai.android.filesfork.util.ActionState
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.fadeToVisibilityUnsafe
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.getTextArray
+import me.zhanghai.android.filesfork.util.hideTextInputLayoutErrorOnTextChange
+import me.zhanghai.android.filesfork.util.isReady
+import me.zhanghai.android.filesfork.util.setResult
+import me.zhanghai.android.filesfork.util.showToast
+import me.zhanghai.android.filesfork.util.takeIfNotEmpty
+import me.zhanghai.android.filesfork.util.viewModels
 import java.net.URI
 
 class EditWebDavServerFragment : Fragment() {

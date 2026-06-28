@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -22,17 +22,17 @@ import androidx.core.view.updatePaddingRelative
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.foregroundCompat
-import me.zhanghai.android.files.compat.obtainStyledAttributesCompat
-import me.zhanghai.android.files.compat.setTextAppearanceCompat
-import me.zhanghai.android.files.compat.use
-import me.zhanghai.android.files.databinding.NavigationDividerItemBinding
-import me.zhanghai.android.files.databinding.NavigationItemBinding
-import me.zhanghai.android.files.ui.AutoMirrorDrawable
-import me.zhanghai.android.files.ui.SimpleAdapter
-import me.zhanghai.android.files.util.getColorStateListByAttr
-import me.zhanghai.android.files.util.layoutInflater
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.foregroundCompat
+import me.zhanghai.android.filesfork.compat.obtainStyledAttributesCompat
+import me.zhanghai.android.filesfork.compat.setTextAppearanceCompat
+import me.zhanghai.android.filesfork.compat.use
+import me.zhanghai.android.filesfork.databinding.NavigationDividerItemBinding
+import me.zhanghai.android.filesfork.databinding.NavigationItemBinding
+import me.zhanghai.android.filesfork.ui.AutoMirrorDrawable
+import me.zhanghai.android.filesfork.ui.SimpleAdapter
+import me.zhanghai.android.filesfork.util.getColorStateListByAttr
+import me.zhanghai.android.filesfork.util.layoutInflater
 
 class NavigationListAdapter(
     private val listener: NavigationItem.Listener,

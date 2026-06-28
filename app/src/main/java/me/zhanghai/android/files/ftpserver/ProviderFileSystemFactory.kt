@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import org.apache.ftpserver.ftplet.FileSystemFactory
 import org.apache.ftpserver.ftplet.FileSystemView

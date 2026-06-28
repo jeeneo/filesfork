@@ -1,179 +1,92 @@
-/*
- * Copyright (c) 2019 Hai Zhang <dreaming.in.code.zh@gmail.com>
- * All Rights Reserved.
- */
+package me.zhanghai.android.filesfork.viewer.text
 
-package me.zhanghai.android.files.viewer.text
-
-import android.content.Context
-import android.os.Parcelable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.rosemoe.sora.text.Content
+import io.github.rosemoe.sora.widget.CodeEditor
+import java8.nio.file.Files
 import java8.nio.file.Path
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
-import me.zhanghai.android.files.filejob.FileJobService
-import me.zhanghai.android.files.provider.common.readAllBytes
-import me.zhanghai.android.files.provider.common.size
-import me.zhanghai.android.files.util.ActionState
-import me.zhanghai.android.files.util.DataState
-import me.zhanghai.android.files.util.isFinished
-import me.zhanghai.android.files.util.isReady
-import me.zhanghai.android.files.util.toError
-import me.zhanghai.android.files.util.toLoading
 import java.io.IOException
-import java.nio.charset.StandardCharsets
 
-class TextEditorViewModel(file: Path) : ViewModel() {
-    private val _file = MutableStateFlow(file)
-    val file = _file.asStateFlow()
+data class CodeEditorState(
+    val editor: CodeEditor? = null, val initialContent: Content = Content()
+) {
+    var content by mutableStateOf(initialContent)
+}
 
-    private val _bytesState = MutableStateFlow<DataState<ByteArray>>(DataState.Loading())
+sealed interface LoadState {
+    data object Loading : LoadState
+    data object Success : LoadState
+    data class Error(val message: String) : LoadState
+}
 
-    private var loadJob: Job? = null
-    private var reloadJob: Job? = null
+class TextEditorViewModel : ViewModel() {
+    val editorState = CodeEditorState()
+    var loadState: LoadState by mutableStateOf(LoadState.Loading)
+        private set
+    var isModified: Boolean by mutableStateOf(false)
+        private set
+    var syntaxHighlight: Boolean by mutableStateOf(true)
+        private set
+    var wordWrap: Boolean by mutableStateOf(false)
+        private set
 
-    init {
+    private var originalContent: String = ""
+    private var currentPath: Path? = null
+
+    fun load(path: Path) {
+        currentPath = path
+        loadState = LoadState.Loading
+        isModified = false
         viewModelScope.launch {
-            _file.collectLatest {
-                loadJob?.cancel()?.also { loadJob = null }
-                reloadJob?.cancel()?.also { reloadJob = null }
-                loadJob = launch {
-                    mapFileToBytesState(it)
-                    if (isActive) {
-                        loadJob = null
-                    }
+            try {
+                val text = withContext(Dispatchers.IO) {
+                    Files.newBufferedReader(path, Charsets.UTF_8).use { it.readText() }
                 }
+                originalContent = text
+                editorState.content = Content(text)
+                loadState = LoadState.Success
+            } catch (e: OutOfMemoryError) {
+                loadState = LoadState.Error(e.localizedMessage ?: "Out of memory")
+            } catch (e: IOException) {
+                loadState = LoadState.Error(e.localizedMessage ?: "Read error")
             }
         }
     }
 
-    fun reload() {
+    fun onContentChanged(text: String) {
+        isModified = text != originalContent
+    }
+
+    fun save(
+        path: Path, getText: () -> String, onSuccess: () -> Unit, onError: (String) -> Unit
+    ) {
         viewModelScope.launch {
-            loadJob?.cancel()?.also { loadJob = null }
-            reloadJob?.cancel()?.also { reloadJob = null }
-            reloadJob = launch {
-                mapFileToBytesState(_file.value)
-                if (isActive) {
-                    reloadJob = null
+            try {
+                val text = getText()
+                withContext(Dispatchers.IO) {
+                    Files.newBufferedWriter(path, Charsets.UTF_8).use { it.write(text) }
                 }
+                originalContent = text
+                isModified = false
+                onSuccess()
+            } catch (e: IOException) {
+                onError(e.localizedMessage ?: "Write error")
             }
         }
     }
 
-    private suspend fun mapFileToBytesState(file: Path) {
-        _bytesState.value = _bytesState.value.toLoading()
-        try {
-            val bytes = runInterruptible(Dispatchers.IO) {
-                val size = file.size()
-                if (size > MAX_FILE_SIZE) {
-                    throw IOException("File size $size is too large")
-                }
-                file.readAllBytes()
-            }
-            currentCoroutineContext().ensureActive()
-            _bytesState.value = DataState.Success(bytes)
-        } catch (e: CancellationException) {
-            e.printStackTrace()
-        } catch (e: Exception) {
-            _bytesState.value = _bytesState.value.toError(e)
-        }
+    fun toggleSyntaxHighlight() {
+        syntaxHighlight = !syntaxHighlight
     }
 
-    val encoding = MutableStateFlow(StandardCharsets.UTF_8)
-
-    private val _textState = MutableStateFlow<DataState<String>>(DataState.Loading())
-    val textState = _textState.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            _bytesState.combine(encoding) { bytesState, encoding -> bytesState to encoding }
-                .collectLatest { (bytesState, encoding) ->
-                    when (bytesState) {
-                        is DataState.Loading -> _textState.value = _textState.value.toLoading()
-                        is DataState.Success -> {
-                            _textState.value = _textState.value.toLoading()
-                            try {
-                                val text = withContext(Dispatchers.Default) {
-                                    String(bytesState.data, encoding)
-                                }
-                                currentCoroutineContext().ensureActive()
-                                _textState.value = DataState.Success(text)
-                            } catch (e: CancellationException) {
-                                e.printStackTrace()
-                            } catch (e: Exception) {
-                                _textState.value = _textState.value.toError(e)
-                            }
-                        }
-                        is DataState.Error ->
-                            _textState.value = _textState.value.toError(bytesState.throwable)
-                    }
-                }
-        }
-    }
-
-    val isTextChanged = MutableStateFlow(false)
-
-    private val _writeFileState =
-        MutableStateFlow<ActionState<Pair<Path, String>, Unit>>(ActionState.Ready())
-    val writeFileState = _writeFileState.asStateFlow()
-
-    fun writeFile(path: Path, text: String, context: Context) {
-        viewModelScope.launch {
-            check(_writeFileState.value.isReady)
-            val argument = path to text
-            _writeFileState.value = ActionState.Running(argument)
-            val bytes = withContext(Dispatchers.Default) {
-                text.toByteArray(encoding.value)
-            }
-            FileJobService.write(path, bytes, context) { successful ->
-                if (successful) {
-                    loadJob?.cancel()?.also { loadJob = null }
-                    reloadJob?.cancel()?.also { reloadJob = null }
-                    _bytesState.value = DataState.Success(bytes)
-                }
-                _writeFileState.value = if (successful) {
-                    ActionState.Success(argument, Unit)
-                } else {
-                    // The error will be toasted by service so we should never show it in UI, but we
-                    // need a non-null value here.
-                    ActionState.Error(argument, Throwable())
-                }
-            }
-        }
-    }
-
-    fun finishWritingFile() {
-        viewModelScope.launch {
-            check(_writeFileState.value.isFinished)
-            _writeFileState.value = ActionState.Ready()
-        }
-    }
-
-    private var editTextSavedState: Parcelable? = null
-
-    fun setEditTextSavedState(editTextSavedState: Parcelable?) {
-        this.editTextSavedState = editTextSavedState
-    }
-
-    fun removeEditTextSavedState(): Parcelable? {
-        val savedState = editTextSavedState
-        editTextSavedState = null
-        return savedState
-    }
-
-    companion object {
-        private const val MAX_FILE_SIZE = 1024 * 1024.toLong()
+    fun toggleWordWrap() {
+        wordWrap = !wordWrap
     }
 }

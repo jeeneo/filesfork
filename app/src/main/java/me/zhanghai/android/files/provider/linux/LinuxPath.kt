@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import android.os.Build
 import android.os.Parcel
@@ -14,15 +14,15 @@ import java8.nio.file.ProviderMismatchException
 import java8.nio.file.WatchEvent
 import java8.nio.file.WatchKey
 import java8.nio.file.WatchService
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.compat.isPrimaryCompat
-import me.zhanghai.android.files.compat.pathFileCompat
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringListPath
-import me.zhanghai.android.files.provider.root.RootablePath
-import me.zhanghai.android.files.storage.StorageVolumeListLiveData
-import me.zhanghai.android.files.util.readParcelable
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.compat.isPrimaryCompat
+import me.zhanghai.android.filesfork.compat.pathFileCompat
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringListPath
+import me.zhanghai.android.filesfork.provider.root.RootablePath
+import me.zhanghai.android.filesfork.storage.StorageVolumeListLiveData
+import me.zhanghai.android.filesfork.util.readParcelable
+import me.zhanghai.android.filesfork.util.valueCompat
 import java.io.File
 import java.io.IOException
 

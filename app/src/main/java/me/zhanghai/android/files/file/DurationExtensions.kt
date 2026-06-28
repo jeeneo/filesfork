@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.file
+package me.zhanghai.android.filesfork.file
 
 import android.text.format.DateUtils
 import java.time.Duration

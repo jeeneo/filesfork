@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import android.system.OsConstants
-import me.zhanghai.android.files.provider.common.OpenOptions
-import me.zhanghai.android.files.provider.linux.syscall.Constants
+import me.zhanghai.android.filesfork.provider.common.OpenOptions
+import me.zhanghai.android.filesfork.provider.linux.syscall.Constants
 
 internal fun OpenOptions.toLinuxFlags(): Int {
     var flags = if (read && write) {

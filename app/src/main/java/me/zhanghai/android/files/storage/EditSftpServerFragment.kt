@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -20,26 +20,26 @@ import com.hierynomus.sshj.common.KeyDecryptionFailedException
 import java8.nio.file.Path
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.databinding.EditSftpServerFragmentBinding
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.filelist.FileListActivity
-import me.zhanghai.android.files.provider.sftp.client.Authority
-import me.zhanghai.android.files.provider.sftp.client.PasswordAuthentication
-import me.zhanghai.android.files.provider.sftp.client.PublicKeyAuthentication
-import me.zhanghai.android.files.ui.UnfilteredArrayAdapter
-import me.zhanghai.android.files.util.ActionState
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.fadeToVisibilityUnsafe
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.getTextArray
-import me.zhanghai.android.files.util.hideTextInputLayoutErrorOnTextChange
-import me.zhanghai.android.files.util.isReady
-import me.zhanghai.android.files.util.launchSafe
-import me.zhanghai.android.files.util.showToast
-import me.zhanghai.android.files.util.takeIfNotEmpty
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.databinding.EditSftpServerFragmentBinding
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.filelist.FileListActivity
+import me.zhanghai.android.filesfork.provider.sftp.client.Authority
+import me.zhanghai.android.filesfork.provider.sftp.client.PasswordAuthentication
+import me.zhanghai.android.filesfork.provider.sftp.client.PublicKeyAuthentication
+import me.zhanghai.android.filesfork.ui.UnfilteredArrayAdapter
+import me.zhanghai.android.filesfork.util.ActionState
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.fadeToVisibilityUnsafe
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.getTextArray
+import me.zhanghai.android.filesfork.util.hideTextInputLayoutErrorOnTextChange
+import me.zhanghai.android.filesfork.util.isReady
+import me.zhanghai.android.filesfork.util.launchSafe
+import me.zhanghai.android.filesfork.util.showToast
+import me.zhanghai.android.filesfork.util.takeIfNotEmpty
+import me.zhanghai.android.filesfork.util.viewModels
 import java.net.URI
 
 class EditSftpServerFragment : Fragment() {

@@ -3,17 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import java8.nio.file.Path
-import me.zhanghai.android.files.filelist.FileSortOptions.By
-import me.zhanghai.android.files.filelist.FileSortOptions.Order
-import me.zhanghai.android.files.settings.PathSettings
-import me.zhanghai.android.files.settings.SettingLiveData
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.filelist.FileSortOptions.By
+import me.zhanghai.android.filesfork.filelist.FileSortOptions.Order
+import me.zhanghai.android.filesfork.settings.PathSettings
+import me.zhanghai.android.filesfork.settings.SettingLiveData
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.valueCompat
 
 class FileSortOptionsLiveData(pathLiveData: LiveData<Path>) : MediatorLiveData<FileSortOptions>() {
     private lateinit var pathSortOptionsLiveData: SettingLiveData<FileSortOptions?>

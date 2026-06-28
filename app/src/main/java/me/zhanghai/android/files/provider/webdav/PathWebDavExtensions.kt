@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.webdav
+package me.zhanghai.android.filesfork.provider.webdav
 
 import java8.nio.file.Path
-import me.zhanghai.android.files.provider.webdav.client.Authority
+import me.zhanghai.android.filesfork.provider.webdav.client.Authority
 
 fun Authority.createWebDavRootPath(): Path =
     WebDavFileSystemProvider.getOrNewFileSystem(this).rootDirectory

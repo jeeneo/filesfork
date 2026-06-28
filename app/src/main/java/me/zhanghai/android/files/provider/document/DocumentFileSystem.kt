@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.document
+package me.zhanghai.android.filesfork.provider.document
 
 import android.net.Uri
 import android.os.Parcel
@@ -15,11 +15,11 @@ import java8.nio.file.PathMatcher
 import java8.nio.file.WatchService
 import java8.nio.file.attribute.UserPrincipalLookupService
 import java8.nio.file.spi.FileSystemProvider
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringBuilder
-import me.zhanghai.android.files.provider.common.ByteStringListPathCreator
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.util.StableUriParceler
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringBuilder
+import me.zhanghai.android.filesfork.provider.common.ByteStringListPathCreator
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.util.StableUriParceler
 import java.io.IOException
 
 internal class DocumentFileSystem(

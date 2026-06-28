@@ -1,4 +1,4 @@
-package me.zhanghai.android.files.provider.webdav
+package me.zhanghai.android.filesfork.provider.webdav
 
 import at.bitfire.dav4jvm.exception.ConflictException
 import at.bitfire.dav4jvm.exception.DavException
@@ -9,7 +9,7 @@ import java8.nio.file.AccessDeniedException
 import java8.nio.file.FileAlreadyExistsException
 import java8.nio.file.FileSystemException
 import java8.nio.file.NoSuchFileException
-import me.zhanghai.android.files.provider.webdav.client.DavIOException
+import me.zhanghai.android.filesfork.provider.webdav.client.DavIOException
 
 fun DavException.toFileSystemException(
     file: String?,

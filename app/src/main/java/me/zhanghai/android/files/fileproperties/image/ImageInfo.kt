@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.image
+package me.zhanghai.android.filesfork.fileproperties.image
 
 import android.util.Size
 import java.time.Instant

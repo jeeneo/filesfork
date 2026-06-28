@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.ftp
+package me.zhanghai.android.filesfork.provider.ftp
 
 import java8.nio.file.FileAlreadyExistsException
 import java8.nio.file.NoSuchFileException
 import java8.nio.file.StandardCopyOption
-import me.zhanghai.android.files.provider.common.CopyOptions
-import me.zhanghai.android.files.provider.common.copyTo
-import me.zhanghai.android.files.provider.ftp.client.Client
+import me.zhanghai.android.filesfork.provider.common.CopyOptions
+import me.zhanghai.android.filesfork.provider.common.copyTo
+import me.zhanghai.android.filesfork.provider.ftp.client.Client
 import java.io.IOException
 
 internal object FtpCopyMove {

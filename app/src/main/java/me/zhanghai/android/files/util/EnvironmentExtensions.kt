@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.content.Intent
 import android.net.Uri
@@ -12,8 +12,8 @@ import android.os.Environment
 import android.provider.Settings
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.RequiresApi
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.app.packageManager
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.app.packageManager
 import kotlin.reflect.KClass
 
 // TvSettings didn't have "All files access" page until Android 13.

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filejob
+package me.zhanghai.android.filesfork.filejob
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runInterruptible
-import me.zhanghai.android.files.provider.common.PosixFileStore
-import me.zhanghai.android.files.util.ActionState
-import me.zhanghai.android.files.util.isFinished
-import me.zhanghai.android.files.util.isReady
+import me.zhanghai.android.filesfork.provider.common.PosixFileStore
+import me.zhanghai.android.filesfork.util.ActionState
+import me.zhanghai.android.filesfork.util.isFinished
+import me.zhanghai.android.filesfork.util.isReady
 
 class FileJobErrorViewModel : ViewModel() {
     private val _remountState =

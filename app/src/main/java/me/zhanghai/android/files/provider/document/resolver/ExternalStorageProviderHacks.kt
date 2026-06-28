@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.document.resolver
+package me.zhanghai.android.filesfork.provider.document.resolver
 
 import android.database.Cursor
 import android.database.MergeCursor
 import android.net.Uri
 import android.provider.DocumentsContract
-import me.zhanghai.android.files.compat.DocumentsContractCompat
-import me.zhanghai.android.files.provider.content.resolver.requireString
+import me.zhanghai.android.filesfork.compat.DocumentsContractCompat
+import me.zhanghai.android.filesfork.provider.content.resolver.requireString
 
 // On Android 11, ExternalStorageProvider no longer returns Android/data and Android/obb as children
 // of the Android directory on primary storage. However, the two child directories are actually

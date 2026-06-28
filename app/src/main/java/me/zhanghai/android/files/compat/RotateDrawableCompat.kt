@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RotateDrawable
 import android.os.Build
-import me.zhanghai.android.files.util.lazyReflectedField
+import me.zhanghai.android.filesfork.util.lazyReflectedField
 import kotlin.reflect.KClass
 
 fun KClass<RotateDrawable>.createCompat(): RotateDrawable =

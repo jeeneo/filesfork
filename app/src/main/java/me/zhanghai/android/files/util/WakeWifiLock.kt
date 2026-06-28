@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.net.wifi.WifiManager
 import android.os.PowerManager
-import me.zhanghai.android.files.app.powerManager
-import me.zhanghai.android.files.app.wifiManager
+import me.zhanghai.android.filesfork.app.powerManager
+import me.zhanghai.android.filesfork.app.wifiManager
 
 class WakeWifiLock(tag: String) {
     private val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag)

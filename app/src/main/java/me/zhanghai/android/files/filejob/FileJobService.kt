@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filejob
+package me.zhanghai.android.filesfork.filejob
 
 import android.app.Service
 import android.content.Context
@@ -11,16 +11,17 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.annotation.MainThread
 import java8.nio.file.Path
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.provider.common.PosixFileModeBit
-import me.zhanghai.android.files.provider.common.PosixGroup
-import me.zhanghai.android.files.provider.common.PosixUser
-import me.zhanghai.android.files.util.ForegroundNotificationManager
-import me.zhanghai.android.files.util.WakeWifiLock
-import me.zhanghai.android.files.util.removeFirst
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.filelist.CompressionTarget
+import me.zhanghai.android.filesfork.provider.common.PosixFileModeBit
+import me.zhanghai.android.filesfork.provider.common.PosixGroup
+import me.zhanghai.android.filesfork.provider.common.PosixUser
+import me.zhanghai.android.filesfork.util.ForegroundNotificationManager
+import me.zhanghai.android.filesfork.util.WakeWifiLock
+import me.zhanghai.android.filesfork.util.removeFirst
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
-import me.zhanghai.android.files.compat.removeFirstCompat
+import me.zhanghai.android.filesfork.compat.removeFirstCompat
 
 class FileJobService : Service() {
     private lateinit var wakeWifiLock: WakeWifiLock
@@ -117,10 +118,18 @@ class FileJobService : Service() {
             archiveFile: Path,
             format: Int,
             filter: Int,
+            compressionTarget: CompressionTarget,
             password: String?,
+            compressionLevel: Int?,
             context: Context
         ) {
-            startJob(ArchiveFileJob(sources, archiveFile, format, filter, password), context)
+            startJob(
+                ArchiveFileJob(
+                    sources, archiveFile, format, filter, compressionTarget, password,
+                    compressionLevel
+                ),
+                context
+            )
         }
 
         fun copy(sources: List<Path>, targetDirectory: Path, context: Context) {
@@ -145,6 +154,15 @@ class FileJobService : Service() {
 
         fun open(file: Path, mimeType: MimeType, withChooser: Boolean, context: Context) {
             startJob(OpenFileJob(file, mimeType, withChooser), context)
+        }
+        
+        fun replaceArchiveEntry(
+            archiveEntry: Path,
+            cacheFile: Path,
+            passwords: List<String>,
+            context: Context
+        ) {
+            startJob(ReplaceArchiveEntryFileJob(archiveEntry, cacheFile, passwords), context)
         }
 
         fun rename(path: Path, newName: String, context: Context) {

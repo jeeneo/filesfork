@@ -50,7 +50,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">해당 작업을 위한 애플리케이션이 없습니다</string>
     <string name="open_settings">설정 열기</string>
-    <string name="shortcut_created">바로가기가 생성되었습니다</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="other">%1$,d 바이트</item>
@@ -195,7 +194,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">“%1$s” 항목의 SELinux 컨텍스트를 복원하는 중에 오류가 발생하였습니다.\n%2$s</string>
     <string name="file_job_write_error_title">쓰기 중 오류</string>
     <string name="file_job_write_error_message_format">“%1$s” 항목을 쓰는 중에 오류가 발생하였습니다.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">“%1$s” 항목의 정보를 가져오는 중에 오류가 발생하였습니다.</string>
     <string name="file_job_remount_format">“%1$s” 을(를) 쓰기 허용으로 다시 마운트</string>
     <string name="file_job_remount_loading_format">쓰기 허용으로 “%1$s” 다시 마운트 중…</string>
     <string name="file_job_remount_success_format">“%1$s” 을(를) 쓰기 허용으로 다시 마운트했습니다</string>
@@ -308,7 +306,6 @@
     <string name="file_properties_basic_parent_directory">상위 폴더</string>
     <string name="file_properties_basic_archive_file">압축 파일</string>
     <string name="file_properties_basic_archive_entry">압축된 항목</string>
-    <string name="file_properties_basic_free_space">빈 공간</string>
     <string name="file_properties_permission">권한</string>
     <string name="file_properties_permission_owner">소유자</string>
     <string name="file_properties_permission_group">그룹</string>
@@ -555,11 +552,7 @@
     <string name="save_as_error">파일 저장 중 오류</string>
     <string name="save_as_success_format">“%1$s” 항목을 “%2$s”에 저장했습니다.</string>
     <string name="text_editor_title">텍스트 편집기</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">저장됨</string>
     <string name="text_editor_reload_message">정말 다시 불러오시겠습니까? 이 문서의 저장하지 않은 내용은 사라집니다.</string>
-    <string name="text_editor_encoding">인코딩</string>
     <string name="text_editor_close_message">정말 이 문서의 저장하지 않은 내용을 버리시겠습니까?</string>
 
     <string name="ftp_server_title">FTP 서버</string>

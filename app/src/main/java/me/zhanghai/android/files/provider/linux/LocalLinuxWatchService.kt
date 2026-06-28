@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import android.system.OsConstants
 import android.system.StructPollfd
@@ -14,13 +14,13 @@ import java8.nio.file.StandardWatchEventKinds
 import java8.nio.file.WatchEvent
 import java8.nio.file.attribute.BasicFileAttributes
 import kotlinx.coroutines.runBlocking
-import me.zhanghai.android.files.provider.FileSystemProviders
-import me.zhanghai.android.files.provider.common.AbstractWatchService
-import me.zhanghai.android.files.provider.common.readAttributes
-import me.zhanghai.android.files.provider.linux.syscall.Constants
-import me.zhanghai.android.files.provider.linux.syscall.Syscall
-import me.zhanghai.android.files.provider.linux.syscall.SyscallException
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.provider.FileSystemProviders
+import me.zhanghai.android.filesfork.provider.common.AbstractWatchService
+import me.zhanghai.android.filesfork.provider.common.readAttributes
+import me.zhanghai.android.filesfork.provider.linux.syscall.Constants
+import me.zhanghai.android.filesfork.provider.linux.syscall.Syscall
+import me.zhanghai.android.filesfork.provider.linux.syscall.SyscallException
+import me.zhanghai.android.filesfork.util.hasBits
 import java.io.Closeable
 import java.io.FileDescriptor
 import java.io.IOException

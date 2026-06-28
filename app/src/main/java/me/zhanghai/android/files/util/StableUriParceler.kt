@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.net.Uri
 import android.os.Build
 import android.os.Parcel
 import androidx.annotation.RequiresApi
 import kotlinx.parcelize.Parceler
-import me.zhanghai.android.files.hiddenapi.RestrictedHiddenApi
+import me.zhanghai.android.filesfork.hiddenapi.RestrictedHiddenApi
 
 // The built-in parceling of Uri isn't guaranteed to be stable and has changed 2 times, so we should
 // always use our own parceling for persistence.

@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.os.Parcel
 import android.os.Parcelable
-import me.zhanghai.android.files.compat.readSerializableCompat
-import me.zhanghai.android.files.util.toEnumSet
+import me.zhanghai.android.filesfork.compat.readSerializableCompat
+import me.zhanghai.android.filesfork.util.toEnumSet
 import java.io.Serializable
 
 class ParcelablePosixFileMode(val value: Set<PosixFileModeBit>) : Parcelable {

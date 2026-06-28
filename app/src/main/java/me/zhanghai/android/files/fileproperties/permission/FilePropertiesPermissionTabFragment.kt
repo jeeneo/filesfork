@@ -3,19 +3,19 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 import android.os.Bundle
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.fileproperties.FilePropertiesFileViewModel
-import me.zhanghai.android.files.fileproperties.FilePropertiesTabFragment
-import me.zhanghai.android.files.provider.common.PosixFileAttributes
-import me.zhanghai.android.files.provider.common.PosixPrincipal
-import me.zhanghai.android.files.provider.common.toInt
-import me.zhanghai.android.files.provider.common.toModeString
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.fileproperties.FilePropertiesFileViewModel
+import me.zhanghai.android.filesfork.fileproperties.FilePropertiesTabFragment
+import me.zhanghai.android.filesfork.provider.common.PosixFileAttributes
+import me.zhanghai.android.filesfork.provider.common.PosixPrincipal
+import me.zhanghai.android.filesfork.provider.common.toInt
+import me.zhanghai.android.filesfork.provider.common.toModeString
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.viewModels
 
 class FilePropertiesPermissionTabFragment : FilePropertiesTabFragment() {
     private val viewModel by viewModels<FilePropertiesFileViewModel>({ requireParentFragment() })

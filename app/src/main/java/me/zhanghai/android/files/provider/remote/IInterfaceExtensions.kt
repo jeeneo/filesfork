@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import android.os.Binder
 import android.os.IInterface
@@ -28,10 +28,11 @@ fun <T : IInterface, R> T.call(block: T.(ParcelableException) -> R): R {
 }
 
 @OptIn(ExperimentalContracts::class)
-fun <T, R> T.tryRun(exception: ParcelableException, block: T.() -> R): R?
-    where T : IInterface, T : Binder {
+fun <T, R> T.tryRun(
+    exception: ParcelableException, block: T.() -> R
+): R? where T : IInterface, T : Binder {
     contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+        callsInPlace(block, InvocationKind.AT_MOST_ONCE)
     }
     return try {
         block()

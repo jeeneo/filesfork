@@ -3,17 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.content.Context
 import android.content.Intent
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.file.ExternalStorageUri
-import me.zhanghai.android.files.file.displayName
-import me.zhanghai.android.files.util.createDocumentsUiViewDirectoryIntent
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.putArgs
+import me.zhanghai.android.filesfork.file.ExternalStorageUri
+import me.zhanghai.android.filesfork.file.displayName
+import me.zhanghai.android.filesfork.util.createDocumentsUiViewDirectoryIntent
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.putArgs
 import kotlin.random.Random
 
 @Parcelize

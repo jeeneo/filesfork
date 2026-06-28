@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.coil
+package me.zhanghai.android.filesfork.coil
 
 import android.graphics.drawable.Drawable
 import coil.request.ImageRequest

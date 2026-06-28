@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.content.Context
 import android.text.TextUtils
@@ -14,11 +14,11 @@ import androidx.annotation.StyleRes
 import androidx.lifecycle.Observer
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
-import me.zhanghai.android.files.compat.ListFormatterCompat
-import me.zhanghai.android.files.storage.Storage
-import me.zhanghai.android.files.storage.StorageListActivity
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.startActivitySafe
+import me.zhanghai.android.filesfork.compat.ListFormatterCompat
+import me.zhanghai.android.filesfork.storage.Storage
+import me.zhanghai.android.filesfork.storage.StorageListActivity
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.startActivitySafe
 
 class StoragesPreference : Preference {
     private var emptySummary = summary

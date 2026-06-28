@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
-import me.zhanghai.android.files.app.appClassLoader
+import me.zhanghai.android.filesfork.app.appClassLoader
 
 fun <T : Parcelable> Bundle.getParcelableSafe(key: String?): T? {
     classLoader = appClassLoader

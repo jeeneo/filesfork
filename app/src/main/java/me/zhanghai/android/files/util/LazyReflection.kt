@@ -1,4 +1,4 @@
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field

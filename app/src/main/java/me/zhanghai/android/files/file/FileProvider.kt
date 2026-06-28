@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.file
+package me.zhanghai.android.filesfork.file
 
 import android.content.ContentProvider
 import android.content.ContentResolver
@@ -34,23 +34,23 @@ import java8.nio.file.OpenOption
 import java8.nio.file.Path
 import java8.nio.file.Paths
 import java8.nio.file.StandardOpenOption
-import me.zhanghai.android.files.BuildConfig
-import me.zhanghai.android.files.app.storageManager
-import me.zhanghai.android.files.compat.ProxyFileDescriptorCallbackCompat
-import me.zhanghai.android.files.compat.openProxyFileDescriptorCompat
-import me.zhanghai.android.files.provider.common.InvalidFileNameException
-import me.zhanghai.android.files.provider.common.IsDirectoryException
-import me.zhanghai.android.files.provider.common.force
-import me.zhanghai.android.files.provider.common.getLastModifiedTime
-import me.zhanghai.android.files.provider.common.isForceable
-import me.zhanghai.android.files.provider.common.newByteChannel
-import me.zhanghai.android.files.provider.common.size
-import me.zhanghai.android.files.provider.document.documentUri
-import me.zhanghai.android.files.provider.document.isDocumentPath
-import me.zhanghai.android.files.provider.linux.isLinuxPath
-import me.zhanghai.android.files.provider.linux.syscall.SyscallException
-import me.zhanghai.android.files.util.hasBits
-import me.zhanghai.android.files.util.withoutPenaltyDeathOnNetwork
+import me.zhanghai.android.filesfork.BuildConfig
+import me.zhanghai.android.filesfork.app.storageManager
+import me.zhanghai.android.filesfork.compat.ProxyFileDescriptorCallbackCompat
+import me.zhanghai.android.filesfork.compat.openProxyFileDescriptorCompat
+import me.zhanghai.android.filesfork.provider.common.InvalidFileNameException
+import me.zhanghai.android.filesfork.provider.common.IsDirectoryException
+import me.zhanghai.android.filesfork.provider.common.force
+import me.zhanghai.android.filesfork.provider.common.getLastModifiedTime
+import me.zhanghai.android.filesfork.provider.common.isForceable
+import me.zhanghai.android.filesfork.provider.common.newByteChannel
+import me.zhanghai.android.filesfork.provider.common.size
+import me.zhanghai.android.filesfork.provider.document.documentUri
+import me.zhanghai.android.filesfork.provider.document.isDocumentPath
+import me.zhanghai.android.filesfork.provider.linux.isLinuxPath
+import me.zhanghai.android.filesfork.provider.linux.syscall.SyscallException
+import me.zhanghai.android.filesfork.util.hasBits
+import me.zhanghai.android.filesfork.util.withoutPenaltyDeathOnNetwork
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InterruptedIOException

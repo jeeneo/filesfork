@@ -3,22 +3,22 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.audio
+package me.zhanghai.android.filesfork.fileproperties.audio
 
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.file.format
-import me.zhanghai.android.files.file.isAudio
-import me.zhanghai.android.files.fileproperties.FilePropertiesTabFragment
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.ParcelableParceler
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.isMediaMetadataRetrieverCompatible
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.file.format
+import me.zhanghai.android.filesfork.file.isAudio
+import me.zhanghai.android.filesfork.fileproperties.FilePropertiesTabFragment
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.isMediaMetadataRetrieverCompatible
+import me.zhanghai.android.filesfork.util.viewModels
 
 class FilePropertiesAudioTabFragment : FilePropertiesTabFragment() {
     private val args by args<Args>()

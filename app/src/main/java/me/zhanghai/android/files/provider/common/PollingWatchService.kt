@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import java8.nio.file.DirectoryIteratorException
 import java8.nio.file.LinkOption
@@ -11,8 +11,8 @@ import java8.nio.file.Path
 import java8.nio.file.StandardWatchEventKinds
 import java8.nio.file.WatchEvent
 import java8.nio.file.attribute.BasicFileAttributes
-import me.zhanghai.android.files.BuildConfig
-import me.zhanghai.android.files.provider.FileSystemProviders
+import me.zhanghai.android.filesfork.BuildConfig
+import me.zhanghai.android.filesfork.provider.FileSystemProviders
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.util.concurrent.atomic.AtomicInteger

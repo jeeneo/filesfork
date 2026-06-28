@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
-import me.zhanghai.android.files.compat.doWithStartForegroundServiceAllowed
+import me.zhanghai.android.filesfork.compat.doWithStartForegroundServiceAllowed
 
 @RequiresApi(Build.VERSION_CODES.N)
 class FtpServerTileService : TileService() {

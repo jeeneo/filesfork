@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
-import me.zhanghai.android.files.provider.linux.syscall.Syscall.endpwent
-import me.zhanghai.android.files.provider.linux.syscall.Syscall.getpwent
-import me.zhanghai.android.files.provider.linux.syscall.Syscall.setpwent
+import me.zhanghai.android.filesfork.provider.linux.syscall.Syscall.endpwent
+import me.zhanghai.android.filesfork.provider.linux.syscall.Syscall.getpwent
+import me.zhanghai.android.filesfork.provider.linux.syscall.Syscall.setpwent
 
 class UserListLiveData : PrincipalListLiveData() {
     override val androidPrincipals: MutableList<PrincipalItem>

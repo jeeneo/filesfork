@@ -3,25 +3,25 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.apk
+package me.zhanghai.android.filesfork.fileproperties.apk
 
 import android.os.Build
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.longVersionCodeCompat
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.file.isApk
-import me.zhanghai.android.files.fileproperties.FilePropertiesTabFragment
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.ParcelableParceler
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.getQuantityString
-import me.zhanghai.android.files.util.getStringArray
-import me.zhanghai.android.files.util.isGetPackageArchiveInfoCompatible
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.longVersionCodeCompat
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.file.isApk
+import me.zhanghai.android.filesfork.fileproperties.FilePropertiesTabFragment
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.getQuantityString
+import me.zhanghai.android.filesfork.util.getStringArray
+import me.zhanghai.android.filesfork.util.isGetPackageArchiveInfoCompatible
+import me.zhanghai.android.filesfork.util.viewModels
 
 class FilePropertiesApkTabFragment : FilePropertiesTabFragment() {
     private val args by args<Args>()

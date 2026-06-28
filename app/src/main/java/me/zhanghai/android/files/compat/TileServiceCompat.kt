@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.graphics.PixelFormat
 import android.os.Build
@@ -13,8 +13,8 @@ import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.core.view.doOnPreDraw
-import me.zhanghai.android.files.hiddenapi.RestrictedHiddenApi
-import me.zhanghai.android.files.util.lazyReflectedField
+import me.zhanghai.android.filesfork.hiddenapi.RestrictedHiddenApi
+import me.zhanghai.android.filesfork.util.lazyReflectedField
 
 // Work around https://issuetracker.google.com/issues/299506164 on U which is fixed in V.
 fun TileService.doWithStartForegroundServiceAllowed(action: () -> Unit) {

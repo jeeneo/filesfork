@@ -3,11 +3,11 @@
  * All Rights flagserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.os.ParcelFileDescriptor
 import android.system.OsConstants
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.util.hasBits
 import kotlin.reflect.KClass
 
 // @see android.os.FileUtils#translateModePfdToPosix

@@ -3,17 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.view.ViewGroup
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder
-import me.zhanghai.android.files.compat.foregroundCompat
-import me.zhanghai.android.files.compat.isTransformedTouchPointInViewCompat
-import me.zhanghai.android.files.databinding.StorageItemBinding
-import me.zhanghai.android.files.ui.SimpleAdapter
-import me.zhanghai.android.files.util.layoutInflater
+import me.zhanghai.android.filesfork.compat.foregroundCompat
+import me.zhanghai.android.filesfork.compat.isTransformedTouchPointInViewCompat
+import me.zhanghai.android.filesfork.databinding.StorageItemBinding
+import me.zhanghai.android.filesfork.ui.SimpleAdapter
+import me.zhanghai.android.filesfork.util.layoutInflater
 
 class StorageListAdapter(
     private val listener: Listener

@@ -3,10 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.os.SystemClock
 import android.text.TextUtils
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -19,28 +24,32 @@ import coil.dispose
 import coil.load
 import java8.nio.file.Path
 import me.zhanghai.android.fastscroll.PopupTextProvider
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.coil.AppIconPackageName
-import me.zhanghai.android.files.compat.foregroundCompat
-import me.zhanghai.android.files.compat.getDrawableCompat
-import me.zhanghai.android.files.compat.isSingleLineCompat
-import me.zhanghai.android.files.databinding.FileItemGridBinding
-import me.zhanghai.android.files.databinding.FileItemListBinding
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.file.fileSize
-import me.zhanghai.android.files.file.formatShort
-import me.zhanghai.android.files.file.iconRes
-import me.zhanghai.android.files.file.isApk
-import me.zhanghai.android.files.provider.archive.isArchivePath
-import me.zhanghai.android.files.provider.common.isEncrypted
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.ui.AnimatedListAdapter
-import me.zhanghai.android.files.ui.CheckableForegroundLinearLayout
-import me.zhanghai.android.files.ui.CheckableItemBackground
-import me.zhanghai.android.files.util.isMaterial3Theme
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.coil.AppIconPackageName
+import me.zhanghai.android.filesfork.compat.foregroundCompat
+import me.zhanghai.android.filesfork.compat.getDrawableCompat
+import me.zhanghai.android.filesfork.compat.isSingleLineCompat
+import me.zhanghai.android.filesfork.databinding.FileItemGridBinding
+import me.zhanghai.android.filesfork.databinding.FileItemListBinding
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.file.asFileSize
+import me.zhanghai.android.filesfork.file.fileSize
+import me.zhanghai.android.filesfork.file.formatShort
+import me.zhanghai.android.filesfork.file.iconRes
+import me.zhanghai.android.filesfork.file.isApk
+import me.zhanghai.android.filesfork.provider.archive.canModifyArchiveEntries
+import me.zhanghai.android.filesfork.provider.archive.isArchivePath
+import me.zhanghai.android.filesfork.provider.common.isEncrypted
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.ui.AnimatedListAdapter
+import me.zhanghai.android.filesfork.ui.CheckableForegroundLinearLayout
+import me.zhanghai.android.filesfork.ui.CheckableItemBackground
+import me.zhanghai.android.filesfork.util.isMaterial3Theme
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.valueCompat
 import java.util.Locale
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 class FileListAdapter(
     private val listener: Listener
@@ -63,7 +72,7 @@ class FileListAdapter(
         set(value) {
             _sortOptions = value
             if (!isSearching) {
-                val sortedList = list.sortedWith(value.createComparator())
+                val sortedList = list.sortedWith(value.createComparator(folderSizes))
                 super.replace(sortedList, true)
                 rebuildFilePositionMap()
             }
@@ -77,6 +86,8 @@ class FileListAdapter(
 
     private val selectedFiles = fileItemSetOf()
 
+    private val _touchData: TouchData = TouchData()
+
     private val filePositionMap = mutableMapOf<Path, Int>()
 
     private lateinit var _nameEllipsize: TextUtils.TruncateAt
@@ -86,6 +97,56 @@ class FileListAdapter(
             _nameEllipsize = value
             notifyItemRangeChanged(0, itemCount, PAYLOAD_STATE_CHANGED)
         }
+
+    private var _denseLayout: Boolean = false
+    var denseLayout: Boolean
+        get() = _denseLayout
+        set(value) {
+            _denseLayout = value
+        }
+
+    private var _calcSizes: Boolean = false
+    var calcSizes: Boolean
+        get() = _calcSizes
+        set(value) {
+            _calcSizes = value
+        }
+
+    private var folderSizes: Map<Path, Long> = emptyMap()
+    private var recyclerView: RecyclerView? = null
+
+    fun onFolderSizesChanged(newSizes: Map<Path, Long>) {
+        val old = folderSizes
+        folderSizes = newSizes
+        val needsResort = _sortOptions.by == FileSortOptions.By.SIZE && !isSearching
+        val changedPaths = (0 until itemCount).filter {
+            getItem(it).attributes.isDirectory && old[getItem(it).path] != newSizes[getItem(
+                it
+            ).path]
+        }.map { getItem(it).path }.toSet()
+        val rv = recyclerView
+        fun applyUpdates() {
+            if (needsResort) {
+                super.replace(list.sortedWith(_sortOptions.createComparator(folderSizes)), false)
+                rebuildFilePositionMap()
+            }
+            if (changedPaths.isNotEmpty()) {
+                (0 until itemCount).filter { getItem(it).path in changedPaths }
+                    .forEach { notifyItemChanged(it, PAYLOAD_FOLDER_SIZE_CHANGED) }
+            }
+        }
+        if (rv != null) rv.post(::applyUpdates) else applyUpdates()
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        this.recyclerView = null
+    }
 
     fun replaceSelectedFiles(files: FileItemSet) {
         val changedFiles = fileItemSetOf()
@@ -132,12 +193,44 @@ class FileListAdapter(
         listener.selectFiles(files, true)
     }
 
+    fun rangeSelectFiles() {
+        var firstSelectItem = -1
+        var lastSelectItem = -1
+        for (index in 0..<itemCount) {
+            val file = getItem(index)
+            if (file in selectedFiles) {
+                firstSelectItem = index
+                break
+            }
+        }
+        for (index in itemCount - 1 downTo firstSelectItem) {
+            val file = getItem(index)
+            if (file in selectedFiles) {
+                lastSelectItem = index
+                break
+            }
+        }
+        val files = fileItemSetOf()
+        if (firstSelectItem >= 0 && lastSelectItem >= 0 && lastSelectItem < itemCount && firstSelectItem < lastSelectItem) {
+            for (index in firstSelectItem..lastSelectItem) {
+                val file = getItem(index)
+                if (isFileSelectable(file)) {
+                    files.add(file)
+                }
+            }
+        }
+        listener.selectFiles(files, true)
+    }
+
     private fun isFileSelectable(file: FileItem): Boolean {
         val pickOptions = pickOptions ?: return true
         return when (pickOptions.mode) {
-            PickOptions.Mode.OPEN_FILE, PickOptions.Mode.CREATE_FILE ->
-                !file.attributes.isDirectory &&
-                    pickOptions.mimeTypes.any { it.match(file.mimeType) }
+            PickOptions.Mode.OPEN_FILE, PickOptions.Mode.CREATE_FILE -> !file.attributes.isDirectory && pickOptions.mimeTypes.any {
+                it.match(
+                    file.mimeType
+                )
+            }
+
             PickOptions.Mode.OPEN_DIRECTORY -> file.attributes.isDirectory
         }
     }
@@ -156,7 +249,8 @@ class FileListAdapter(
     fun replaceListAndIsSearching(list: List<FileItem>, isSearching: Boolean) {
         val clear = this.isSearching != isSearching
         this.isSearching = isSearching
-        val sortedList = if (!isSearching) list.sortedWith(sortOptions.createComparator()) else list
+        val sortedList =
+            if (!isSearching) list.sortedWith(sortOptions.createComparator(folderSizes)) else list
         super.replace(sortedList, clear)
         rebuildFilePositionMap()
     }
@@ -181,6 +275,7 @@ class FileListAdapter(
         return holder.apply {
             itemLayout.apply {
                 val context = context
+
                 val isMaterial3Theme = context.isMaterial3Theme
                 if (viewType == FileViewType.GRID && isMaterial3Theme) {
                     foregroundCompat =
@@ -191,6 +286,12 @@ class FileListAdapter(
                 } else {
                     CheckableItemBackground.create(0f, 0f, context)
                 }
+                if (viewType == FileViewType.LIST && denseLayout) {
+                    layoutParams = layoutParams.apply {
+                        height =
+                            context.resources.getDimensionPixelSize(R.dimen.dense_two_line_list_item_height)
+                    }
+                }
             }
             thumbnailOutlineView?.apply {
                 val context = context
@@ -200,8 +301,8 @@ class FileListAdapter(
                     )
                 }
             }
-            popupMenu = PopupMenu(menuButton.context, menuButton)
-                .apply { inflate(R.menu.file_item) }
+            popupMenu =
+                PopupMenu(menuButton.context, menuButton).apply { inflate(R.menu.file_item) }
             menuButton.setOnClickListener { popupMenu.show() }
         }
     }
@@ -210,6 +311,93 @@ class FileListAdapter(
         throw UnsupportedOperationException()
     }
 
+    private fun onTouchListener(
+        context: Context, holder: ViewHolder, view: View, event: MotionEvent, file: FileItem
+    ) {
+        if (_viewType == FileViewType.GRID) return
+        val maxWaitMillisSelection = 400L
+        val lineHeight = (view.parent as CheckableForegroundLinearLayout).height
+        val localPosition = holder.absoluteAdapterPosition
+        val horizontalError = 7.5f
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                view.parent.requestDisallowInterceptTouchEvent(true)
+                _touchData.setup(
+                    pStartTouchPosX = event.x,
+                    pStartTouchPosY = event.y,
+                    pIsDuringClick = true,
+                    pIsGestureHorizontal = false,
+                    pIsMultipleSelectionStarted = false,
+                    pClickedLineAnchorY = event.y, // was view.y, fixed selection glitching
+                    pLastPosSelected = localPosition,
+                    pActionIdentifier = event.eventTime,
+                )
+                _touchData.threadedWaiter = Thread {
+                    val id = _touchData.actionIdentifier
+                    SystemClock.sleep(maxWaitMillisSelection)
+                    if (!_touchData.isDuringClick || _touchData.isMultipleSelectionStarted || _touchData.isGestureHorizontal || id != _touchData.actionIdentifier) return@Thread
+                    _touchData.isMultipleSelectionStarted = true
+                    selectFile(file)
+                }
+                _touchData.threadedWaiter.start()
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                val deltaPos = ((event.y - _touchData.clickedLineAnchorY) / lineHeight).roundToInt()
+                val newPosition = (localPosition + deltaPos).coerceIn(0, itemCount - 1)
+                if (newPosition != _touchData.lastPosSelected && !_touchData.isGestureHorizontal) {
+                    if (!_touchData.isMultipleSelectionStarted) {
+                        _touchData.isMultipleSelectionStarted = true
+                        selectFile(file)
+                    }
+                    if (!_touchData.isDeltaPosSet) {
+                        _touchData.isDeltaPosSet = true
+                        _touchData.prevDeltaPos = 0
+                        _touchData.isDeltaPosGrowing = deltaPos > 0
+                    }
+                    if ((deltaPos > _touchData.prevDeltaPos) != _touchData.isDeltaPosGrowing) {
+                        _touchData.isDeltaPosGrowing = !_touchData.isDeltaPosGrowing
+                        selectFile(getItem(_touchData.lastPosSelected))
+                    }
+                    // Handle fast user input (touch capture may be too slow -- abs(deltaPos) > 1)
+                    if (_touchData.isDeltaPosGrowing) {
+                        for (p in _touchData.lastPosSelected + 1..newPosition) selectFile(getItem(p))
+                    } else {
+                        for (p in newPosition..<_touchData.lastPosSelected) {
+                            selectFile(getItem(p))
+                        }
+                    }
+                    _touchData.lastPosSelected = newPosition
+                } else {
+                    if (_touchData.isMultipleSelectionStarted) return
+                    if (abs(event.x - _touchData.startTouchPosX) > horizontalError) {
+                        _touchData.isGestureHorizontal = true
+                        view.parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                }
+                _touchData.prevDeltaPos = deltaPos
+            }
+
+            MotionEvent.ACTION_UP -> {
+                if (!_touchData.isMultipleSelectionStarted && TouchData.isClickAction(
+                        context,
+                        _touchData.startTouchPosX,
+                        _touchData.startTouchPosY,
+                        event.x,
+                        event.y
+                    )
+                ) {
+                    _touchData.isDuringClick = false
+                    view.performClick()
+                    view.parent.requestDisallowInterceptTouchEvent(false)
+                }
+                _touchData.isMultipleSelectionStarted = false
+                _touchData.isDeltaPosSet = false
+            }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: List<Any>) {
         val file = getItem(position)
         val isDirectory = file.attributes.isDirectory
@@ -232,9 +420,14 @@ class FileListAdapter(
             }
         }
         if (payloads.isNotEmpty()) {
+            if ((payloads.any { it === PAYLOAD_FOLDER_SIZE_CHANGED } && isDirectory) && calcSizes) {
+                holder.descriptionText?.text =
+                    buildDirectoryDescription(file, holder.descriptionText.context)
+            }
             return
         }
         bindViewHolderAnimation(holder)
+
         holder.itemLayout.apply {
             setOnClickListener {
                 if (selectedFiles.isEmpty()) {
@@ -252,7 +445,13 @@ class FileListAdapter(
                 true
             }
         }
-        holder.iconLayout.setOnClickListener { selectFile(file) }
+        holder.iconLayout.apply {
+            setOnTouchListener { view, event ->
+                onTouchListener(context, holder, view, event, file)
+                true
+            }
+            setOnClickListener { selectFile(file) }
+        }
         val iconRes = file.mimeType.iconRes
         holder.iconImage.apply {
             isVisible = true
@@ -261,8 +460,8 @@ class FileListAdapter(
         holder.directoryThumbnailImage?.isVisible = isDirectory
         holder.thumbnailOutlineView?.isVisible = !isDirectory
         val supportsThumbnail = file.supportsThumbnail
-        val shouldLoadThumbnailIcon = supportsThumbnail && holder.thumbnailIconImage != null &&
-            file.mimeType.isApk
+        val shouldLoadThumbnailIcon =
+            supportsThumbnail && holder.thumbnailIconImage != null && file.mimeType.isApk
         val attributes = file.attributes
         holder.thumbnailIconImage?.apply {
             dispose()
@@ -293,7 +492,7 @@ class FileListAdapter(
             val hasAppIconBadge = appDirectoryPackageName != null
             isVisible = hasAppIconBadge
             if (hasAppIconBadge) {
-                load(AppIconPackageName(appDirectoryPackageName!!))
+                load(AppIconPackageName(appDirectoryPackageName))
             }
         }
         holder.badgeImage.apply {
@@ -311,18 +510,18 @@ class FileListAdapter(
             val hasBadge = badgeIconRes != null
             isVisible = hasBadge
             if (hasBadge) {
-                setImageResource(badgeIconRes!!)
+                setImageResource(badgeIconRes)
             } else {
                 setImageDrawable(null)
             }
         }
         holder.nameText.text = file.name
         holder.descriptionText?.text = if (isDirectory) {
-            null
+            buildDirectoryDescription(file, holder.descriptionText.context)
         } else {
-            val context = holder.descriptionText!!.context
-            val lastModificationTime = attributes.lastModifiedTime().toInstant()
-                .formatShort(context)
+            val context = holder.descriptionText.context
+            val lastModificationTime =
+                attributes.lastModifiedTime().toInstant().formatShort(context)
             val size = attributes.fileSize.formatHumanReadable(context)
             val descriptionSeparator = context.getString(R.string.file_item_description_separator)
             listOf(lastModificationTime, size).joinToString(descriptionSeparator)
@@ -330,8 +529,10 @@ class FileListAdapter(
         val isArchivePath = path.isArchivePath
         menu.findItem(R.id.action_copy)
             .setTitle(if (isArchivePath) R.string.file_item_action_extract else R.string.copy)
-        menu.findItem(R.id.action_delete).isVisible = !isReadOnly
-        menu.findItem(R.id.action_rename).isVisible = !isReadOnly
+        menu.findItem(R.id.action_delete).isVisible =
+            !isReadOnly || isArchivePath && path.canModifyArchiveEntries
+        menu.findItem(R.id.action_rename).isVisible =
+            !isReadOnly || isArchivePath && path.canModifyArchiveEntries
         menu.findItem(R.id.action_extract).isVisible = file.isArchiveFile
         menu.findItem(R.id.action_archive).isVisible = !isArchivePath
         menu.findItem(R.id.action_add_bookmark).isVisible = isDirectory
@@ -341,50 +542,62 @@ class FileListAdapter(
                     listener.openFileWith(file)
                     true
                 }
+
                 R.id.action_cut -> {
                     listener.cutFile(file)
                     true
                 }
+
                 R.id.action_copy -> {
                     listener.copyFile(file)
                     true
                 }
+
                 R.id.action_delete -> {
                     listener.confirmDeleteFile(file)
                     true
                 }
+
                 R.id.action_rename -> {
                     listener.showRenameFileDialog(file)
                     true
                 }
+
                 R.id.action_extract -> {
                     listener.extractFile(file)
                     true
                 }
+
                 R.id.action_archive -> {
                     listener.showCreateArchiveDialog(file)
                     true
                 }
+
                 R.id.action_share -> {
                     listener.shareFile(file)
                     true
                 }
+
                 R.id.action_copy_path -> {
                     listener.copyPath(file)
                     true
                 }
+
                 R.id.action_add_bookmark -> {
                     listener.addBookmark(file)
                     true
                 }
+
                 R.id.action_create_shortcut -> {
                     listener.createShortcut(file)
                     true
                 }
+
                 R.id.action_properties -> {
                     listener.showPropertiesDialog(file)
                     true
                 }
+
                 else -> false
             }
         }
@@ -396,16 +609,28 @@ class FileListAdapter(
             FileSortOptions.By.NAME -> file.name.take(1).uppercase(Locale.getDefault())
             FileSortOptions.By.TYPE -> file.extension.uppercase(Locale.getDefault())
             FileSortOptions.By.SIZE -> file.attributes.fileSize.formatHumanReadable(view.context)
-            FileSortOptions.By.LAST_MODIFIED ->
-                file.attributes.lastModifiedTime().toInstant().formatShort(view.context)
+            FileSortOptions.By.LAST_MODIFIED -> file.attributes.lastModifiedTime().toInstant()
+                .formatShort(view.context)
         }
     }
 
     override val isAnimationEnabled: Boolean
         get() = Settings.FILE_LIST_ANIMATION.valueCompat
 
+    private fun buildDirectoryDescription(file: FileItem, context: Context): String? {
+        if (!calcSizes) return null
+        val cachedSize = folderSizes[file.path]
+        return if (cachedSize != null) {
+            cachedSize.asFileSize().formatHumanReadable(context)
+        } else {
+            listener.requestFolderSize(file)
+            null
+        }
+    }
+
     companion object {
         private val PAYLOAD_STATE_CHANGED = Any()
+        val PAYLOAD_FOLDER_SIZE_CHANGED = Any()
 
         private val CALLBACK = object : DiffUtil.ItemCallback<FileItem>() {
             override fun areItemsTheSame(oldItem: FileItem, newItem: FileItem): Boolean =
@@ -483,5 +708,53 @@ class FileListAdapter(
         fun addBookmark(file: FileItem)
         fun createShortcut(file: FileItem)
         fun showPropertiesDialog(file: FileItem)
+        fun requestFolderSize(directory: FileItem)
+    }
+}
+
+private data class TouchData(
+    var startTouchPosX: Float = 0f,
+    var startTouchPosY: Float = 0f,
+    var isDeltaPosSet: Boolean = false,
+    var isDeltaPosGrowing: Boolean = false,
+    var prevDeltaPos: Int = 0,
+    var isDuringClick: Boolean = false,
+    var isMultipleSelectionStarted: Boolean = false,
+    var isGestureHorizontal: Boolean = false,
+    var lastPosSelected: Int = -1,
+    var clickedLineAnchorY: Float = 0f,
+    var actionIdentifier: Long = 0L
+) {
+    lateinit var threadedWaiter: Thread
+
+    fun setup(
+        pStartTouchPosX: Float,
+        pStartTouchPosY: Float,
+        pIsDuringClick: Boolean,
+        pIsGestureHorizontal: Boolean,
+        pIsMultipleSelectionStarted: Boolean,
+        pClickedLineAnchorY: Float,
+        pLastPosSelected: Int,
+        pActionIdentifier: Long
+    ) {
+        startTouchPosX = pStartTouchPosX
+        startTouchPosY = pStartTouchPosY
+        isDuringClick = pIsDuringClick
+        isGestureHorizontal = pIsGestureHorizontal
+        isMultipleSelectionStarted = pIsMultipleSelectionStarted
+        clickedLineAnchorY = pClickedLineAnchorY
+        lastPosSelected = pLastPosSelected
+        actionIdentifier = pActionIdentifier
+    }
+
+    companion object {
+        fun isClickAction(
+            context: Context, startX: Float, startY: Float, endX: Float, endY: Float
+        ): Boolean {
+            val clickActionThreshold = ViewConfiguration.get(context).scaledTouchSlop
+            val differenceX = abs(startX - endX)
+            val differenceY = abs(startY - endY)
+            return differenceX <= clickActionThreshold && differenceY <= clickActionThreshold
+        }
     }
 }

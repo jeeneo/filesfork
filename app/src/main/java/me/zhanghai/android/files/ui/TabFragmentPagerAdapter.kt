@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

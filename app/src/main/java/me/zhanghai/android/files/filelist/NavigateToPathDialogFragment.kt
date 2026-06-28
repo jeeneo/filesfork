@@ -3,19 +3,19 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.ParcelableParceler
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.show
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.show
 
 class NavigateToPathDialogFragment : PathDialogFragment() {
     private val args by args<Args>()

@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import java8.nio.file.Path
-import me.zhanghai.android.files.settings.PathPreference
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.settings.PathPreference
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.valueCompat
 
 class FtpServerHomeDirectoryPreference : PathPreference {
     constructor(context: Context) : super(context)

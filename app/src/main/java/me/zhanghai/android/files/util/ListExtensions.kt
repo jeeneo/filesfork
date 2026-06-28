@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 fun <T> List<T>.startsWith(prefix: List<T>): Boolean =
     size >= prefix.size && subList(0, prefix.size) == prefix

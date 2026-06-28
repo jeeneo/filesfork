@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -12,9 +12,9 @@ import androidx.annotation.AttrRes
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePaddingRelative
-import me.zhanghai.android.files.compat.requireViewByIdCompat
-import me.zhanghai.android.files.util.dpToDimensionPixelSize
-import me.zhanghai.android.files.util.getDrawableByAttr
+import me.zhanghai.android.filesfork.compat.requireViewByIdCompat
+import me.zhanghai.android.filesfork.util.dpToDimensionPixelSize
+import me.zhanghai.android.filesfork.util.getDrawableByAttr
 
 open class FixLayoutSearchView : SearchView {
     constructor(context: Context) : super(context)

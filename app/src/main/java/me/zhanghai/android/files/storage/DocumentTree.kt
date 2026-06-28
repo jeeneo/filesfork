@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,17 +12,17 @@ import android.os.Environment
 import androidx.annotation.DrawableRes
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.getDescriptionCompat
-import me.zhanghai.android.files.compat.isPrimaryCompat
-import me.zhanghai.android.files.compat.pathCompat
-import me.zhanghai.android.files.file.DocumentTreeUri
-import me.zhanghai.android.files.file.displayName
-import me.zhanghai.android.files.file.storageVolume
-import me.zhanghai.android.files.provider.document.createDocumentTreeRootPath
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.supportsExternalStorageManager
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.getDescriptionCompat
+import me.zhanghai.android.filesfork.compat.isPrimaryCompat
+import me.zhanghai.android.filesfork.compat.pathCompat
+import me.zhanghai.android.filesfork.file.DocumentTreeUri
+import me.zhanghai.android.filesfork.file.displayName
+import me.zhanghai.android.filesfork.file.storageVolume
+import me.zhanghai.android.filesfork.provider.document.createDocumentTreeRootPath
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.supportsExternalStorageManager
 import kotlin.random.Random
 
 @Parcelize

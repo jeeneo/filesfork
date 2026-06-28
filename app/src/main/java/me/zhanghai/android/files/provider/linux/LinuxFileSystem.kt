@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import android.os.Parcel
 import android.os.Parcelable
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringListPathCreator
-import me.zhanghai.android.files.provider.root.RootFileSystem
-import me.zhanghai.android.files.provider.root.RootableFileSystem
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringListPathCreator
+import me.zhanghai.android.filesfork.provider.root.RootFileSystem
+import me.zhanghai.android.filesfork.provider.root.RootableFileSystem
 
 internal class LinuxFileSystem(provider: LinuxFileSystemProvider) : RootableFileSystem(
     { LocalLinuxFileSystem(it as LinuxFileSystem, provider) }, { RootFileSystem(it) }

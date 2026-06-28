@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.coil
+package me.zhanghai.android.filesfork.coil
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import coil.key.Keyer
 import coil.request.Options
 import me.zhanghai.android.appiconloader.AppIconLoader
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.longVersionCodeCompat
-import me.zhanghai.android.files.util.getDimensionPixelSize
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.longVersionCodeCompat
+import me.zhanghai.android.filesfork.util.getDimensionPixelSize
 import java.io.Closeable
 
 class AppIconApplicationInfoKeyer : Keyer<ApplicationInfo> {

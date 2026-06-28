@@ -3,6 +3,6 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 fun Any.hash(vararg values: Any?): Int = values.contentDeepHashCode()

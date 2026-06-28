@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import android.content.Context
 import android.content.Intent
@@ -15,26 +15,26 @@ import androidx.annotation.Size
 import androidx.annotation.StringRes
 import java8.nio.file.Path
 import java8.nio.file.Paths
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.about.AboutActivity
-import me.zhanghai.android.files.compat.getDescriptionCompat
-import me.zhanghai.android.files.compat.isPrimaryCompat
-import me.zhanghai.android.files.compat.pathCompat
-import me.zhanghai.android.files.file.JavaFile
-import me.zhanghai.android.files.file.asFileSize
-import me.zhanghai.android.files.ftpserver.FtpServerActivity
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.settings.SettingsActivity
-import me.zhanghai.android.files.settings.StandardDirectoryListActivity
-import me.zhanghai.android.files.storage.AddStorageDialogActivity
-import me.zhanghai.android.files.storage.FileSystemRoot
-import me.zhanghai.android.files.storage.Storage
-import me.zhanghai.android.files.storage.StorageVolumeListLiveData
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.isMounted
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.supportsExternalStorageManager
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.about.AboutActivity
+import me.zhanghai.android.filesfork.compat.getDescriptionCompat
+import me.zhanghai.android.filesfork.compat.isPrimaryCompat
+import me.zhanghai.android.filesfork.compat.pathCompat
+import me.zhanghai.android.filesfork.file.JavaFile
+import me.zhanghai.android.filesfork.file.asFileSize
+import me.zhanghai.android.filesfork.ftpserver.FtpServerActivity
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.settings.SettingsActivity
+import me.zhanghai.android.filesfork.settings.StandardDirectoryListActivity
+import me.zhanghai.android.filesfork.storage.AddStorageDialogActivity
+import me.zhanghai.android.filesfork.storage.FileSystemRoot
+import me.zhanghai.android.filesfork.storage.Storage
+import me.zhanghai.android.filesfork.storage.StorageVolumeListLiveData
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.isMounted
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.supportsExternalStorageManager
+import me.zhanghai.android.filesfork.util.valueCompat
 
 val navigationItems: List<NavigationItem?>
     get() =

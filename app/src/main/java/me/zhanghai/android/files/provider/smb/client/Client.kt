@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb.client
+package me.zhanghai.android.filesfork.provider.smb.client
 
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mserref.NtStatus
@@ -34,13 +34,13 @@ import com.rapid7.client.dcerpc.mssrvs.ServerService
 import com.rapid7.client.dcerpc.transport.SMBTransportFactories
 import java8.nio.channels.SeekableByteChannel
 import jcifs.context.SingletonContext
-import me.zhanghai.android.files.provider.common.CloseableIterator
-import me.zhanghai.android.files.provider.common.copyTo
-import me.zhanghai.android.files.provider.common.newInputStream
-import me.zhanghai.android.files.provider.common.newOutputStream
-import me.zhanghai.android.files.util.closeSafe
-import me.zhanghai.android.files.util.enumSetOf
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.provider.common.CloseableIterator
+import me.zhanghai.android.filesfork.provider.common.copyTo
+import me.zhanghai.android.filesfork.provider.common.newInputStream
+import me.zhanghai.android.filesfork.provider.common.newOutputStream
+import me.zhanghai.android.filesfork.util.closeSafe
+import me.zhanghai.android.filesfork.util.enumSetOf
+import me.zhanghai.android.filesfork.util.hasBits
 import java.io.Closeable
 import java.io.IOException
 import java.net.Inet4Address

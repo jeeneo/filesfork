@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

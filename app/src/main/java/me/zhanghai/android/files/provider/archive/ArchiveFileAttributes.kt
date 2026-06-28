@@ -3,22 +3,22 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive
+package me.zhanghai.android.filesfork.provider.archive
 
 import android.os.Parcelable
 import java8.nio.file.Path
 import java8.nio.file.attribute.FileTime
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.provider.archive.archiver.ReadArchive
-import me.zhanghai.android.files.provider.common.AbstractPosixFileAttributes
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.EncryptedFileAttributes
-import me.zhanghai.android.files.provider.common.FileTimeParceler
-import me.zhanghai.android.files.provider.common.PosixFileModeBit
-import me.zhanghai.android.files.provider.common.PosixFileType
-import me.zhanghai.android.files.provider.common.PosixGroup
-import me.zhanghai.android.files.provider.common.PosixUser
+import me.zhanghai.android.filesfork.provider.archive.archiver.ReadArchive
+import me.zhanghai.android.filesfork.provider.common.AbstractPosixFileAttributes
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.EncryptedFileAttributes
+import me.zhanghai.android.filesfork.provider.common.FileTimeParceler
+import me.zhanghai.android.filesfork.provider.common.PosixFileModeBit
+import me.zhanghai.android.filesfork.provider.common.PosixFileType
+import me.zhanghai.android.filesfork.provider.common.PosixGroup
+import me.zhanghai.android.filesfork.provider.common.PosixUser
 
 @Parcelize
 internal class ArchiveFileAttributes(

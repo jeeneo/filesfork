@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.file
+package me.zhanghai.android.filesfork.file
 
 import android.content.Context
 import android.text.format.Formatter
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.getQuantityString
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.getQuantityString
 
 @JvmInline
 value class FileSize(val value: Long) {

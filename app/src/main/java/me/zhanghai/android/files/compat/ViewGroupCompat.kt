@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.graphics.PointF
 import android.view.View
 import android.view.ViewGroup
-import me.zhanghai.android.files.hiddenapi.RestrictedHiddenApi
-import me.zhanghai.android.files.util.lazyReflectedMethod
+import me.zhanghai.android.filesfork.hiddenapi.RestrictedHiddenApi
+import me.zhanghai.android.filesfork.util.lazyReflectedMethod
 
 @RestrictedHiddenApi
 private val isTransformedTouchPointInViewMethod by lazyReflectedMethod(

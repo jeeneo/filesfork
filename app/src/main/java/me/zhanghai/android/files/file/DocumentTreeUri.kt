@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.file
+package me.zhanghai.android.filesfork.file
 
 import android.content.Intent
 import android.net.Uri
@@ -12,15 +12,15 @@ import android.os.storage.StorageVolume
 import android.provider.DocumentsContract
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.app.contentResolver
-import me.zhanghai.android.files.compat.DocumentsContractCompat
-import me.zhanghai.android.files.compat.createOpenDocumentTreeIntentCompat
-import me.zhanghai.android.files.storage.StorageVolumeListLiveData
-import me.zhanghai.android.files.util.StableUriParceler
-import me.zhanghai.android.files.util.getParcelableExtraSafe
-import me.zhanghai.android.files.util.releasePersistablePermission
-import me.zhanghai.android.files.util.takePersistablePermission
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.app.contentResolver
+import me.zhanghai.android.filesfork.compat.DocumentsContractCompat
+import me.zhanghai.android.filesfork.compat.createOpenDocumentTreeIntentCompat
+import me.zhanghai.android.filesfork.storage.StorageVolumeListLiveData
+import me.zhanghai.android.filesfork.util.StableUriParceler
+import me.zhanghai.android.filesfork.util.getParcelableExtraSafe
+import me.zhanghai.android.filesfork.util.releasePersistablePermission
+import me.zhanghai.android.filesfork.util.takePersistablePermission
+import me.zhanghai.android.filesfork.util.valueCompat
 
 @Parcelize
 @JvmInline
@@ -65,16 +65,21 @@ fun DocumentTreeUri.releasePersistablePermission(): Boolean =
         Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
     )
 
-val StorageVolume.documentTreeUri: DocumentTreeUri
+val StorageVolume.documentTreeUri: DocumentTreeUri?
     get() {
         val intent = createOpenDocumentTreeIntentCompat()
         val rootUri = intent.getParcelableExtraSafe<Uri>(
             DocumentsContractCompat.EXTRA_INITIAL_URI
-        )!!
+        ) ?: return null
+        val rootId = try {
+            DocumentsContract.getRootId(rootUri)
+        } catch (e: IllegalArgumentException) {
+            return null
+        }
         // @see com.android.externalstorage.ExternalStorageProvider#getDocIdForFile(File)
         // @see com.android.documentsui.picker.ConfirmFragment#onCreateDialog(Bundle)
         return DocumentsContract.buildTreeDocumentUri(
-            rootUri.authority, "${DocumentsContract.getRootId(rootUri)}:"
+            rootUri.authority, "$rootId:"
         ).asDocumentTreeUri()
     }
 

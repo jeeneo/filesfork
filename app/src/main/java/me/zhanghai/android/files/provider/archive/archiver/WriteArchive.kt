@@ -3,16 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive.archiver
+package me.zhanghai.android.filesfork.provider.archive.archiver
 
 import java8.nio.channels.SeekableByteChannel
 import java8.nio.charset.StandardCharsets
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.provider.common.PosixFileModeBit
-import me.zhanghai.android.files.provider.common.PosixFileType
-import me.zhanghai.android.files.provider.common.PosixGroup
-import me.zhanghai.android.files.provider.common.PosixUser
-import me.zhanghai.android.files.provider.common.toInt
+import me.zhanghai.android.filesfork.provider.common.PosixFileModeBit
+import me.zhanghai.android.filesfork.provider.common.PosixFileType
+import me.zhanghai.android.filesfork.provider.common.PosixGroup
+import me.zhanghai.android.filesfork.provider.common.PosixUser
+import me.zhanghai.android.filesfork.provider.common.toInt
+import me.zhanghai.android.filesfork.filelist.CompressionTarget
 import me.zhanghai.android.libarchive.Archive
 import me.zhanghai.android.libarchive.ArchiveEntry
 import me.zhanghai.android.libarchive.ArchiveException
@@ -25,7 +26,9 @@ class WriteArchive @Throws(ArchiveException::class) constructor(
     channel: SeekableByteChannel,
     format: Int,
     filter: Int,
-    password: String?
+    compressionTarget: CompressionTarget,
+    password: String?,
+    compressionLevel: Int?
 ) : Closeable {
     private val archive = Archive.writeNew()
 
@@ -36,6 +39,28 @@ class WriteArchive @Throws(ArchiveException::class) constructor(
             Archive.writeSetBytesInLastBlock(archive, 1)
             Archive.writeSetFormat(archive, format)
             Archive.writeAddFilter(archive, filter)
+            if (compressionLevel != null) {
+                when (compressionTarget) {
+                    CompressionTarget.FORMAT -> Archive.writeSetFormatOption(
+                        archive, null, "compression-level".toByteArray(),
+                        compressionLevel.toString().toByteArray()
+                    )
+                    CompressionTarget.FILTER -> Archive.writeSetFilterOption(
+                        archive, null, "compression-level".toByteArray(),
+                        compressionLevel.toString().toByteArray()
+                    )
+                    CompressionTarget.BOTH -> {
+                        Archive.writeSetFormatOption(
+                            archive, null, "compression-level".toByteArray(),
+                            compressionLevel.toString().toByteArray()
+                        )
+                        Archive.writeSetFilterOption(
+                            archive, null, "compression-level".toByteArray(),
+                            compressionLevel.toString().toByteArray()
+                        )
+                    }
+                }
+            }
             if (password != null) {
                 require(format == Archive.FORMAT_ZIP)
                 Archive.writeSetPassphrase(archive, password.toByteArray())

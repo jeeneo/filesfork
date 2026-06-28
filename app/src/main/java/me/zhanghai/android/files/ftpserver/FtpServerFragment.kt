@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import me.zhanghai.android.files.databinding.FtpServerFragmentBinding
+import me.zhanghai.android.filesfork.databinding.FtpServerFragmentBinding
 
 class FtpServerFragment : Fragment() {
     private lateinit var binding: FtpServerFragmentBinding

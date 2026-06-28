@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive
+package me.zhanghai.android.filesfork.provider.archive
 
 import android.content.Context
 import java8.nio.file.Path
-import me.zhanghai.android.files.fileaction.ArchivePasswordDialogActivity
-import me.zhanghai.android.files.fileaction.ArchivePasswordDialogFragment
-import me.zhanghai.android.files.provider.common.UserAction
-import me.zhanghai.android.files.provider.common.UserActionRequiredException
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.putArgs
+import me.zhanghai.android.filesfork.fileaction.ArchivePasswordDialogActivity
+import me.zhanghai.android.filesfork.fileaction.ArchivePasswordDialogFragment
+import me.zhanghai.android.filesfork.provider.common.UserAction
+import me.zhanghai.android.filesfork.provider.common.UserActionRequiredException
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.putArgs
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 

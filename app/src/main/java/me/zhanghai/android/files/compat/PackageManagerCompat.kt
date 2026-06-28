@@ -3,15 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.SigningInfo
 import android.os.Build
-import me.zhanghai.android.files.util.andInv
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.util.andInv
+import me.zhanghai.android.filesfork.util.hasBits
 
 object PackageManagerCompat {
     @SuppressLint("InlinedApi")

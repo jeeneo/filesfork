@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.provider.common.ByteStringBuilder
-import me.zhanghai.android.files.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringBuilder
+import me.zhanghai.android.filesfork.provider.common.toByteString
 import java.text.CollationKey
 import java.text.Collator
 import kotlin.math.min

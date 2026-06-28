@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
-import me.zhanghai.android.files.provider.webdav.client.Authentication
-import me.zhanghai.android.files.provider.webdav.client.Authenticator
-import me.zhanghai.android.files.provider.webdav.client.Authority
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.provider.webdav.client.Authentication
+import me.zhanghai.android.filesfork.provider.webdav.client.Authenticator
+import me.zhanghai.android.filesfork.provider.webdav.client.Authority
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.valueCompat
 
 object WebDavServerAuthenticator : Authenticator {
     private val transientServers = mutableSetOf<WebDavServer>()

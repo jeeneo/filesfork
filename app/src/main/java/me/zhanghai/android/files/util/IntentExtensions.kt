@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.content.Context
 import android.content.Intent
@@ -12,13 +12,13 @@ import android.os.Parcelable
 import android.provider.MediaStore
 import android.provider.Settings
 import androidx.core.app.ShareCompat
-import me.zhanghai.android.files.app.appClassLoader
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.app.packageManager
-import me.zhanghai.android.files.compat.DocumentsContractCompat
-import me.zhanghai.android.files.compat.removeFlagsCompat
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.file.intentType
+import me.zhanghai.android.filesfork.app.appClassLoader
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.app.packageManager
+import me.zhanghai.android.filesfork.compat.DocumentsContractCompat
+import me.zhanghai.android.filesfork.compat.removeFlagsCompat
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.file.intentType
 import kotlin.reflect.KClass
 
 fun <T : Context> KClass<T>.createIntent(): Intent = Intent(application, java)

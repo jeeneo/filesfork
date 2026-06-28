@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.app.PendingIntent
 import android.app.Service
@@ -11,12 +11,12 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ServiceCompat
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.app.NotificationIds
-import me.zhanghai.android.files.compat.stopForegroundCompat
-import me.zhanghai.android.files.util.NotificationChannelTemplate
-import me.zhanghai.android.files.util.NotificationTemplate
-import me.zhanghai.android.files.util.createIntent
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.app.NotificationIds
+import me.zhanghai.android.filesfork.compat.stopForegroundCompat
+import me.zhanghai.android.filesfork.util.NotificationChannelTemplate
+import me.zhanghai.android.filesfork.util.NotificationTemplate
+import me.zhanghai.android.filesfork.util.createIntent
 
 val ftpServerServiceNotificationTemplate =
     NotificationTemplate(

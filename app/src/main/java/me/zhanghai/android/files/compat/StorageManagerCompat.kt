@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.os.Build
 import android.os.Handler
@@ -11,7 +11,7 @@ import android.os.ParcelFileDescriptor
 import android.os.storage.StorageManager
 import android.os.storage.StorageVolume
 import kotlinx.coroutines.runBlocking
-import me.zhanghai.android.files.util.lazyReflectedMethod
+import me.zhanghai.android.filesfork.util.lazyReflectedMethod
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.resume

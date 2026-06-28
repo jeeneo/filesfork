@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.webdav
+package me.zhanghai.android.filesfork.provider.webdav
 
 import at.bitfire.dav4jvm.exception.DavException
 import java8.nio.file.LinkOption
 import java8.nio.file.attribute.BasicFileAttributeView
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.provider.webdav.client.Client
+import me.zhanghai.android.filesfork.provider.webdav.client.Client
 import java.io.IOException
 
 internal class WebDavFileAttributeView(

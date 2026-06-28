@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
 import androidx.core.content.ContextCompat
-import me.zhanghai.android.files.compat.registerReceiverCompat
+import me.zhanghai.android.filesfork.compat.registerReceiverCompat
 
 class RuntimeBroadcastReceiver(
     private val filter: IntentFilter,

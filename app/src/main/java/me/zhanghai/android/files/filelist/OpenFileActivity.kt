@@ -3,21 +3,21 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.content.Intent
 import android.os.Bundle
 import java8.nio.file.Path
-import me.zhanghai.android.files.app.AppActivity
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.file.asMimeTypeOrNull
-import me.zhanghai.android.files.file.fileProviderUri
-import me.zhanghai.android.files.filejob.FileJobService
-import me.zhanghai.android.files.provider.archive.isArchivePath
-import me.zhanghai.android.files.util.createViewIntent
-import me.zhanghai.android.files.util.extraPath
-import me.zhanghai.android.files.util.startActivitySafe
+import me.zhanghai.android.filesfork.app.AppActivity
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.file.asMimeTypeOrNull
+import me.zhanghai.android.filesfork.file.fileProviderUri
+import me.zhanghai.android.filesfork.filejob.FileJobService
+import me.zhanghai.android.filesfork.provider.archive.isArchivePath
+import me.zhanghai.android.filesfork.util.createViewIntent
+import me.zhanghai.android.filesfork.util.extraPath
+import me.zhanghai.android.filesfork.util.startActivitySafe
 
 class OpenFileActivity : AppActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +44,7 @@ class OpenFileActivity : AppActivity() {
     }
 
     companion object {
-        private const val ACTION_OPEN_FILE = "me.zhanghai.android.files.intent.action.OPEN_FILE"
+        private const val ACTION_OPEN_FILE = "me.zhanghai.android.filesfork.intent.action.OPEN_FILE"
 
         fun createIntent(path: Path, mimeType: MimeType): Intent =
             Intent(ACTION_OPEN_FILE)

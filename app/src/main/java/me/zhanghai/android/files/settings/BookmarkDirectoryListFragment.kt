@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.graphics.drawable.NinePatchDrawable
 import android.os.Bundle
@@ -18,19 +18,19 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils
 import java8.nio.file.Path
-import me.zhanghai.android.files.databinding.BookmarkDirectoryListFragmentBinding
-import me.zhanghai.android.files.filelist.FileListActivity
-import me.zhanghai.android.files.navigation.BookmarkDirectories
-import me.zhanghai.android.files.navigation.BookmarkDirectory
-import me.zhanghai.android.files.navigation.EditBookmarkDirectoryDialogActivity
-import me.zhanghai.android.files.navigation.EditBookmarkDirectoryDialogFragment
-import me.zhanghai.android.files.ui.ScrollingViewOnApplyWindowInsetsListener
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.fadeToVisibilityUnsafe
-import me.zhanghai.android.files.util.getDrawable
-import me.zhanghai.android.files.util.launchSafe
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.startActivitySafe
+import me.zhanghai.android.filesfork.databinding.BookmarkDirectoryListFragmentBinding
+import me.zhanghai.android.filesfork.filelist.FileListActivity
+import me.zhanghai.android.filesfork.navigation.BookmarkDirectories
+import me.zhanghai.android.filesfork.navigation.BookmarkDirectory
+import me.zhanghai.android.filesfork.navigation.EditBookmarkDirectoryDialogActivity
+import me.zhanghai.android.filesfork.navigation.EditBookmarkDirectoryDialogFragment
+import me.zhanghai.android.filesfork.ui.ScrollingViewOnApplyWindowInsetsListener
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.fadeToVisibilityUnsafe
+import me.zhanghai.android.filesfork.util.getDrawable
+import me.zhanghai.android.filesfork.util.launchSafe
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.startActivitySafe
 
 class BookmarkDirectoryListFragment : Fragment(), BookmarkDirectoryListAdapter.Listener {
     private val openPathLauncher =

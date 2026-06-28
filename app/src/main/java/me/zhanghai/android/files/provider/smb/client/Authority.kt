@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb.client
+package me.zhanghai.android.filesfork.provider.smb.client
 
 import android.os.Parcelable
 import com.hierynomus.smbj.SMBClient
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.provider.common.UriAuthority
-import me.zhanghai.android.files.util.takeIfNotEmpty
+import me.zhanghai.android.filesfork.provider.common.UriAuthority
+import me.zhanghai.android.filesfork.util.takeIfNotEmpty
 
 @Parcelize
 data class Authority(

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.content.resolver
+package me.zhanghai.android.filesfork.provider.content.resolver
 
 import java8.nio.file.AccessDeniedException
 import java8.nio.file.FileSystemException

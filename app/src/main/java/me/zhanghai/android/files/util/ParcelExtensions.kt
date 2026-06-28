@@ -3,15 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.os.Parcel
 import android.os.Parcelable
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
-import me.zhanghai.android.files.app.appClassLoader
-import me.zhanghai.android.files.compat.readParcelableListCompat
+import me.zhanghai.android.filesfork.app.appClassLoader
+import me.zhanghai.android.filesfork.compat.readParcelableListCompat
 
 @Suppress("DEPRECATION")
 fun <T : Parcelable> Parcel.readParcelable(): T? = readParcelable(appClassLoader)

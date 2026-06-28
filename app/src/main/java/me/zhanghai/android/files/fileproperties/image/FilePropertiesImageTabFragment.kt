@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.image
+package me.zhanghai.android.filesfork.fileproperties.image
 
 import android.content.Intent
 import android.location.Geocoder
@@ -14,23 +14,23 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.file.formatLong
-import me.zhanghai.android.files.file.isImage
-import me.zhanghai.android.files.filelist.name
-import me.zhanghai.android.files.fileproperties.FilePropertiesTabFragment
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.ParcelableParceler
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.awaitGetFromLocation
-import me.zhanghai.android.files.util.createViewLocation
-import me.zhanghai.android.files.util.isGeocoderPresent
-import me.zhanghai.android.files.util.startActivitySafe
-import me.zhanghai.android.files.util.userFriendlyString
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.file.formatLong
+import me.zhanghai.android.filesfork.file.isImage
+import me.zhanghai.android.filesfork.filelist.name
+import me.zhanghai.android.filesfork.fileproperties.FilePropertiesTabFragment
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.awaitGetFromLocation
+import me.zhanghai.android.filesfork.util.createViewLocation
+import me.zhanghai.android.filesfork.util.isGeocoderPresent
+import me.zhanghai.android.filesfork.util.startActivitySafe
+import me.zhanghai.android.filesfork.util.userFriendlyString
+import me.zhanghai.android.filesfork.util.viewModels
 import kotlin.math.pow
 import kotlin.math.roundToInt
 

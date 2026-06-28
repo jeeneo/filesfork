@@ -3,29 +3,29 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import java8.nio.file.Path
 import java8.nio.file.StandardOpenOption
 import java8.nio.file.attribute.FileTime
 import java8.nio.file.attribute.PosixFileAttributeView
-import me.zhanghai.android.files.provider.common.createDirectory
-import me.zhanghai.android.files.provider.common.delete
-import me.zhanghai.android.files.provider.common.exists
-import me.zhanghai.android.files.provider.common.getFileAttributeView
-import me.zhanghai.android.files.provider.common.getLastModifiedTime
-import me.zhanghai.android.files.provider.common.getOwner
-import me.zhanghai.android.files.provider.common.isDirectory
-import me.zhanghai.android.files.provider.common.isReadable
-import me.zhanghai.android.files.provider.common.isRegularFile
-import me.zhanghai.android.files.provider.common.isWritable
-import me.zhanghai.android.files.provider.common.moveTo
-import me.zhanghai.android.files.provider.common.newByteChannel
-import me.zhanghai.android.files.provider.common.newDirectoryStream
-import me.zhanghai.android.files.provider.common.newInputStream
-import me.zhanghai.android.files.provider.common.newOutputStream
-import me.zhanghai.android.files.provider.common.setLastModifiedTime
-import me.zhanghai.android.files.provider.common.size
+import me.zhanghai.android.filesfork.provider.common.createDirectory
+import me.zhanghai.android.filesfork.provider.common.delete
+import me.zhanghai.android.filesfork.provider.common.exists
+import me.zhanghai.android.filesfork.provider.common.getFileAttributeView
+import me.zhanghai.android.filesfork.provider.common.getLastModifiedTime
+import me.zhanghai.android.filesfork.provider.common.getOwner
+import me.zhanghai.android.filesfork.provider.common.isDirectory
+import me.zhanghai.android.filesfork.provider.common.isReadable
+import me.zhanghai.android.filesfork.provider.common.isRegularFile
+import me.zhanghai.android.filesfork.provider.common.isWritable
+import me.zhanghai.android.filesfork.provider.common.moveTo
+import me.zhanghai.android.filesfork.provider.common.newByteChannel
+import me.zhanghai.android.filesfork.provider.common.newDirectoryStream
+import me.zhanghai.android.filesfork.provider.common.newInputStream
+import me.zhanghai.android.filesfork.provider.common.newOutputStream
+import me.zhanghai.android.filesfork.provider.common.setLastModifiedTime
+import me.zhanghai.android.filesfork.provider.common.size
 import org.apache.ftpserver.ftplet.FtpFile
 import org.apache.ftpserver.ftplet.User
 import org.apache.ftpserver.usermanager.impl.WriteRequest

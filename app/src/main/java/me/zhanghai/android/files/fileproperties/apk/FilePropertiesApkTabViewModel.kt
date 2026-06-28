@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.apk
+package me.zhanghai.android.filesfork.fileproperties.apk
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import java8.nio.file.Path
-import me.zhanghai.android.files.util.Stateful
+import me.zhanghai.android.filesfork.util.Stateful
 
 class FilePropertiesApkTabViewModel(path: Path) : ViewModel() {
     private val _apkInfoLiveData = ApkInfoLiveData(path)

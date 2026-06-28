@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.ftp.client
+package me.zhanghai.android.filesfork.provider.ftp.client
 
-import me.zhanghai.android.files.compat.nullInputStream
-import me.zhanghai.android.files.provider.common.AbstractFileByteChannel
-import me.zhanghai.android.files.provider.common.ByteBufferInputStream
-import me.zhanghai.android.files.provider.common.readFully
+import me.zhanghai.android.filesfork.compat.nullInputStream
+import me.zhanghai.android.filesfork.provider.common.AbstractFileByteChannel
+import me.zhanghai.android.filesfork.provider.common.ByteBufferInputStream
+import me.zhanghai.android.filesfork.provider.common.readFully
 import org.apache.commons.net.ftp.FTPClient
 import java.io.IOException
 import java.io.InputStream

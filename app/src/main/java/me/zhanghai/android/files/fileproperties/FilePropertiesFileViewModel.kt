@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties
+package me.zhanghai.android.filesfork.fileproperties
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.util.Stateful
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.util.Stateful
 
 class FilePropertiesFileViewModel(file: FileItem) : ViewModel() {
     private val _fileLiveData = FileLiveData(file)

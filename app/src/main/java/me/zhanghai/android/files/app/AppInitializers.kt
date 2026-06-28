@@ -3,34 +3,34 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.app
+package me.zhanghai.android.filesfork.app
 
 import android.os.AsyncTask
 import android.os.Build
 import android.webkit.WebView
 import jcifs.context.SingletonContext
-import me.zhanghai.android.files.BuildConfig
-import me.zhanghai.android.files.coil.initializeCoil
-import me.zhanghai.android.files.filejob.fileJobNotificationTemplate
-import me.zhanghai.android.files.ftpserver.ftpServerServiceNotificationTemplate
-import me.zhanghai.android.files.hiddenapi.HiddenApi
-import me.zhanghai.android.files.provider.FileSystemProviders
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.storage.FtpServerAuthenticator
-import me.zhanghai.android.files.storage.SftpServerAuthenticator
-import me.zhanghai.android.files.storage.SmbServerAuthenticator
-import me.zhanghai.android.files.storage.StorageVolumeListLiveData
-import me.zhanghai.android.files.storage.WebDavServerAuthenticator
-import me.zhanghai.android.files.theme.custom.CustomThemeHelper
-import me.zhanghai.android.files.theme.night.NightModeHelper
+import me.zhanghai.android.filesfork.BuildConfig
+import me.zhanghai.android.filesfork.coil.initializeCoil
+import me.zhanghai.android.filesfork.filejob.fileJobNotificationTemplate
+import me.zhanghai.android.filesfork.ftpserver.ftpServerServiceNotificationTemplate
+import me.zhanghai.android.filesfork.hiddenapi.HiddenApi
+import me.zhanghai.android.filesfork.provider.FileSystemProviders
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.storage.FtpServerAuthenticator
+import me.zhanghai.android.filesfork.storage.SftpServerAuthenticator
+import me.zhanghai.android.filesfork.storage.SmbServerAuthenticator
+import me.zhanghai.android.filesfork.storage.StorageVolumeListLiveData
+import me.zhanghai.android.filesfork.storage.WebDavServerAuthenticator
+import me.zhanghai.android.filesfork.theme.custom.CustomThemeHelper
+import me.zhanghai.android.filesfork.theme.night.NightModeHelper
 import java.util.Properties
-import me.zhanghai.android.files.provider.ftp.client.Client as FtpClient
-import me.zhanghai.android.files.provider.sftp.client.Client as SftpClient
-import me.zhanghai.android.files.provider.smb.client.Client as SmbClient
-import me.zhanghai.android.files.provider.webdav.client.Client as WebDavClient
+import me.zhanghai.android.filesfork.provider.ftp.client.Client as FtpClient
+import me.zhanghai.android.filesfork.provider.sftp.client.Client as SftpClient
+import me.zhanghai.android.filesfork.provider.smb.client.Client as SmbClient
+import me.zhanghai.android.filesfork.provider.webdav.client.Client as WebDavClient
 
 val appInitializers = listOf(
-    ::initializeCrashlytics,
+    // ::initializeCrashlytics,
     ::disableHiddenApiChecks,
     ::initializeWebViewDebugging,
     ::initializeCoil,
@@ -42,11 +42,11 @@ val appInitializers = listOf(
     ::createNotificationChannels
 )
 
-private fun initializeCrashlytics() {
-//#ifdef NONFREE
-    me.zhanghai.android.files.nonfree.CrashlyticsInitializer.initialize()
-//#endif
-}
+// private fun initializeCrashlytics() {
+// //#ifdef NONFREE
+//     // me.zhanghai.android.filesfork.nonfree.CrashlyticsInitializer.initialize()
+// //#endif
+// }
 
 private fun disableHiddenApiChecks() {
     HiddenApi.disableHiddenApiChecks()

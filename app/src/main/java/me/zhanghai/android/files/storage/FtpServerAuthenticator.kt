@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
-import me.zhanghai.android.files.provider.ftp.client.Authenticator
-import me.zhanghai.android.files.provider.ftp.client.Authority
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.provider.ftp.client.Authenticator
+import me.zhanghai.android.filesfork.provider.ftp.client.Authority
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.valueCompat
 
 object FtpServerAuthenticator : Authenticator {
     private val transientServers = mutableSetOf<FtpServer>()

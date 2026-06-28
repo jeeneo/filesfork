@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties
+package me.zhanghai.android.filesfork.fileproperties
 
 import android.app.Dialog
 import android.os.Bundle
@@ -15,24 +15,24 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.databinding.FilePropertiesDialogBinding
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.filelist.name
-import me.zhanghai.android.files.fileproperties.apk.FilePropertiesApkTabFragment
-import me.zhanghai.android.files.fileproperties.audio.FilePropertiesAudioTabFragment
-import me.zhanghai.android.files.fileproperties.basic.FilePropertiesBasicTabFragment
-import me.zhanghai.android.files.fileproperties.checksum.FilePropertiesChecksumTabFragment
-import me.zhanghai.android.files.fileproperties.image.FilePropertiesImageTabFragment
-import me.zhanghai.android.files.fileproperties.permission.FilePropertiesPermissionTabFragment
-import me.zhanghai.android.files.fileproperties.video.FilePropertiesVideoTabFragment
-import me.zhanghai.android.files.ui.TabFragmentPagerAdapter
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.show
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.databinding.FilePropertiesDialogBinding
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.filelist.name
+import me.zhanghai.android.filesfork.fileproperties.apk.FilePropertiesApkTabFragment
+import me.zhanghai.android.filesfork.fileproperties.audio.FilePropertiesAudioTabFragment
+import me.zhanghai.android.filesfork.fileproperties.basic.FilePropertiesBasicTabFragment
+import me.zhanghai.android.filesfork.fileproperties.checksum.FilePropertiesChecksumTabFragment
+import me.zhanghai.android.filesfork.fileproperties.image.FilePropertiesImageTabFragment
+import me.zhanghai.android.filesfork.fileproperties.permission.FilePropertiesPermissionTabFragment
+import me.zhanghai.android.filesfork.fileproperties.video.FilePropertiesVideoTabFragment
+import me.zhanghai.android.filesfork.ui.TabFragmentPagerAdapter
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.show
+import me.zhanghai.android.filesfork.util.viewModels
 
 class FilePropertiesDialogFragment : AppCompatDialogFragment() {
     private val args by args<Args>()

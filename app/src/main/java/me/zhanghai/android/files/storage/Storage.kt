@@ -3,15 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import java8.nio.file.Path
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.takeIfNotEmpty
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.takeIfNotEmpty
 
 abstract class Storage : Parcelable {
     abstract val id: Long

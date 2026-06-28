@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,7 +11,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.lifecycle.Observer
 import androidx.preference.SwitchPreferenceCompat
-import me.zhanghai.android.files.R
+import me.zhanghai.android.filesfork.R
 
 class FtpServerStatePreference : SwitchPreferenceCompat {
     private val observer = Observer<FtpServerService.State> { onStateChanged(it) }

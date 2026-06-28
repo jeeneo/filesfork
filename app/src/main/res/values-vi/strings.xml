@@ -49,7 +49,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">Không tìm thấy ứng dụng nào để xử lý hành động này</string>
     <string name="open_settings">Mở cài đặt</string>
-    <string name="shortcut_created">Đã tạo lối tắt</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="other">%1$,d byte</item>
@@ -186,7 +185,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">Xảy ra lỗi khi khôi phục hoàn cảnh SELinux của “%1$s”.\n%2$s</string>
     <string name="file_job_write_error_title">Lỗi khi ghi</string>
     <string name="file_job_write_error_message_format">Đã có lỗi khi ghi “%1$s”.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">Đã có lỗi khi lấy thông tin về “%1$s”.</string>
     <string name="file_job_remount_format">Đã mount lại “%1$s” thành thiết bị đọc-ghi</string>
     <string name="file_job_remount_loading_format">Đang mount lại “%1$s” thành thiết bị đọc-ghi…</string>
     <string name="file_job_remount_success_format">“%1$s” đã được mount lại thành thiết bị đọc-ghi</string>
@@ -283,7 +281,6 @@
     <string name="file_properties_basic_parent_directory">Thư mục mẹ</string>
     <string name="file_properties_basic_archive_file">Tệp nén</string>
     <string name="file_properties_basic_archive_entry">Mục lưu trữ nén</string>
-    <string name="file_properties_basic_free_space">Không gian trống</string>
     <string name="file_properties_image">Hình ảnh</string>
     <string name="file_properties_media_dimensions">Kích thước</string>
     <string name="file_properties_media_dimensions_format">%1$d \u00d7 %2$d</string>
@@ -456,11 +453,7 @@
     <string name="image_viewer_title">Trình xem hình ảnh</string>
     <string name="image_viewer_subtitle_format">%1$,d/%2$,d</string>
     <string name="text_editor_title">Trình chỉnh sửa văn bản</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">* %1$s</string>
-    <string name="text_editor_save_success">Đã lưu</string>
     <string name="text_editor_reload_message">Bạn có chắc chắn muốn tải lại không? Những thay đổi chưa lưu sẽ bị mất.</string>
-    <string name="text_editor_encoding">Bảng mã kí tự</string>
     <string name="text_editor_close_message">Bạn có chắc chắn muốn huỷ bỏ những thay đổi chưa lưu đối với tài liệu này?</string>
 
     <string name="ftp_server_title">Máy chủ FTP</string>

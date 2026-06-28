@@ -1,4 +1,4 @@
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import java.net.URI
 import java.net.URISyntaxException

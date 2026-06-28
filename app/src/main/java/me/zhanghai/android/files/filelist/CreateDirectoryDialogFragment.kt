@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.show
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.show
 
 class CreateDirectoryDialogFragment : FileNameDialogFragment() {
     override val listener: Listener

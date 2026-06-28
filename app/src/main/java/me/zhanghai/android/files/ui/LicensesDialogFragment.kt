@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.app.Dialog
 import android.os.Bundle
@@ -14,11 +14,11 @@ import de.psdev.licensesdialog.LicensesDialog
 import de.psdev.licensesdialog.NoticesXmlParser
 import de.psdev.licensesdialog.model.Notices
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.ParcelableState
-import me.zhanghai.android.files.util.getState
-import me.zhanghai.android.files.util.putState
-import me.zhanghai.android.files.util.show
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.ParcelableState
+import me.zhanghai.android.filesfork.util.getState
+import me.zhanghai.android.filesfork.util.putState
+import me.zhanghai.android.filesfork.util.show
 
 class LicensesDialogFragment : AppCompatDialogFragment() {
     private lateinit var notices: Notices

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -11,13 +11,13 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.file.asExternalStorageUri
-import me.zhanghai.android.files.provider.document.resolver.ExternalStorageProviderHacks
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.startActivitySafe
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.file.asExternalStorageUri
+import me.zhanghai.android.filesfork.provider.document.resolver.ExternalStorageProviderHacks
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.startActivitySafe
 
 class AddStorageDialogFragment : AppCompatDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =

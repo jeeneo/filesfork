@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.os.Handler
 import android.os.HandlerThread
-import me.zhanghai.android.files.util.ThrottledRunnable
+import me.zhanghai.android.filesfork.util.ThrottledRunnable
 import java.io.IOException
 
 abstract class AbstractPathObservable(private val intervalMillis: Long) : PathObservable {

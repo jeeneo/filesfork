@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.app.application
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.app.application
 
 var ClipboardManager.primaryText: CharSequence
     get() = primaryClip?.firstOrNull()?.coerceToText(application)!!

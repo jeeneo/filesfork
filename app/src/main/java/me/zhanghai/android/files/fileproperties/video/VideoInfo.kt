@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.video
+package me.zhanghai.android.filesfork.fileproperties.video
 
 import android.util.Size
 import java.time.Duration

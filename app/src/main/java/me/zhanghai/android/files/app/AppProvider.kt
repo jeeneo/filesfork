@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.app
+package me.zhanghai.android.filesfork.app
 
 import android.app.Application
 import android.content.ContentProvider

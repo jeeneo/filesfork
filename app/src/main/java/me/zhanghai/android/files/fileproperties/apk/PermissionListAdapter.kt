@@ -3,19 +3,19 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.apk
+package me.zhanghai.android.filesfork.fileproperties.apk
 
 import android.content.pm.PermissionInfo
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import me.zhanghai.android.files.app.clipboardManager
-import me.zhanghai.android.files.compat.protectionCompat
-import me.zhanghai.android.files.databinding.PermissionItemBinding
-import me.zhanghai.android.files.ui.SimpleAdapter
-import me.zhanghai.android.files.util.copyText
-import me.zhanghai.android.files.util.isBold
-import me.zhanghai.android.files.util.layoutInflater
+import me.zhanghai.android.filesfork.app.clipboardManager
+import me.zhanghai.android.filesfork.compat.protectionCompat
+import me.zhanghai.android.filesfork.databinding.PermissionItemBinding
+import me.zhanghai.android.filesfork.ui.SimpleAdapter
+import me.zhanghai.android.filesfork.util.copyText
+import me.zhanghai.android.filesfork.util.isBold
+import me.zhanghai.android.filesfork.util.layoutInflater
 import java.util.Locale
 
 class PermissionListAdapter : SimpleAdapter<PermissionItem, PermissionListAdapter.ViewHolder>() {

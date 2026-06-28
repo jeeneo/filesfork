@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.annotation.SuppressLint
 import android.view.Gravity
@@ -18,7 +18,7 @@ import androidx.core.view.isVisible
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import me.zhanghai.android.files.app.inputMethodManager
+import me.zhanghai.android.filesfork.app.inputMethodManager
 
 fun View.doOnGlobalLayout(block: () -> Unit): OneShotGlobalLayoutListener =
     OneShotGlobalLayoutListener.add(this, block)

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.AttrRes
 import com.google.android.material.textfield.TextInputLayout
-import me.zhanghai.android.files.compat.getDrawableCompat
+import me.zhanghai.android.filesfork.compat.getDrawableCompat
 
 class ReadOnlyTextInputLayout : TextInputLayout {
     constructor(context: Context) : super(context)

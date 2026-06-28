@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.content.Context
 import android.graphics.Color
@@ -17,11 +17,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.ViewCompat
 import de.psdev.licensesdialog.model.Notices
-import me.zhanghai.android.files.compat.scrollIndicatorsCompat
-import me.zhanghai.android.files.util.createViewIntent
-import me.zhanghai.android.files.util.getColorByAttr
-import me.zhanghai.android.files.util.getDimensionPixelSize
-import me.zhanghai.android.files.util.startActivitySafe
+import me.zhanghai.android.filesfork.compat.scrollIndicatorsCompat
+import me.zhanghai.android.filesfork.util.createViewIntent
+import me.zhanghai.android.filesfork.util.getColorByAttr
+import me.zhanghai.android.filesfork.util.getDimensionPixelSize
+import me.zhanghai.android.filesfork.util.startActivitySafe
 import java.nio.charset.StandardCharsets
 import kotlin.math.roundToInt
 

@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import me.zhanghai.android.files.app.AppActivity
+import me.zhanghai.android.filesfork.app.AppActivity
 
 class FtpServerActivity : AppActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

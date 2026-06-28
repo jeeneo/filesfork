@@ -1,4 +1,4 @@
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import java.net.URI
 import java.net.URISyntaxException

@@ -3,20 +3,20 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
 import coil.dispose
 import coil.load
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.coil.ignoreError
-import me.zhanghai.android.files.compat.getDrawableCompat
-import me.zhanghai.android.files.databinding.PrincipalItemBinding
-import me.zhanghai.android.files.ui.SimpleAdapter
-import me.zhanghai.android.files.util.SelectionLiveData
-import me.zhanghai.android.files.util.layoutInflater
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.coil.ignoreError
+import me.zhanghai.android.filesfork.compat.getDrawableCompat
+import me.zhanghai.android.filesfork.databinding.PrincipalItemBinding
+import me.zhanghai.android.filesfork.ui.SimpleAdapter
+import me.zhanghai.android.filesfork.util.SelectionLiveData
+import me.zhanghai.android.filesfork.util.layoutInflater
 
 abstract class PrincipalListAdapter(
     private val selectionLiveData: SelectionLiveData<Int>

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -22,8 +22,8 @@ import androidx.annotation.StyleableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.TintTypedArray
 import androidx.core.content.ContextCompat
-import me.zhanghai.android.files.hiddenapi.RestrictedHiddenApi
-import me.zhanghai.android.files.util.lazyReflectedMethod
+import me.zhanghai.android.filesfork.hiddenapi.RestrictedHiddenApi
+import me.zhanghai.android.filesfork.util.lazyReflectedMethod
 import java.util.concurrent.Executor
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind

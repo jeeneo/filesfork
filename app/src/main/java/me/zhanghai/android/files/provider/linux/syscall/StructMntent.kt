@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux.syscall
+package me.zhanghai.android.filesfork.provider.linux.syscall
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteString
 
 @Parcelize
 class StructMntent(

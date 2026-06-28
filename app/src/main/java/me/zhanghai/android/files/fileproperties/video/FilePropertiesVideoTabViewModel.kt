@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.video
+package me.zhanghai.android.filesfork.fileproperties.video
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import java8.nio.file.Path
-import me.zhanghai.android.files.util.Stateful
+import me.zhanghai.android.filesfork.util.Stateful
 
 class FilePropertiesVideoTabViewModel(path: Path) : ViewModel() {
     private val _videoInfoLiveData = VideoInfoLiveData(path)

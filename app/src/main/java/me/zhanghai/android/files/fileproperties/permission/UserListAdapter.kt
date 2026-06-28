@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 import androidx.annotation.DrawableRes
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.SelectionLiveData
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.SelectionLiveData
 
 class UserListAdapter(
     selectionLiveData: SelectionLiveData<Int>

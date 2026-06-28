@@ -3,6 +3,6 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 class SearchState(val isSearching: Boolean, val query: String)

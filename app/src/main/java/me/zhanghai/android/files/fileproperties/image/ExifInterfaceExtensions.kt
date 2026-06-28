@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.image
+package me.zhanghai.android.filesfork.fileproperties.image
 
 import android.annotation.SuppressLint
 import androidx.exifinterface.media.ExifInterface
@@ -12,7 +12,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
 import kotlin.math.roundToLong
-import me.zhanghai.android.files.util.takeIfNotBlank
+import me.zhanghai.android.filesfork.util.takeIfNotBlank
 
 fun ExifInterface.getAttributeNotBlank(tag: String): String? =
     getAttribute(tag)?.takeIfNotBlank()

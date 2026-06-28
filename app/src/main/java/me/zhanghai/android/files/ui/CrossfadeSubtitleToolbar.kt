@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -17,7 +17,7 @@ import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.appcompat.widget.Toolbar
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import me.zhanghai.android.files.util.shortAnimTime
+import me.zhanghai.android.filesfork.util.shortAnimTime
 
 class CrossfadeSubtitleToolbar : Toolbar {
     private val subtitleAnimator = ObjectAnimator.ofFloat(null, View.ALPHA, 1f, 0f, 1f).apply {

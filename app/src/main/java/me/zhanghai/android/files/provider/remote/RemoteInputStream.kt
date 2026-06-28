@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -21,11 +21,7 @@ class RemoteInputStream : InputStream, Parcelable {
 
     @Throws(IOException::class)
     override fun read(): Int =
-        if (remoteInputStream != null) {
-            remoteInputStream.call { exception -> read(exception) }
-        } else {
-            localInputStream!!.read()
-        }
+        remoteInputStream?.call { exception -> read(exception) } ?: localInputStream!!.read()
 
     @Throws(IOException::class)
     override fun read(buffer: ByteArray, offset: Int, length: Int): Int =
@@ -42,19 +38,13 @@ class RemoteInputStream : InputStream, Parcelable {
 
     @Throws(IOException::class)
     override fun skip(size: Long): Long =
-        if (remoteInputStream != null) {
-            remoteInputStream.call { exception -> skip(size, exception) }
-        } else {
-            localInputStream!!.skip(size)
-        }
+        remoteInputStream?.call { exception -> skip(size, exception) } ?: localInputStream!!.skip(
+            size
+        )
 
     @Throws(IOException::class)
-    override fun available(): Int =
-        if (remoteInputStream != null) {
-            remoteInputStream.call { exception -> available(exception) }
-        } else {
-            localInputStream!!.available()
-        }
+    override fun available(): Int = remoteInputStream?.call { exception -> available(exception) }
+        ?: localInputStream!!.available()
 
     @Throws(IOException::class)
     override fun close() {

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import java8.nio.file.FileStore
 import java8.nio.file.FileSystem
@@ -11,11 +11,11 @@ import java8.nio.file.Path
 import java8.nio.file.PathMatcher
 import java8.nio.file.WatchService
 import java8.nio.file.spi.FileSystemProvider
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringBuilder
-import me.zhanghai.android.files.provider.common.ByteStringListPathCreator
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.util.takeIfNotEmpty
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringBuilder
+import me.zhanghai.android.filesfork.provider.common.ByteStringListPathCreator
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.util.takeIfNotEmpty
 import java.io.IOException
 
 internal class LocalLinuxFileSystem(

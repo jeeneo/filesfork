@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import androidx.core.content.res.ResourcesCompat
 import java8.nio.file.Path
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.filelist.FileSortOptions
-import me.zhanghai.android.files.filelist.FileViewType
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.filelist.FileSortOptions
+import me.zhanghai.android.filesfork.filelist.FileViewType
 
 object PathSettings {
     private const val NAME_SUFFIX = "path"

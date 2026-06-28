@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.app
+package me.zhanghai.android.filesfork.app
 
 import android.content.SharedPreferences
 import android.net.Uri
@@ -12,45 +12,44 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import androidx.core.content.edit
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.PreferenceManagerCompat
-import me.zhanghai.android.files.compat.getDescriptionCompat
-import me.zhanghai.android.files.compat.readBooleanCompat
-import me.zhanghai.android.files.compat.writeBooleanCompat
-import me.zhanghai.android.files.compat.writeParcelableListCompat
-import me.zhanghai.android.files.file.DocumentTreeUri
-import me.zhanghai.android.files.file.asExternalStorageUriOrNull
-import me.zhanghai.android.files.file.displayName
-import me.zhanghai.android.files.file.storageVolume
-import me.zhanghai.android.files.filelist.FileSortOptions
-import me.zhanghai.android.files.navigation.BookmarkDirectory
-import me.zhanghai.android.files.navigation.StandardDirectorySettings
-import me.zhanghai.android.files.provider.archive.ArchiveFileSystem
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.moveToByteString
-import me.zhanghai.android.files.provider.content.ContentFileSystem
-import me.zhanghai.android.files.provider.document.DocumentFileSystem
-import me.zhanghai.android.files.provider.document.resolver.ExternalStorageProviderHacks
-import me.zhanghai.android.files.provider.linux.LinuxFileSystem
-import me.zhanghai.android.files.provider.root.RootStrategy
-import me.zhanghai.android.files.provider.sftp.SftpFileSystem
-import me.zhanghai.android.files.provider.smb.SmbFileSystem
-import me.zhanghai.android.files.storage.DocumentTree
-import me.zhanghai.android.files.storage.FileSystemRoot
-import me.zhanghai.android.files.storage.PrimaryStorageVolume
-import me.zhanghai.android.files.util.StableUriParceler
-import me.zhanghai.android.files.util.asBase64
-import me.zhanghai.android.files.util.readParcelable
-import me.zhanghai.android.files.util.readParcelableListCompat
-import me.zhanghai.android.files.util.toBase64
-import me.zhanghai.android.files.util.toByteArray
-import me.zhanghai.android.files.util.use
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.PreferenceManagerCompat
+import me.zhanghai.android.filesfork.compat.getDescriptionCompat
+import me.zhanghai.android.filesfork.compat.readBooleanCompat
+import me.zhanghai.android.filesfork.compat.writeBooleanCompat
+import me.zhanghai.android.filesfork.compat.writeParcelableListCompat
+import me.zhanghai.android.filesfork.file.DocumentTreeUri
+import me.zhanghai.android.filesfork.file.asExternalStorageUriOrNull
+import me.zhanghai.android.filesfork.file.displayName
+import me.zhanghai.android.filesfork.file.storageVolume
+import me.zhanghai.android.filesfork.filelist.FileSortOptions
+import me.zhanghai.android.filesfork.navigation.BookmarkDirectory
+import me.zhanghai.android.filesfork.navigation.StandardDirectorySettings
+import me.zhanghai.android.filesfork.provider.archive.ArchiveFileSystem
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.moveToByteString
+import me.zhanghai.android.filesfork.provider.content.ContentFileSystem
+import me.zhanghai.android.filesfork.provider.document.DocumentFileSystem
+import me.zhanghai.android.filesfork.provider.document.resolver.ExternalStorageProviderHacks
+import me.zhanghai.android.filesfork.provider.linux.LinuxFileSystem
+import me.zhanghai.android.filesfork.provider.root.RootStrategy
+import me.zhanghai.android.filesfork.provider.sftp.SftpFileSystem
+import me.zhanghai.android.filesfork.provider.smb.SmbFileSystem
+import me.zhanghai.android.filesfork.storage.DocumentTree
+import me.zhanghai.android.filesfork.storage.FileSystemRoot
+import me.zhanghai.android.filesfork.storage.PrimaryStorageVolume
+import me.zhanghai.android.filesfork.util.StableUriParceler
+import me.zhanghai.android.filesfork.util.asBase64
+import me.zhanghai.android.filesfork.util.readParcelable
+import me.zhanghai.android.filesfork.util.readParcelableListCompat
+import me.zhanghai.android.filesfork.util.toBase64
+import me.zhanghai.android.filesfork.util.toByteArray
+import me.zhanghai.android.filesfork.util.use
 
 internal fun upgradeAppTo1_1_0() {
     // Migrate settings.
     migratePathSetting1_1_0(R.string.pref_key_file_list_default_directory)
     migrateFileSortOptionsSetting1_1_0()
-    migrateCreateArchiveTypeSetting1_1_0()
     migrateStandardDirectorySettingsSetting1_1_0()
     migrateBookmarkDirectoriesSetting1_1_0()
     migratePathSetting1_1_0(R.string.pref_key_ftp_server_home_directory)
@@ -109,20 +108,6 @@ private fun migrateFileSortOptionsSetting1_1_0(sharedPreferences: SharedPreferen
         null
     }
     sharedPreferences.edit { putString(key, newBytes?.toBase64()?.value) }
-}
-
-fun migrateCreateArchiveTypeSetting1_1_0() {
-    val key = application.getString(R.string.pref_key_create_archive_type)
-    val oldValue = defaultSharedPreferences.getString(key, null) ?: return
-    val newValue = oldValue.replace(Regex("type_.+$")) {
-        when (it.value) {
-            "type_zip" -> "zipRadio"
-            "type_tar_xz" -> "tarXzRadio"
-            "type_seven_z" -> "sevenZRadio"
-            else -> "zipRadio"
-        }
-    }
-    defaultSharedPreferences.edit { putString(key, newValue) }
 }
 
 private fun migrateStandardDirectorySettingsSetting1_1_0() {
@@ -199,22 +184,22 @@ private fun migratePath1_1_0(oldParcel: Parcel, newParcel: Parcel) {
     newParcel.writeBooleanCompat(oldParcel.readByte() != 0.toByte())
     newParcel.writeParcelableListCompat(oldParcel.createTypedArrayList(oldByteStringCreator), 0)
     when (className) {
-        "me.zhanghai.android.files.provider.archive.ArchivePath" -> {
+        "me.zhanghai.android.filesfork.provider.archive.ArchivePath" -> {
             oldParcel.readString()
             newParcel.writeString(ArchiveFileSystem::class.java.name)
             migratePath1_1_0(oldParcel, newParcel)
         }
-        "me.zhanghai.android.files.provider.content.ContentPath" -> {
+        "me.zhanghai.android.filesfork.provider.content.ContentPath" -> {
             oldParcel.readString()
             newParcel.writeString(ContentFileSystem::class.java.name)
             newParcel.writeParcelable(oldParcel.readParcelable<Uri>(), 0)
         }
-        "me.zhanghai.android.files.provider.document.DocumentPath" -> {
+        "me.zhanghai.android.filesfork.provider.document.DocumentPath" -> {
             oldParcel.readString()
             newParcel.writeString(DocumentFileSystem::class.java.name)
             newParcel.writeParcelable(oldParcel.readParcelable<Uri>(), 0)
         }
-        "me.zhanghai.android.files.provider.linux.LinuxPath" -> {
+        "me.zhanghai.android.filesfork.provider.linux.LinuxPath" -> {
             oldParcel.readString()
             newParcel.writeString(LinuxFileSystem::class.java.name)
             newParcel.writeBooleanCompat(oldParcel.readByte() != 0.toByte())
@@ -270,16 +255,16 @@ private fun migrateSmbServersSetting1_3_0() {
                     val oldPosition = oldParcel.dataPosition()
                     oldParcel.readInt()
                     val className = oldParcel.readString()
-                    if (className == "me.zhanghai.android.files.storage.SmbServer") {
+                    if (className == "me.zhanghai.android.filesfork.storage.SmbServer") {
                         newParcel.writeInt(PARCEL_VAL_PARCELABLE)
-                        newParcel.writeString("me.zhanghai.android.files.storage.SmbServer")
+                        newParcel.writeString("me.zhanghai.android.filesfork.storage.SmbServer")
                         val id = oldParcel.readLong()
                         newParcel.writeLong(id)
                         val customName = oldParcel.readString()
                         newParcel.writeString(customName)
                         oldParcel.readString()
                         newParcel.writeString(
-                            "me.zhanghai.android.files.provider.smb.client.Authority"
+                            "me.zhanghai.android.filesfork.provider.smb.client.Authority"
                         )
                         val authorityHost = oldParcel.readString()
                         newParcel.writeString(authorityHost)
@@ -287,7 +272,7 @@ private fun migrateSmbServersSetting1_3_0() {
                         newParcel.writeInt(authorityPort)
                         oldParcel.readString()
                         newParcel.writeString(
-                            "me.zhanghai.android.files.provider.smb.client.Authentication"
+                            "me.zhanghai.android.filesfork.provider.smb.client.Authentication"
                         )
                         val authenticationUsername = oldParcel.readString()
                         newParcel.writeString(authenticationUsername)
@@ -378,23 +363,23 @@ private fun migratePath1_4_0(oldParcel: Parcel, newParcel: Parcel) {
     newParcel.writeBooleanCompat(oldParcel.readBooleanCompat())
     newParcel.writeParcelableListCompat(oldParcel.readParcelableListCompat<ByteString>(), 0)
     when (className) {
-        "me.zhanghai.android.files.provider.archive.ArchivePath" -> {
+        "me.zhanghai.android.filesfork.provider.archive.ArchivePath" -> {
             newParcel.writeString(oldParcel.readString())
             migratePath1_4_0(oldParcel, newParcel)
         }
-        "me.zhanghai.android.files.provider.content.ContentPath" -> {
+        "me.zhanghai.android.filesfork.provider.content.ContentPath" -> {
             newParcel.writeParcelable(oldParcel.readParcelable<ContentFileSystem>(), 0)
             newParcel.writeParcelable(oldParcel.readParcelable<Uri>(), 0)
         }
-        "me.zhanghai.android.files.provider.document.DocumentPath" ->
+        "me.zhanghai.android.filesfork.provider.document.DocumentPath" ->
             newParcel.writeParcelable(oldParcel.readParcelable<DocumentFileSystem>(), 0)
-        "me.zhanghai.android.files.provider.linux.LinuxPath" -> {
+        "me.zhanghai.android.filesfork.provider.linux.LinuxPath" -> {
             newParcel.writeParcelable(oldParcel.readParcelable<LinuxFileSystem>(), 0)
             oldParcel.readBooleanCompat()
         }
-        "me.zhanghai.android.files.provider.sftp.SftpPath" ->
+        "me.zhanghai.android.filesfork.provider.sftp.SftpPath" ->
             newParcel.writeParcelable(oldParcel.readParcelable<SftpFileSystem>(), 0)
-        "me.zhanghai.android.files.provider.smb.SmbPath" ->
+        "me.zhanghai.android.filesfork.provider.smb.SmbPath" ->
             newParcel.writeParcelable(oldParcel.readParcelable<SmbFileSystem>(), 0)
         else -> throw IllegalStateException(className)
     }
@@ -416,9 +401,9 @@ private fun migrateSftpServersSetting1_4_0() {
                     val oldPosition = oldParcel.dataPosition()
                     oldParcel.readInt()
                     when (oldParcel.readString()) {
-                        "me.zhanghai.android.files.storage.SftpServer" -> {
+                        "me.zhanghai.android.filesfork.storage.SftpServer" -> {
                             newParcel.writeInt(PARCEL_VAL_PARCELABLE)
-                            newParcel.writeString("me.zhanghai.android.files.storage.SftpServer")
+                            newParcel.writeString("me.zhanghai.android.filesfork.storage.SftpServer")
                             val id = oldParcel.readLong()
                             newParcel.writeLong(id)
                             val customName = oldParcel.readString()
@@ -484,9 +469,9 @@ private fun migrateSftpServersSetting1_5_0() {
                     val oldPosition = oldParcel.dataPosition()
                     oldParcel.readInt()
                     when (oldParcel.readString()) {
-                        "me.zhanghai.android.files.storage.SftpServer" -> {
+                        "me.zhanghai.android.filesfork.storage.SftpServer" -> {
                             newParcel.writeInt(PARCEL_VAL_PARCELABLE)
-                            newParcel.writeString("me.zhanghai.android.files.storage.SftpServer")
+                            newParcel.writeString("me.zhanghai.android.filesfork.storage.SftpServer")
                             val id = oldParcel.readLong()
                             newParcel.writeLong(id)
                             val customName = oldParcel.readString()
@@ -501,7 +486,7 @@ private fun migrateSftpServersSetting1_5_0() {
                             newParcel.writeString(authenticationClassName)
                             val authenticationPasswordOrPrivateKey = oldParcel.readString()
                             newParcel.writeString(authenticationPasswordOrPrivateKey)
-                            if (authenticationClassName == "me.zhanghai.android.files.provider.sftp"
+                            if (authenticationClassName == "me.zhanghai.android.filesfork.provider.sftp"
                                 + ".client.PublicKeyAuthentication") {
                                 newParcel.writeString(null)
                             }
@@ -574,12 +559,12 @@ private fun migrateDocumentManagerShortcutSetting1_7_2() {
                             val className = oldParcel.readString()
                             oldParcel.setDataPosition(oldPosition)
                             when (className) {
-                                "me.zhanghai.android.files.storage.DocumentManagerShortcut" -> {
+                                "me.zhanghai.android.filesfork.storage.DocumentManagerShortcut" -> {
                                     newParcel.writeInt(oldParcel.readInt())
                                     readWriteLengthPrefixedValue(oldParcel, newParcel) {
                                         oldParcel.readString()
                                         newParcel.writeString(
-                                            "me.zhanghai.android.files.storage" +
+                                            "me.zhanghai.android.filesfork.storage" +
                                                 ".ExternalStorageShortcut"
                                         )
                                         val id = oldParcel.readLong()

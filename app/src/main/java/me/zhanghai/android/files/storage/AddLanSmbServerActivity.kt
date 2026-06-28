@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.commit
-import me.zhanghai.android.files.app.AppActivity
+import me.zhanghai.android.filesfork.app.AppActivity
 
 class AddLanSmbServerActivity : AppActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

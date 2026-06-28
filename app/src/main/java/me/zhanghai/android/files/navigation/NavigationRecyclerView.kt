@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import android.content.Context
 import android.graphics.Canvas
@@ -14,13 +14,13 @@ import androidx.annotation.AttrRes
 import androidx.core.graphics.withSave
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.activity
-import me.zhanghai.android.files.util.displayWidth
-import me.zhanghai.android.files.util.getDimensionPixelSize
-import me.zhanghai.android.files.util.getDimensionPixelSizeByAttr
-import me.zhanghai.android.files.util.getDrawableByAttr
-import me.zhanghai.android.files.util.isLayoutDirectionRtl
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.activity
+import me.zhanghai.android.filesfork.util.displayWidth
+import me.zhanghai.android.filesfork.util.getDimensionPixelSize
+import me.zhanghai.android.filesfork.util.getDimensionPixelSizeByAttr
+import me.zhanghai.android.filesfork.util.getDrawableByAttr
+import me.zhanghai.android.filesfork.util.isLayoutDirectionRtl
 
 class NavigationRecyclerView : RecyclerView {
     private val verticalPadding = context.getDimensionPixelSize(

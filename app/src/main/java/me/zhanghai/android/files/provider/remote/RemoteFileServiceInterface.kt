@@ -3,9 +3,9 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
-import me.zhanghai.android.files.provider.FileSystemProviders
+import me.zhanghai.android.filesfork.provider.FileSystemProviders
 
 open class RemoteFileServiceInterface : IRemoteFileService.Stub() {
     override fun getRemoteFileSystemProviderInterface(scheme: String): IRemoteFileSystemProvider =

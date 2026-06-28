@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -28,11 +28,11 @@ import androidx.annotation.IntegerRes
 import androidx.annotation.InterpolatorRes
 import androidx.annotation.PluralsRes
 import androidx.fragment.app.Fragment
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.checkSelfPermissionCompat
-import me.zhanghai.android.files.compat.getColorCompat
-import me.zhanghai.android.files.compat.getColorStateListCompat
-import me.zhanghai.android.files.compat.getDrawableCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.checkSelfPermissionCompat
+import me.zhanghai.android.filesfork.compat.getColorCompat
+import me.zhanghai.android.filesfork.compat.getColorStateListCompat
+import me.zhanghai.android.filesfork.compat.getDrawableCompat
 
 fun Fragment.addOnBackPressedCallback(callback: OnBackPressedCallback) {
     requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)

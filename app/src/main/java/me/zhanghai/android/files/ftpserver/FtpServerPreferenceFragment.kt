@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.os.Bundle
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.ui.PreferenceFragmentCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.ui.PreferenceFragmentCompat
 
 class FtpServerPreferenceFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {

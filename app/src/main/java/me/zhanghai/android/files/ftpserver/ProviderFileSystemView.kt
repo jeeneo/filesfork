@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import java8.nio.file.Paths
-import me.zhanghai.android.files.provider.archive.isArchivePath
+import me.zhanghai.android.filesfork.provider.archive.isArchivePath
 import org.apache.ftpserver.ftplet.FileSystemView
 import org.apache.ftpserver.ftplet.User
 import java.net.URI

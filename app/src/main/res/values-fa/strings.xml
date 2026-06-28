@@ -51,7 +51,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">برنامه‌ای برای اداره کردن این کنش یافت نشد</string>
     <string name="open_settings">گشودن تنظیمات</string>
-    <string name="shortcut_created">میان‌بر ایجاد شد</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="one">%1$,d بایت</item>
@@ -209,7 +208,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">هنگام بازگردانی مفاد اس‌ای‌لینوکس برای «⁨%1$s⁩» خطایی رخ داد.\n%2$s</string>
     <string name="file_job_write_error_title">خطا هنگام نوشتن</string>
     <string name="file_job_write_error_message_format">هنگام نوشتن «⁨%1$s⁩» خطایی رخ داد.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">هنگام دریافت اطّلاعات دربارهٔ «⁨%1$s⁩» خطایی رخ داد.</string>
     <string name="file_job_remount_format">سوار کردن دوبارهٔ «⁨%1$s⁩» به عنوان خواندن-نوشتن</string>
     <string name="file_job_remount_loading_format">در حال سوار کردن دوبارهٔ «⁨%1$s⁩» به عنوان خواندن-نوشتن…</string>
     <string name="file_job_remount_success_format">«⁨%1$s⁩» به عنوان خواندن-نوشتن دوباره سوار شد</string>
@@ -312,7 +310,6 @@
     <string name="file_properties_basic_parent_directory">شاخهٔ والد</string>
     <string name="file_properties_basic_archive_file">پروندهٔ بایگانی</string>
     <string name="file_properties_basic_archive_entry">ورودی بایگانی</string>
-    <string name="file_properties_basic_free_space">فضای خالی</string>
     <string name="file_properties_image">تصویر</string>
     <string name="file_properties_media_dimensions">ابعاد</string>
     <string name="file_properties_media_dimensions_format">⁦%1$d \u00d7 %2$d⁩</string>
@@ -486,11 +483,7 @@
     <string name="image_viewer_title">نمایشگر تصویر</string>
     <string name="image_viewer_subtitle_format">%1$,d/%2$,d</string>
     <string name="text_editor_title">ویرایشگر متن</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">ذخیره شد</string>
     <string name="text_editor_reload_message">آیا مطمئن هستید که می‌خواهید دوباره بارگزاری کنید؟ تغییرات ذخیره نشده در این سند از بین خواهند رفت.</string>
-    <string name="text_editor_encoding">رمزگذاری</string>
     <string name="text_editor_close_message">آیا مطمئن هستید که می‌خواهید تغییرات ذخیره نشده در این سند را دور بریزید؟</string>
 
     <string name="ftp_server_title">کارساز اف‌تی‌پی</string>

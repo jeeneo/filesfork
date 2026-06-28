@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.document
+package me.zhanghai.android.filesfork.provider.document
 
 import android.net.Uri
 import java8.nio.file.Path
 import java8.nio.file.ProviderMismatchException
-import me.zhanghai.android.files.provider.content.resolver.ResolverException
-import me.zhanghai.android.files.provider.document.resolver.DocumentResolver
+import me.zhanghai.android.filesfork.provider.content.resolver.ResolverException
+import me.zhanghai.android.filesfork.provider.document.resolver.DocumentResolver
 import java.io.IOException
 
 val Path.documentUri: Uri

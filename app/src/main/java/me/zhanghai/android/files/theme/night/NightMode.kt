@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.theme.night
+package me.zhanghai.android.filesfork.theme.night
 
 import androidx.appcompat.app.AppCompatDelegate
 

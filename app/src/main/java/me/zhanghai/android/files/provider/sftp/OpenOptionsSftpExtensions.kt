@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.sftp
+package me.zhanghai.android.filesfork.provider.sftp
 
 import java8.nio.file.StandardOpenOption
-import me.zhanghai.android.files.provider.common.OpenOptions
-import me.zhanghai.android.files.util.enumSetOf
+import me.zhanghai.android.filesfork.provider.common.OpenOptions
+import me.zhanghai.android.filesfork.util.enumSetOf
 import net.schmizz.sshj.sftp.OpenMode
 
 internal fun OpenOptions.toSftpFlags(): Set<OpenMode> =

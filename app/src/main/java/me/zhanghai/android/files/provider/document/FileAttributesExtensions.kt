@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.document
+package me.zhanghai.android.filesfork.provider.document
 
 import android.provider.DocumentsContract
 import java8.nio.file.ProviderMismatchException
 import java8.nio.file.attribute.BasicFileAttributes
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.util.hasBits
 
 val BasicFileAttributes.documentSupportsThumbnail: Boolean
     get() {

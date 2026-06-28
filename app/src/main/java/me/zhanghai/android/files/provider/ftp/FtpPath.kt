@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.ftp
+package me.zhanghai.android.filesfork.provider.ftp
 
 import android.net.Uri
 import android.os.Parcel
@@ -15,14 +15,14 @@ import java8.nio.file.ProviderMismatchException
 import java8.nio.file.WatchEvent
 import java8.nio.file.WatchKey
 import java8.nio.file.WatchService
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringListPath
-import me.zhanghai.android.files.provider.common.LocalWatchService
-import me.zhanghai.android.files.provider.common.UriAuthority
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.provider.ftp.client.Authority
-import me.zhanghai.android.files.provider.ftp.client.Client
-import me.zhanghai.android.files.util.readParcelable
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringListPath
+import me.zhanghai.android.filesfork.provider.common.LocalWatchService
+import me.zhanghai.android.filesfork.provider.common.UriAuthority
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.ftp.client.Authority
+import me.zhanghai.android.filesfork.provider.ftp.client.Client
+import me.zhanghai.android.filesfork.util.readParcelable
 import java.io.File
 import java.io.IOException
 

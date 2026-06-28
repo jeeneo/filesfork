@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import androidx.lifecycle.MediatorLiveData
 import java8.nio.file.Path
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.util.valueCompat
 
 object NavigationRootMapLiveData : MediatorLiveData<Map<Path, NavigationRoot>>() {
     init {

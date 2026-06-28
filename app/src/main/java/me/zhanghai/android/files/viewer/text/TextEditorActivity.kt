@@ -1,37 +1,62 @@
-/*
- * Copyright (c) 2019 Hai Zhang <dreaming.in.code.zh@gmail.com>
- * All Rights Reserved.
- */
+package me.zhanghai.android.filesfork.viewer.text
 
-package me.zhanghai.android.files.viewer.text
-
+import android.content.Context
 import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.commit
-import me.zhanghai.android.files.app.AppActivity
-import me.zhanghai.android.files.util.putArgs
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.lifecycleScope
+import io.github.rosemoe.sora.langs.textmate.registry.FileProviderRegistry
+import io.github.rosemoe.sora.langs.textmate.registry.GrammarRegistry
+import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import me.zhanghai.android.filesfork.app.AppActivity
+import me.zhanghai.android.filesfork.theme.AppTheme
+import me.zhanghai.android.filesfork.util.extraPath
 
-class TextEditorActivity : AppActivity() {
-    private lateinit var fragment: TextEditorFragment
+object TextEditorInitializer {
+    @Volatile
+    var themeReady = false
+        private set
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    var grammarReady by mutableStateOf(false)
+        private set
 
-        // Calls ensureSubDecor().
-        findViewById<View>(android.R.id.content)
-        if (savedInstanceState == null) {
-            fragment = TextEditorFragment().putArgs(TextEditorFragment.Args(intent))
-            supportFragmentManager.commit { add(android.R.id.content, fragment) }
-        } else {
-            fragment = supportFragmentManager.findFragmentById(android.R.id.content)
-                as TextEditorFragment
-        }
+    fun initializeThemes(context: Context) {
+        if (themeReady) return
+        FileProviderRegistry.getInstance().addFileProvider(
+            AssetsFileResolver(context.assets)
+        )
+        ThemeManager.initialize(context)
+        themeReady = true
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        if (fragment.onSupportNavigateUp()) {
-            return true
+    fun initializeGrammars(context: Context) {
+        if (grammarReady) return
+        GrammarRegistry.getInstance().loadGrammars("textmate/languages/languages.json")
+        LanguageRegistry.initialize(context)
+        grammarReady = true
+    }
+}
+
+class TextEditorActivity : AppActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        val path = intent.extraPath ?: run { finish(); return }
+        TextEditorInitializer.initializeThemes(applicationContext)
+        if (!TextEditorInitializer.grammarReady) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                TextEditorInitializer.initializeGrammars(applicationContext)
+            }
         }
-        return super.onSupportNavigateUp()
+        setContent {
+            AppTheme {
+                TextEditorScreen(path = path, onNavigateUp = { finish() })
+            }
+        }
     }
 }

@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import android.os.Parcel
 import android.os.Parcelable
-import me.zhanghai.android.files.compat.readSerializableCompat
+import me.zhanghai.android.filesfork.compat.readSerializableCompat
 import java.io.IOException
 
 class ParcelableException() : Parcelable {

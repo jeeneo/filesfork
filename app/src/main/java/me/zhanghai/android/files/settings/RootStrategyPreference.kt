@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import com.takisoft.preferencex.PreferenceFragmentCompat
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.filejob.FileJobService
-import me.zhanghai.android.files.ui.MaterialPreferenceDialogFragmentCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.filejob.FileJobService
+import me.zhanghai.android.filesfork.ui.MaterialPreferenceDialogFragmentCompat
 import rikka.preference.SimpleMenuPreference
 
 class RootStrategyPreference : SimpleMenuPreference {

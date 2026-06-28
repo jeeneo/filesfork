@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.document
+package me.zhanghai.android.filesfork.provider.document
 
 import android.database.ContentObserver
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.provider.common.AbstractPathObservable
-import me.zhanghai.android.files.provider.content.resolver.ResolverException
-import me.zhanghai.android.files.provider.document.resolver.DocumentResolver
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.provider.common.AbstractPathObservable
+import me.zhanghai.android.filesfork.provider.content.resolver.ResolverException
+import me.zhanghai.android.filesfork.provider.document.resolver.DocumentResolver
 
 internal class DocumentPathObservable(
     path: DocumentPath,

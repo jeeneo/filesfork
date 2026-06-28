@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.checksum
+package me.zhanghai.android.filesfork.fileproperties.checksum
 
 import java.security.MessageDigest
 import java.util.zip.CRC32

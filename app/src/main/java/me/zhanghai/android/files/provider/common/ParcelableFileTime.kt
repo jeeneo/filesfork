@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.os.Parcel
 import android.os.Parcelable
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.compat.readSerializableCompat
+import me.zhanghai.android.filesfork.compat.readSerializableCompat
 
 class ParcelableFileTime(val value: FileTime) : Parcelable {
     private constructor(source: Parcel) : this(FileTime.from(source.readSerializableCompat()))

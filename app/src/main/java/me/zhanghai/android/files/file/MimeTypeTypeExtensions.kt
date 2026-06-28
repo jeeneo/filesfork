@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.file
+package me.zhanghai.android.filesfork.file
 
 val MimeType.isApk: Boolean
     get() = this == MimeType.APK
@@ -37,7 +37,8 @@ private val supportedArchiveMimeTypes = mutableListOf(
     "application/x-redhat-package-manager",
     "application/x-tar",
     "application/x-ustar",
-    "application/x-xz"
+    "application/x-xz",
+    "application/x-mtz"
 ).map { it.asMimeType() }.toSet()
 
 val MimeType.isImage: Boolean

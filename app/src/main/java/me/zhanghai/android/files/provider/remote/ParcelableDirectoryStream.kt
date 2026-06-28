@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -11,9 +11,9 @@ import java.io.IOException
 import java8.nio.file.DirectoryIteratorException
 import java8.nio.file.DirectoryStream
 import java8.nio.file.Path
-import me.zhanghai.android.files.provider.common.PathListDirectoryStream
-import me.zhanghai.android.files.util.ParcelSlicedList
-import me.zhanghai.android.files.util.readParcelable
+import me.zhanghai.android.filesfork.provider.common.PathListDirectoryStream
+import me.zhanghai.android.filesfork.util.ParcelSlicedList
+import me.zhanghai.android.filesfork.util.readParcelable
 
 class ParcelableDirectoryStream : Parcelable {
     private val paths: List<Path>

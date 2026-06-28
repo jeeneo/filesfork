@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringBuilder
-import me.zhanghai.android.files.provider.common.dropLast
-import me.zhanghai.android.files.provider.common.dropLastWhile
-import me.zhanghai.android.files.provider.common.substringAfterLast
-import me.zhanghai.android.files.provider.common.takeIfNotEmpty
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringBuilder
+import me.zhanghai.android.filesfork.provider.common.dropLast
+import me.zhanghai.android.filesfork.provider.common.dropLastWhile
+import me.zhanghai.android.filesfork.provider.common.substringAfterLast
+import me.zhanghai.android.filesfork.provider.common.takeIfNotEmpty
 
 @JvmInline
 value class BytePathName(val value: ByteString) {

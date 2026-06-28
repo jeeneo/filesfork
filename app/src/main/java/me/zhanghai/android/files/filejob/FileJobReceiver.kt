@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filejob
+package me.zhanghai.android.filesfork.filejob
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import me.zhanghai.android.files.app.application
+import me.zhanghai.android.filesfork.app.application
 
 class FileJobReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

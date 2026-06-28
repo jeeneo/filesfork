@@ -5,14 +5,13 @@
   ~ All Rights Reserved.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <me.zhanghai.android.files.ui.CoordinatorAppBarLayout
+    <me.zhanghai.android.filesfork.ui.CoordinatorAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorAppBarSurface"
@@ -25,9 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             app:popupTheme="?actionBarPopupTheme" />
-    </me.zhanghai.android.files.ui.CoordinatorAppBarLayout>
+    </me.zhanghai.android.filesfork.ui.CoordinatorAppBarLayout>
 
-    <me.zhanghai.android.files.ui.CoordinatorScrollingFrameLayout
+    <me.zhanghai.android.filesfork.ui.CoordinatorScrollingFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -41,10 +40,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/screen_edge_margin"
                 android:clipToPadding="false"
                 android:divider="@drawable/transparent_divider_vertical_16dp"
                 android:orientation="vertical"
+                android:padding="@dimen/screen_edge_margin"
                 android:showDividers="middle">
 
                 <com.google.android.material.card.MaterialCardView
@@ -62,10 +61,10 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="?listPreferredItemHeight"
-                            android:paddingStart="?android:listPreferredItemPaddingStart"
-                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="?android:listPreferredItemPaddingStart"
+                            android:paddingEnd="?android:listPreferredItemPaddingEnd">
 
                             <ImageView
                                 android:layout_width="@dimen/large_icon_size"
@@ -86,15 +85,15 @@
                         <me.zhanghai.android.foregroundcompat.ForegroundLinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="?android:listPreferredItemPaddingStart"
-                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
                             android:clickable="true"
                             android:focusable="true"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="?android:listPreferredItemPaddingStart"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
+                            android:paddingBottom="8dp">
 
                             <ImageView
                                 android:layout_width="@dimen/icon_size"
@@ -105,8 +104,8 @@
 
                             <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:orientation="vertical">
 
@@ -127,6 +126,7 @@
                                     android:maxLines="1"
                                     android:text="@string/app_version"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
                             </LinearLayout>
                         </me.zhanghai.android.foregroundcompat.ForegroundLinearLayout>
 
@@ -134,11 +134,11 @@
                             android:id="@+id/gitHubLayout"
                             android:layout_width="match_parent"
                             android:layout_height="?listPreferredItemHeightSmall"
-                            android:paddingStart="?android:listPreferredItemPaddingStart"
-                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="?android:listPreferredItemPaddingStart"
+                            android:paddingEnd="?android:listPreferredItemPaddingEnd">
 
                             <ImageView
                                 android:layout_width="@dimen/icon_size"
@@ -161,11 +161,11 @@
                             android:id="@+id/licensesLayout"
                             android:layout_width="match_parent"
                             android:layout_height="?listPreferredItemHeightSmall"
-                            android:paddingStart="?android:listPreferredItemPaddingStart"
-                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="?android:listPreferredItemPaddingStart"
+                            android:paddingEnd="?android:listPreferredItemPaddingEnd">
 
                             <ImageView
                                 android:layout_width="@dimen/icon_size"
@@ -188,11 +188,11 @@
                             android:id="@+id/privacyPolicyLayout"
                             android:layout_width="match_parent"
                             android:layout_height="?listPreferredItemHeightSmall"
-                            android:paddingStart="?android:listPreferredItemPaddingStart"
-                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
+                            android:paddingStart="?android:listPreferredItemPaddingStart"
+                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
                             android:visibility="gone">
 
                             <ImageView
@@ -229,10 +229,10 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="?listPreferredItemHeightSmall"
-                            android:paddingStart="?android:listPreferredItemPaddingStart"
-                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="?android:listPreferredItemPaddingStart"
+                            android:paddingEnd="?android:listPreferredItemPaddingEnd">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -248,13 +248,13 @@
                             android:id="@+id/authorNameLayout"
                             android:layout_width="match_parent"
                             android:layout_height="?listPreferredItemHeightSmall"
-                            android:paddingStart="?android:listPreferredItemPaddingStart"
-                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
                             android:clickable="true"
                             android:focusable="true"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="?android:listPreferredItemPaddingStart"
+                            android:paddingEnd="?android:listPreferredItemPaddingEnd">
 
                             <ImageView
                                 android:layout_width="@dimen/icon_size"
@@ -277,11 +277,11 @@
                             android:id="@+id/authorGitHubLayout"
                             android:layout_width="match_parent"
                             android:layout_height="?listPreferredItemHeightSmall"
-                            android:paddingStart="?android:listPreferredItemPaddingStart"
-                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="?android:listPreferredItemPaddingStart"
+                            android:paddingEnd="?android:listPreferredItemPaddingEnd">
 
                             <ImageView
                                 android:layout_width="@dimen/icon_size"
@@ -304,11 +304,11 @@
                             android:id="@+id/authorTwitterLayout"
                             android:layout_width="match_parent"
                             android:layout_height="?listPreferredItemHeightSmall"
-                            android:paddingStart="?android:listPreferredItemPaddingStart"
-                            android:paddingEnd="?android:listPreferredItemPaddingEnd"
                             android:foreground="?selectableItemBackground"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingStart="?android:listPreferredItemPaddingStart"
+                            android:paddingEnd="?android:listPreferredItemPaddingEnd">
 
                             <ImageView
                                 android:layout_width="@dimen/icon_size"
@@ -330,5 +330,5 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-    </me.zhanghai.android.files.ui.CoordinatorScrollingFrameLayout>
+    </me.zhanghai.android.filesfork.ui.CoordinatorScrollingFrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

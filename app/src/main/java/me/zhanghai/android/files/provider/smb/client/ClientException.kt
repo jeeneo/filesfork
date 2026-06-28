@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb.client
+package me.zhanghai.android.filesfork.provider.smb.client
 
 import com.hierynomus.mserref.NtStatus
 import com.hierynomus.mssmb2.SMBApiException
@@ -15,8 +15,8 @@ import java8.nio.file.FileSystemException
 import java8.nio.file.NoSuchFileException
 import java8.nio.file.NotDirectoryException
 import java8.nio.file.NotLinkException
-import me.zhanghai.android.files.provider.common.InvalidFileNameException
-import me.zhanghai.android.files.provider.common.IsDirectoryException
+import me.zhanghai.android.filesfork.provider.common.InvalidFileNameException
+import me.zhanghai.android.filesfork.provider.common.IsDirectoryException
 
 class ClientException : Exception {
     constructor() : super()

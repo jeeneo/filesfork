@@ -3,9 +3,9 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
-import me.zhanghai.android.files.app.wifiManager
+import me.zhanghai.android.filesfork.app.wifiManager
 import java.net.InetAddress
 import java.net.NetworkInterface
 import java.net.SocketException

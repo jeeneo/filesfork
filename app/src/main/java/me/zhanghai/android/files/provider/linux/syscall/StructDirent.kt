@@ -3,9 +3,9 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux.syscall
+package me.zhanghai.android.filesfork.provider.linux.syscall
 
-import me.zhanghai.android.files.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteString
 
 class StructDirent(
     val d_ino: Long, /*ino_t*/

@@ -11,11 +11,11 @@
 
     <PreferenceCategory android:title="@string/settings_interface_title">
 
-        <me.zhanghai.android.files.settings.LocalePreference
+        <me.zhanghai.android.filesfork.settings.LocalePreference
             android:key="@string/pref_key_locale"
             android:title="@string/settings_locale_title" />
 
-        <me.zhanghai.android.files.theme.custom.ThemeColorPreference
+        <me.zhanghai.android.filesfork.theme.custom.ThemeColorPreference
             android:key="@string/pref_key_theme_color"
             android:title="@string/settings_theme_color_title"
             android:defaultValue="@string/pref_default_value_theme_color"
@@ -46,6 +46,19 @@
             android:title="@string/settings_file_list_animation_title"
             android:defaultValue="@bool/pref_default_value_file_list_animation" />
 
+        <SwitchPreferenceCompat
+            android:key="@string/pref_key_file_list_dense_layout"
+            android:title="@string/settings_file_list_dense_layout_title"
+            android:defaultValue="@bool/pref_default_value_file_list_dense_layout" />
+
+        <rikka.preference.SimpleMenuPreference
+            android:key="@string/pref_key_file_list_calc_sizes"
+            android:title="@string/settings_file_list_calc_sizes_title"
+            android:defaultValue="@string/pref_default_value_file_list_calc_sizes"
+            android:entries="@array/settings_file_list_calc_sizes_entries"
+            android:entryValues="@array/pref_entry_values_file_list_calc_sizes"
+            app:useSimpleSummaryProvider="true" />
+
         <rikka.preference.SimpleMenuPreference
             android:key="@string/pref_key_file_name_ellipsize"
             android:title="@string/settings_file_name_ellipsize_title"
@@ -57,24 +70,24 @@
 
     <PreferenceCategory android:title="@string/settings_behavior_title">
 
-        <me.zhanghai.android.files.settings.DefaultDirectoryPreference
+        <me.zhanghai.android.filesfork.settings.DefaultDirectoryPreference
             android:key="@string/pref_key_file_list_default_directory"
             android:title="@string/settings_default_directory_title"
             app:useSimpleSummaryProvider="true" />
 
-        <me.zhanghai.android.files.settings.StoragesPreference
+        <me.zhanghai.android.filesfork.settings.StoragesPreference
             android:title="@string/settings_storages_title"
             android:summary="@string/settings_storages_summary_empty" />
 
-        <me.zhanghai.android.files.settings.StandardDirectoriesPreference
+        <me.zhanghai.android.filesfork.settings.StandardDirectoriesPreference
             android:title="@string/settings_standard_directories_title"
             android:summary="@string/settings_standard_directories_summary_empty" />
 
-        <me.zhanghai.android.files.settings.BookmarkDirectoriesPreference
+        <me.zhanghai.android.filesfork.settings.BookmarkDirectoriesPreference
             android:title="@string/settings_bookmark_directories_title"
             android:summary="@string/settings_bookmark_directories_summary_empty" />
 
-        <me.zhanghai.android.files.settings.RootStrategyPreference
+        <me.zhanghai.android.filesfork.settings.RootStrategyPreference
             android:key="@string/pref_key_root_strategy"
             android:title="@string/settings_root_strategy_title"
             android:defaultValue="@string/pref_default_value_root_strategy"
@@ -82,7 +95,7 @@
             android:entryValues="@array/pref_entry_values_root_strategy"
             app:useSimpleSummaryProvider="true" />
 
-        <me.zhanghai.android.files.settings.CharsetPreference
+        <me.zhanghai.android.filesfork.settings.CharsetPreference
             android:key="@string/pref_key_archive_file_name_encoding"
             android:title="@string/settings_archive_file_name_encoding_title"
             android:defaultValue="@string/pref_default_value_archive_file_name_encoding"

@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import java8.nio.file.attribute.UserPrincipalLookupService
 import java8.nio.file.attribute.UserPrincipalNotFoundException
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.PosixGroup
-import me.zhanghai.android.files.provider.common.PosixUser
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.provider.linux.syscall.Syscall
-import me.zhanghai.android.files.provider.linux.syscall.SyscallException
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.PosixGroup
+import me.zhanghai.android.filesfork.provider.common.PosixUser
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.linux.syscall.Syscall
+import me.zhanghai.android.filesfork.provider.linux.syscall.SyscallException
 import java.io.IOException
 
 internal object LinuxUserPrincipalLookupService : UserPrincipalLookupService() {

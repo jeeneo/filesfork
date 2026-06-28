@@ -3,31 +3,31 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.content.Context
 import android.os.Build
 import java8.nio.file.Path
 import java8.nio.file.attribute.BasicFileAttributes
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.file.getBrokenSymbolicLinkName
-import me.zhanghai.android.files.file.getName
-import me.zhanghai.android.files.file.isApk
-import me.zhanghai.android.files.file.isImage
-import me.zhanghai.android.files.file.isMedia
-import me.zhanghai.android.files.file.isPdf
-import me.zhanghai.android.files.provider.archive.createArchiveRootPath
-import me.zhanghai.android.files.provider.document.documentSupportsThumbnail
-import me.zhanghai.android.files.provider.document.isDocumentPath
-import me.zhanghai.android.files.provider.ftp.isFtpPath
-import me.zhanghai.android.files.provider.linux.isLinuxPath
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.asFileName
-import me.zhanghai.android.files.util.isGetPackageArchiveInfoCompatible
-import me.zhanghai.android.files.util.isMediaMetadataRetrieverCompatible
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.file.getBrokenSymbolicLinkName
+import me.zhanghai.android.filesfork.file.getName
+import me.zhanghai.android.filesfork.file.isApk
+import me.zhanghai.android.filesfork.file.isImage
+import me.zhanghai.android.filesfork.file.isMedia
+import me.zhanghai.android.filesfork.file.isPdf
+import me.zhanghai.android.filesfork.provider.archive.createArchiveRootPath
+import me.zhanghai.android.filesfork.provider.document.documentSupportsThumbnail
+import me.zhanghai.android.filesfork.provider.document.isDocumentPath
+import me.zhanghai.android.filesfork.provider.ftp.isFtpPath
+import me.zhanghai.android.filesfork.provider.linux.isLinuxPath
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.asFileName
+import me.zhanghai.android.filesfork.util.isGetPackageArchiveInfoCompatible
+import me.zhanghai.android.filesfork.util.isMediaMetadataRetrieverCompatible
+import me.zhanghai.android.filesfork.util.valueCompat
 import java.text.CollationKey
 
 val FileItem.name: String

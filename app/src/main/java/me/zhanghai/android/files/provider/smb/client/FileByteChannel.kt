@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb.client
+package me.zhanghai.android.filesfork.provider.smb.client
 
 import com.hierynomus.mserref.NtStatus
 import com.hierynomus.msfscc.fileinformation.FileStandardInformation
@@ -12,11 +12,11 @@ import com.hierynomus.smbj.common.SMBRuntimeException
 import com.hierynomus.smbj.io.ByteChunkProvider
 import com.hierynomus.smbj.share.File
 import com.hierynomus.smbj.share.FileAccessor
-import me.zhanghai.android.files.provider.common.AbstractFileByteChannel
-import me.zhanghai.android.files.provider.common.EMPTY
-import me.zhanghai.android.files.provider.common.map
-import me.zhanghai.android.files.util.closeSafe
-import me.zhanghai.android.files.util.findCauseByClass
+import me.zhanghai.android.filesfork.provider.common.AbstractFileByteChannel
+import me.zhanghai.android.filesfork.provider.common.EMPTY
+import me.zhanghai.android.filesfork.provider.common.map
+import me.zhanghai.android.filesfork.util.closeSafe
+import me.zhanghai.android.filesfork.util.findCauseByClass
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.nio.ByteBuffer
@@ -66,7 +66,7 @@ class FileByteChannel(
         } catch (e: SMBRuntimeException) {
             throw e.toIOException()
         }
-        source.position(sourcePosition + bytesWritten)
+        source.position(sourcePosition + bytesWritten.toInt())
     }
 
     @Throws(IOException::class)

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import java8.nio.file.Path
 import org.apache.ftpserver.ConnectionConfigFactory

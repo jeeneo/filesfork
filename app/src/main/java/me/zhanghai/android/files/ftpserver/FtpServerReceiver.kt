@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import me.zhanghai.android.files.app.application
+import me.zhanghai.android.filesfork.app.application
 
 class FtpServerReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

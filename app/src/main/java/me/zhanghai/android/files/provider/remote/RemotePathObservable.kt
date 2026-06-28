@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.os.RemoteException
-import me.zhanghai.android.files.provider.common.PathObservable
-import me.zhanghai.android.files.util.RemoteCallback
+import me.zhanghai.android.filesfork.provider.common.PathObservable
+import me.zhanghai.android.filesfork.util.RemoteCallback
 import java.io.IOException
 
 class RemotePathObservable : PathObservable, Parcelable {

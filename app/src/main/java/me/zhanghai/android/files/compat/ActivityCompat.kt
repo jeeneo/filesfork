@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.app.Activity
 import android.app.ActivityManager.TaskDescription
@@ -11,7 +11,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.annotation.StyleRes
 import androidx.core.app.ActivityCompat
-import me.zhanghai.android.files.util.getColorByAttr
+import me.zhanghai.android.filesfork.util.getColorByAttr
 
 fun Activity.recreateCompat() {
     ActivityCompat.recreate(this)

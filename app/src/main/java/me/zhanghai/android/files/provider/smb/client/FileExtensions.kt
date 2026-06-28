@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb.client
+package me.zhanghai.android.filesfork.provider.smb.client
 
 import com.hierynomus.mserref.NtStatus
 import com.hierynomus.mssmb2.SMB2PacketHeader

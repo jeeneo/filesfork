@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive.archiver
+package me.zhanghai.android.filesfork.provider.archive.archiver
 
 import android.system.OsConstants
 import java.io.Closeable
@@ -16,12 +16,12 @@ import java.time.Instant
 import java8.nio.channels.SeekableByteChannel
 import java8.nio.charset.StandardCharsets
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.provider.common.PosixFileMode
-import me.zhanghai.android.files.provider.common.PosixFileModeBit
-import me.zhanghai.android.files.provider.common.PosixFileType
-import me.zhanghai.android.files.provider.common.PosixGroup
-import me.zhanghai.android.files.provider.common.PosixUser
-import me.zhanghai.android.files.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.common.PosixFileMode
+import me.zhanghai.android.filesfork.provider.common.PosixFileModeBit
+import me.zhanghai.android.filesfork.provider.common.PosixFileType
+import me.zhanghai.android.filesfork.provider.common.PosixGroup
+import me.zhanghai.android.filesfork.provider.common.PosixUser
+import me.zhanghai.android.filesfork.provider.common.toByteString
 import me.zhanghai.android.libarchive.Archive
 import me.zhanghai.android.libarchive.ArchiveEntry
 import me.zhanghai.android.libarchive.ArchiveException

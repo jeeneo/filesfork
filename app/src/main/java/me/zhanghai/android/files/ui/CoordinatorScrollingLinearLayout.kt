@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -23,7 +23,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
-import me.zhanghai.android.files.util.layoutInNavigation
+import me.zhanghai.android.filesfork.util.layoutInNavigation
 
 class CoordinatorScrollingLinearLayout : LinearLayout, AttachedBehavior {
     private var bottomInsets: WindowInsets? = null

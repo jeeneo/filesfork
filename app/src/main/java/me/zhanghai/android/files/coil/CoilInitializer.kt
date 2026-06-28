@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.coil
+package me.zhanghai.android.filesfork.coil
 
 import android.os.Build
 import coil.Coil
@@ -11,7 +11,7 @@ import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.decode.SvgDecoder
-import me.zhanghai.android.files.app.application
+import me.zhanghai.android.filesfork.app.application
 
 fun initializeCoil() {
     Coil.setImageLoader(

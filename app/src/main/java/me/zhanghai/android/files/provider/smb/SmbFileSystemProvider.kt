@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb
+package me.zhanghai.android.filesfork.provider.smb
 
 import com.hierynomus.msdtyp.AccessMask
 import java8.nio.channels.FileChannel
@@ -23,28 +23,28 @@ import java8.nio.file.attribute.BasicFileAttributes
 import java8.nio.file.attribute.FileAttribute
 import java8.nio.file.attribute.FileAttributeView
 import java8.nio.file.spi.FileSystemProvider
-import me.zhanghai.android.files.provider.common.ByteStringPath
-import me.zhanghai.android.files.provider.common.CloseableIterator
-import me.zhanghai.android.files.provider.common.InvalidFileNameException
-import me.zhanghai.android.files.provider.common.PathIteratorDirectoryStream
-import me.zhanghai.android.files.provider.common.PathObservable
-import me.zhanghai.android.files.provider.common.PathObservableProvider
-import me.zhanghai.android.files.provider.common.Searchable
-import me.zhanghai.android.files.provider.common.WalkFileTreeSearchable
-import me.zhanghai.android.files.provider.common.WatchServicePathObservable
-import me.zhanghai.android.files.provider.common.decodedPathByteString
-import me.zhanghai.android.files.provider.common.toAccessModes
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.provider.common.toCopyOptions
-import me.zhanghai.android.files.provider.common.toLinkOptions
-import me.zhanghai.android.files.provider.common.toOpenOptions
-import me.zhanghai.android.files.provider.smb.client.Authority
-import me.zhanghai.android.files.provider.smb.client.Client
-import me.zhanghai.android.files.provider.smb.client.ClientException
-import me.zhanghai.android.files.provider.smb.client.FileInformation
-import me.zhanghai.android.files.provider.smb.client.SymbolicLinkReparseData
-import me.zhanghai.android.files.util.enumSetOf
-import me.zhanghai.android.files.util.takeIfNotEmpty
+import me.zhanghai.android.filesfork.provider.common.ByteStringPath
+import me.zhanghai.android.filesfork.provider.common.CloseableIterator
+import me.zhanghai.android.filesfork.provider.common.InvalidFileNameException
+import me.zhanghai.android.filesfork.provider.common.PathIteratorDirectoryStream
+import me.zhanghai.android.filesfork.provider.common.PathObservable
+import me.zhanghai.android.filesfork.provider.common.PathObservableProvider
+import me.zhanghai.android.filesfork.provider.common.Searchable
+import me.zhanghai.android.filesfork.provider.common.WalkFileTreeSearchable
+import me.zhanghai.android.filesfork.provider.common.WatchServicePathObservable
+import me.zhanghai.android.filesfork.provider.common.decodedPathByteString
+import me.zhanghai.android.filesfork.provider.common.toAccessModes
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.common.toCopyOptions
+import me.zhanghai.android.filesfork.provider.common.toLinkOptions
+import me.zhanghai.android.filesfork.provider.common.toOpenOptions
+import me.zhanghai.android.filesfork.provider.smb.client.Authority
+import me.zhanghai.android.filesfork.provider.smb.client.Client
+import me.zhanghai.android.filesfork.provider.smb.client.ClientException
+import me.zhanghai.android.filesfork.provider.smb.client.FileInformation
+import me.zhanghai.android.filesfork.provider.smb.client.SymbolicLinkReparseData
+import me.zhanghai.android.filesfork.util.enumSetOf
+import me.zhanghai.android.filesfork.util.takeIfNotEmpty
 import java.io.IOException
 import java.net.URI
 

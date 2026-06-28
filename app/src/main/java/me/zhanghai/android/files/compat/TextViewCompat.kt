@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.os.Build
 import android.widget.TextView
 import androidx.annotation.StyleRes
 import androidx.core.widget.TextViewCompat
-import me.zhanghai.android.files.util.lazyReflectedMethod
+import me.zhanghai.android.filesfork.util.lazyReflectedMethod
 
 private val isSingleLineMethod by lazyReflectedMethod(TextView::class.java, "isSingleLine")
 

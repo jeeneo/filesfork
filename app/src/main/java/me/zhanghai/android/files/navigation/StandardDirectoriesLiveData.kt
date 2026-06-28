@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import androidx.lifecycle.MediatorLiveData
-import me.zhanghai.android.files.settings.Settings
+import me.zhanghai.android.filesfork.settings.Settings
 
 object StandardDirectoriesLiveData : MediatorLiveData<List<StandardDirectory>>() {
     init {

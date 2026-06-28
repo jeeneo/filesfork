@@ -3,16 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import java.io.IOException
 
 class RemoteFileSystemException : IOException {
-    constructor()
 
     constructor(message: String?) : super(message)
-
-    constructor(message: String?, cause: Throwable?) : super(message, cause)
 
     constructor(cause: Throwable?) : super(cause)
 }

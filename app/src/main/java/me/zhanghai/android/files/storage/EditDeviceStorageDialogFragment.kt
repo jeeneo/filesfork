@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -12,13 +12,13 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.databinding.EditDeviceStorageDialogBinding
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.setTextWithSelection
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.databinding.EditDeviceStorageDialogBinding
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.setTextWithSelection
 
 class EditDeviceStorageDialogFragment : AppCompatDialogFragment() {
     private val args by args<Args>()
@@ -49,7 +49,7 @@ class EditDeviceStorageDialogFragment : AppCompatDialogFragment() {
             ) { _, _ -> toggleVisibility() }
             .create()
             .apply {
-                window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+                window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
             }
     }
 

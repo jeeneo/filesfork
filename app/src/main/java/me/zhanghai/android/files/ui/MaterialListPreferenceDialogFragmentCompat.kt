@@ -2,16 +2,16 @@
  * Copyright (c) 2022 Hai Zhang <dreaming.in.code.zh@gmail.com>
  * All Rights Reserved.
  */
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.ListPreference
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.util.ParcelableState
-import me.zhanghai.android.files.util.getState
-import me.zhanghai.android.files.util.putState
+import me.zhanghai.android.filesfork.util.ParcelableState
+import me.zhanghai.android.filesfork.util.getState
+import me.zhanghai.android.filesfork.util.putState
 
 class MaterialListPreferenceDialogFragmentCompat : MaterialPreferenceDialogFragmentCompat() {
     override val preference: ListPreference

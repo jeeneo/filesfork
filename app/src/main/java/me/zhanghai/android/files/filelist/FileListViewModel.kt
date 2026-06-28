@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.os.Parcelable
 import androidx.lifecycle.LiveData
@@ -11,15 +11,18 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import java8.nio.file.Path
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.filelist.FileSortOptions.By
-import me.zhanghai.android.files.filelist.FileSortOptions.Order
-import me.zhanghai.android.files.provider.archive.archiveRefresh
-import me.zhanghai.android.files.provider.archive.isArchivePath
-import me.zhanghai.android.files.util.CloseableLiveData
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.filelist.FileSortOptions.By
+import me.zhanghai.android.filesfork.filelist.FileSortOptions.Order
+import me.zhanghai.android.filesfork.provider.archive.archiveFile
+import me.zhanghai.android.filesfork.provider.archive.archiveRefresh
+import me.zhanghai.android.filesfork.provider.archive.isArchivePath
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.CloseableLiveData
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.valueCompat
 import java.io.Closeable
 
 // TODO: Use SavedStateHandle to save state.
@@ -41,7 +44,8 @@ class FileListViewModel : ViewModel() {
         get() = currentPathLiveData.valueCompat
 
     private val _searchStateLiveData = MutableLiveData(SearchState(false, ""))
-    val searchStateLiveData: LiveData<SearchState> = _searchStateLiveData
+
+    //    val searchStateLiveData: LiveData<SearchState> = _searchStateLiveData
     val searchState: SearchState
         get() = _searchStateLiveData.valueCompat
 
@@ -73,7 +77,38 @@ class FileListViewModel : ViewModel() {
         if (path.isArchivePath) {
             path.archiveRefresh()
         }
+        FolderSizeRepository.cancelAll()
+        FolderSizeRepository.invalidateAll()
+        _folderSizesLiveData.value = emptyMap()
         _fileListLiveData.reload()
+    }
+
+    private val _folderSizesLiveData = MutableLiveData<Map<Path, Long>>(emptyMap())
+    val folderSizesLiveData: LiveData<Map<Path, Long>> = _folderSizesLiveData
+
+    fun requestFolderSize(directory: Path) {
+        val option = Settings.FILE_LIST_CALC_SIZES.valueCompat
+        if (option == CalcSizesOption.NEVER) return
+        val isRemote = if (directory.isArchivePath) {
+            directory.archiveFile.isRemotePath
+        } else {
+            directory.isRemotePath
+        }
+        if (option == CalcSizesOption.LOCAL_ONLY && isRemote) return
+        FolderSizeRepository.computeAsync(
+            scope = viewModelScope, path = directory
+        ) { sizeBytes, _ ->
+            val current = _folderSizesLiveData.value ?: emptyMap()
+            if (current[directory] == sizeBytes) return@computeAsync
+            _folderSizesLiveData.value = current + (directory to sizeBytes)
+        }
+    }
+
+    fun setCalcSizes(option: CalcSizesOption) {
+        if (option == CalcSizesOption.NEVER) {
+            FolderSizeRepository.cancelAll()
+            _folderSizesLiveData.value = emptyMap()
+        }
     }
 
     val searchViewExpandedLiveData = MutableLiveData(false)
@@ -169,18 +204,9 @@ class FileListViewModel : ViewModel() {
             }
         }
         if (changed) {
-            _selectedFilesLiveData.value = selectedFiles
+            // Async setValue for background thread usage: https://stackoverflow.com/questions/53304347/mutablelivedata-cannot-invoke-setvalue-on-a-background-thread-from-coroutine
+            _selectedFilesLiveData.postValue(selectedFiles)
         }
-    }
-
-    fun replaceSelectedFiles(files: FileItemSet) {
-        val selectedFiles = _selectedFilesLiveData.valueCompat
-        if (selectedFiles == files) {
-            return
-        }
-        selectedFiles.clear()
-        selectedFiles.addAll(files)
-        _selectedFilesLiveData.value = selectedFiles
     }
 
     fun clearSelectedFiles() {
@@ -235,6 +261,7 @@ class FileListViewModel : ViewModel() {
 
     override fun onCleared() {
         _fileListLiveData.close()
+        FolderSizeRepository.cancelAll()
     }
 
     companion object {

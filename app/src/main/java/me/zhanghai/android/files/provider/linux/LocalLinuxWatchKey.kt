@@ -3,9 +3,9 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
-import me.zhanghai.android.files.provider.common.AbstractWatchKey
+import me.zhanghai.android.filesfork.provider.common.AbstractWatchKey
 
 internal class LocalLinuxWatchKey(
     watchService: LocalLinuxWatchService,

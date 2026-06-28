@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.colorpicker
+package me.zhanghai.android.filesfork.colorpicker
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
@@ -13,8 +13,8 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import androidx.appcompat.content.res.AppCompatResources
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.ui.CheckableView
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.ui.CheckableView
 
 class ColorSwatchView : CheckableView {
     private val gradientDrawable: GradientDrawable

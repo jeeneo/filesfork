@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.net.Uri
 import java8.nio.file.Path
 import java8.nio.file.Paths
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.storage.createOrLog
-import me.zhanghai.android.files.util.asPathNameOrNull
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.storage.createOrLog
+import me.zhanghai.android.filesfork.util.asPathNameOrNull
 import java.net.URI
 
 abstract class PathDialogFragment : NameDialogFragment() {

@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import me.zhanghai.android.files.databinding.ModeBitItemBinding
-import me.zhanghai.android.files.provider.common.PosixFileModeBit
-import me.zhanghai.android.files.util.layoutInflater
+import me.zhanghai.android.filesfork.databinding.ModeBitItemBinding
+import me.zhanghai.android.filesfork.provider.common.PosixFileModeBit
+import me.zhanghai.android.filesfork.util.layoutInflater
 
 class ModeBitListAdapter(
     private val modeBits: List<PosixFileModeBit>,

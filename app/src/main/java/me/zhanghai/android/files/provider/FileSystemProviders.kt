@@ -3,24 +3,24 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider
+package me.zhanghai.android.filesfork.provider
 
 import java8.nio.file.Files
 import java8.nio.file.ProviderNotFoundException
 import java8.nio.file.spi.FileSystemProvider
-import me.zhanghai.android.files.provider.archive.ArchiveFileSystemProvider
-import me.zhanghai.android.files.provider.common.AndroidFileTypeDetector
-import me.zhanghai.android.files.provider.content.ContentFileSystemProvider
-import me.zhanghai.android.files.provider.document.DocumentFileSystemProvider
-import me.zhanghai.android.files.provider.ftp.FtpFileSystemProvider
-import me.zhanghai.android.files.provider.ftp.FtpesFileSystemProvider
-import me.zhanghai.android.files.provider.ftp.FtpsFileSystemProvider
-import me.zhanghai.android.files.provider.linux.LinuxFileSystemProvider
-import me.zhanghai.android.files.provider.root.isRunningAsRoot
-import me.zhanghai.android.files.provider.sftp.SftpFileSystemProvider
-import me.zhanghai.android.files.provider.smb.SmbFileSystemProvider
-import me.zhanghai.android.files.provider.webdav.WebDavFileSystemProvider
-import me.zhanghai.android.files.provider.webdav.WebDavsFileSystemProvider
+import me.zhanghai.android.filesfork.provider.archive.ArchiveFileSystemProvider
+import me.zhanghai.android.filesfork.provider.common.AndroidFileTypeDetector
+import me.zhanghai.android.filesfork.provider.content.ContentFileSystemProvider
+import me.zhanghai.android.filesfork.provider.document.DocumentFileSystemProvider
+import me.zhanghai.android.filesfork.provider.ftp.FtpFileSystemProvider
+import me.zhanghai.android.filesfork.provider.ftp.FtpesFileSystemProvider
+import me.zhanghai.android.filesfork.provider.ftp.FtpsFileSystemProvider
+import me.zhanghai.android.filesfork.provider.linux.LinuxFileSystemProvider
+import me.zhanghai.android.filesfork.provider.root.isRunningAsRoot
+import me.zhanghai.android.filesfork.provider.sftp.SftpFileSystemProvider
+import me.zhanghai.android.filesfork.provider.smb.SmbFileSystemProvider
+import me.zhanghai.android.filesfork.provider.webdav.WebDavFileSystemProvider
+import me.zhanghai.android.filesfork.provider.webdav.WebDavsFileSystemProvider
 
 object FileSystemProviders {
     /**

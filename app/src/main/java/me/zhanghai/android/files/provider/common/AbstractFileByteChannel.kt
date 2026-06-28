@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import java8.nio.channels.SeekableByteChannel
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -12,7 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withTimeout
-import me.zhanghai.android.files.util.closeSafe
+import me.zhanghai.android.filesfork.util.closeSafe
 import java.io.Closeable
 import java.io.IOException
 import java.io.InterruptedIOException

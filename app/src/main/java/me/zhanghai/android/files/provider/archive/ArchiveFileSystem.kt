@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive
+package me.zhanghai.android.filesfork.provider.archive
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -18,13 +18,13 @@ import java8.nio.file.PathMatcher
 import java8.nio.file.WatchService
 import java8.nio.file.attribute.UserPrincipalLookupService
 import java8.nio.file.spi.FileSystemProvider
-import me.zhanghai.android.files.provider.archive.archiver.ArchiveReader
-import me.zhanghai.android.files.provider.archive.archiver.ReadArchive
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringBuilder
-import me.zhanghai.android.files.provider.common.ByteStringListPathCreator
-import me.zhanghai.android.files.provider.common.IsDirectoryException
-import me.zhanghai.android.files.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.archive.archiver.ArchiveReader
+import me.zhanghai.android.filesfork.provider.archive.archiver.ReadArchive
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringBuilder
+import me.zhanghai.android.filesfork.provider.common.ByteStringListPathCreator
+import me.zhanghai.android.filesfork.provider.common.IsDirectoryException
+import me.zhanghai.android.filesfork.provider.common.toByteString
 import me.zhanghai.android.libarchive.ArchiveException
 import java.io.IOException
 import java.io.InputStream
@@ -118,6 +118,14 @@ internal class ArchiveFileSystem(
             passwords += password
         }
     }
+
+    fun getPasswords(): List<String> =
+        synchronized(lock) {
+            if (!isOpen) {
+                throw ClosedFileSystemException()
+            }
+            passwords
+        }
 
     fun refresh() {
         synchronized(lock) {

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import android.system.OsConstants
 import java8.nio.channels.FileChannel
@@ -23,25 +23,25 @@ import java8.nio.file.attribute.BasicFileAttributes
 import java8.nio.file.attribute.FileAttribute
 import java8.nio.file.attribute.FileAttributeView
 import java8.nio.file.spi.FileSystemProvider
-import me.zhanghai.android.files.provider.common.ByteStringPath
-import me.zhanghai.android.files.provider.common.PathObservable
-import me.zhanghai.android.files.provider.common.PathObservableProvider
-import me.zhanghai.android.files.provider.common.PosixFileMode
-import me.zhanghai.android.files.provider.common.Searchable
-import me.zhanghai.android.files.provider.common.WalkFileTreeSearchable
-import me.zhanghai.android.files.provider.common.WatchServicePathObservable
-import me.zhanghai.android.files.provider.common.decodedPathByteString
-import me.zhanghai.android.files.provider.common.open
-import me.zhanghai.android.files.provider.common.toAccessModes
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.provider.common.toCopyOptions
-import me.zhanghai.android.files.provider.common.toInt
-import me.zhanghai.android.files.provider.common.toLinkOptions
-import me.zhanghai.android.files.provider.common.toOpenOptions
-import me.zhanghai.android.files.provider.linux.media.MediaScanner
-import me.zhanghai.android.files.provider.linux.syscall.Syscall
-import me.zhanghai.android.files.provider.linux.syscall.SyscallException
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.provider.common.ByteStringPath
+import me.zhanghai.android.filesfork.provider.common.PathObservable
+import me.zhanghai.android.filesfork.provider.common.PathObservableProvider
+import me.zhanghai.android.filesfork.provider.common.PosixFileMode
+import me.zhanghai.android.filesfork.provider.common.Searchable
+import me.zhanghai.android.filesfork.provider.common.WalkFileTreeSearchable
+import me.zhanghai.android.filesfork.provider.common.WatchServicePathObservable
+import me.zhanghai.android.filesfork.provider.common.decodedPathByteString
+import me.zhanghai.android.filesfork.provider.common.open
+import me.zhanghai.android.filesfork.provider.common.toAccessModes
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.common.toCopyOptions
+import me.zhanghai.android.filesfork.provider.common.toInt
+import me.zhanghai.android.filesfork.provider.common.toLinkOptions
+import me.zhanghai.android.filesfork.provider.common.toOpenOptions
+import me.zhanghai.android.filesfork.provider.linux.media.MediaScanner
+import me.zhanghai.android.filesfork.provider.linux.syscall.Syscall
+import me.zhanghai.android.filesfork.provider.linux.syscall.SyscallException
+import me.zhanghai.android.filesfork.util.hasBits
 import java.io.IOException
 import java.net.URI
 

@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import me.zhanghai.android.files.util.SelectionLiveData
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.Success
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.util.SelectionLiveData
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.Success
+import me.zhanghai.android.filesfork.util.valueCompat
 
 abstract class SetPrincipalViewModel(
     private val principalListLiveData: MutableLiveData<Stateful<List<PrincipalItem>>>

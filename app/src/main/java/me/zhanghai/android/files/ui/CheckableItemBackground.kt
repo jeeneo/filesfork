@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,12 +13,12 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import androidx.annotation.Dimension
 import androidx.appcompat.graphics.drawable.AnimatedStateListDrawableCompat
-import me.zhanghai.android.files.util.asColor
-import me.zhanghai.android.files.util.dpToDimension
-import me.zhanghai.android.files.util.dpToDimensionPixelOffset
-import me.zhanghai.android.files.util.getColorByAttr
-import me.zhanghai.android.files.util.shortAnimTime
-import me.zhanghai.android.files.util.withModulatedAlpha
+import me.zhanghai.android.filesfork.util.asColor
+import me.zhanghai.android.filesfork.util.dpToDimension
+import me.zhanghai.android.filesfork.util.dpToDimensionPixelOffset
+import me.zhanghai.android.filesfork.util.getColorByAttr
+import me.zhanghai.android.filesfork.util.shortAnimTime
+import me.zhanghai.android.filesfork.util.withModulatedAlpha
 
 object CheckableItemBackground {
     // We need an <animated-selector> (AnimatedStateListDrawable) with an item drawable referencing

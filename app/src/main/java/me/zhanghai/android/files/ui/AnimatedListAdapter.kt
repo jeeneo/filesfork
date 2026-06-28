@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.os.Handler
 import android.os.Looper
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.getAnimation
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.getAnimation
 
 abstract class AnimatedListAdapter<T, VH : RecyclerView.ViewHolder>(
     callback: DiffUtil.ItemCallback<T>

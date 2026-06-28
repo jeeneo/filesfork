@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux.syscall
+package me.zhanghai.android.filesfork.provider.linux.syscall
 
 import android.system.ErrnoException
 import android.system.OsConstants
@@ -16,10 +16,10 @@ import java8.nio.file.FileSystemLoopException
 import java8.nio.file.NoSuchFileException
 import java8.nio.file.NotDirectoryException
 import java8.nio.file.NotLinkException
-import me.zhanghai.android.files.compat.functionNameCompat
-import me.zhanghai.android.files.provider.common.InvalidFileNameException
-import me.zhanghai.android.files.provider.common.IsDirectoryException
-import me.zhanghai.android.files.provider.common.ReadOnlyFileSystemException
+import me.zhanghai.android.filesfork.compat.functionNameCompat
+import me.zhanghai.android.filesfork.provider.common.InvalidFileNameException
+import me.zhanghai.android.filesfork.provider.common.IsDirectoryException
+import me.zhanghai.android.filesfork.provider.common.ReadOnlyFileSystemException
 
 class SyscallException @JvmOverloads constructor(
     val functionName: String,

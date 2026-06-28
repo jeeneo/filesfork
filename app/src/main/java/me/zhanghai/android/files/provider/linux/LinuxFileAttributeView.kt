@@ -3,15 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import android.os.Parcel
 import android.os.Parcelable
-import me.zhanghai.android.files.compat.readBooleanCompat
-import me.zhanghai.android.files.compat.writeBooleanCompat
-import me.zhanghai.android.files.provider.root.RootPosixFileAttributeView
-import me.zhanghai.android.files.provider.root.RootablePosixFileAttributeView
-import me.zhanghai.android.files.util.readParcelable
+import me.zhanghai.android.filesfork.compat.readBooleanCompat
+import me.zhanghai.android.filesfork.compat.writeBooleanCompat
+import me.zhanghai.android.filesfork.provider.root.RootPosixFileAttributeView
+import me.zhanghai.android.filesfork.provider.root.RootablePosixFileAttributeView
+import me.zhanghai.android.filesfork.util.readParcelable
 
 internal class LinuxFileAttributeView constructor(
     private val path: LinuxPath,

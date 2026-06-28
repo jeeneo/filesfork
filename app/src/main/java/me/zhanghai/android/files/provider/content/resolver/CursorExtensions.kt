@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.content.resolver
+package me.zhanghai.android.filesfork.provider.content.resolver
 
 import android.database.Cursor
 import androidx.core.database.getIntOrNull

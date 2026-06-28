@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import android.content.Intent
-import me.zhanghai.android.files.util.andInv
+import me.zhanghai.android.filesfork.util.andInv
 
 fun Intent.removeFlagsCompat(flags: Int) {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

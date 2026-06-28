@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 class ByteStringBuilder(capacity: Int = 16) {
     private var bytes = ByteArray(capacity)

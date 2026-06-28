@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 import android.app.Dialog
 import android.os.Bundle
@@ -13,16 +13,16 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.databinding.SetSelinuxContextDialogBinding
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.filejob.FileJobService
-import me.zhanghai.android.files.provider.common.PosixFileAttributes
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.show
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.databinding.SetSelinuxContextDialogBinding
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.filejob.FileJobService
+import me.zhanghai.android.filesfork.provider.common.PosixFileAttributes
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.show
 
 class SetSeLinuxContextDialogFragment : AppCompatDialogFragment() {
     private val args by args<Args>()

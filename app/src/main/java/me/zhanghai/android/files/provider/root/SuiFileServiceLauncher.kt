@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.root
+package me.zhanghai.android.filesfork.provider.root
 
 import android.content.ComponentName
 import android.content.ServiceConnection
@@ -17,11 +17,11 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
-import me.zhanghai.android.files.BuildConfig
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.provider.remote.IRemoteFileService
-import me.zhanghai.android.files.provider.remote.RemoteFileServiceInterface
-import me.zhanghai.android.files.provider.remote.RemoteFileSystemException
+import me.zhanghai.android.filesfork.BuildConfig
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.provider.remote.IRemoteFileService
+import me.zhanghai.android.filesfork.provider.remote.RemoteFileServiceInterface
+import me.zhanghai.android.filesfork.provider.remote.RemoteFileSystemException
 import rikka.shizuku.Shizuku
 import rikka.sui.Sui
 import kotlin.coroutines.resume

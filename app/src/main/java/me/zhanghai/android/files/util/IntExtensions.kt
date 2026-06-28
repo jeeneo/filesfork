@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 fun Int.hasBits(bits: Int): Boolean = this and bits == bits
 

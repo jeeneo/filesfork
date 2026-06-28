@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -12,14 +12,14 @@ import java8.nio.file.InvalidPathException
 import java8.nio.file.Path
 import java8.nio.file.ProviderMismatchException
 import kotlin.math.min
-import me.zhanghai.android.files.compat.readBooleanCompat
-import me.zhanghai.android.files.compat.removeLastCompat
-import me.zhanghai.android.files.compat.writeBooleanCompat
-import me.zhanghai.android.files.compat.writeParcelableListCompat
-import me.zhanghai.android.files.util.endsWith
-import me.zhanghai.android.files.util.hash
-import me.zhanghai.android.files.util.readParcelableListCompat
-import me.zhanghai.android.files.util.startsWith
+import me.zhanghai.android.filesfork.compat.readBooleanCompat
+import me.zhanghai.android.filesfork.compat.removeLastCompat
+import me.zhanghai.android.filesfork.compat.writeBooleanCompat
+import me.zhanghai.android.filesfork.compat.writeParcelableListCompat
+import me.zhanghai.android.filesfork.util.endsWith
+import me.zhanghai.android.filesfork.util.hash
+import me.zhanghai.android.filesfork.util.readParcelableListCompat
+import me.zhanghai.android.filesfork.util.startsWith
 
 abstract class ByteStringListPath<T : ByteStringListPath<T>> : AbstractPath<T>, Parcelable {
     protected val separator: Byte

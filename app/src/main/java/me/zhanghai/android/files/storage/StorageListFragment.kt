@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.graphics.drawable.NinePatchDrawable
 import android.os.Bundle
@@ -17,13 +17,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils
-import me.zhanghai.android.files.databinding.StorageListFragmentBinding
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.ui.ScrollingViewOnApplyWindowInsetsListener
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.fadeToVisibilityUnsafe
-import me.zhanghai.android.files.util.getDrawable
-import me.zhanghai.android.files.util.startActivitySafe
+import me.zhanghai.android.filesfork.databinding.StorageListFragmentBinding
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.ui.ScrollingViewOnApplyWindowInsetsListener
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.fadeToVisibilityUnsafe
+import me.zhanghai.android.filesfork.util.getDrawable
+import me.zhanghai.android.filesfork.util.startActivitySafe
 
 class StorageListFragment : Fragment(), StorageListAdapter.Listener {
     private lateinit var binding: StorageListFragmentBinding

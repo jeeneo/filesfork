@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.removeFirst
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.removeFirst
+import me.zhanghai.android.filesfork.util.valueCompat
 
 object Storages {
     fun addOrReplace(storage: Storage) {

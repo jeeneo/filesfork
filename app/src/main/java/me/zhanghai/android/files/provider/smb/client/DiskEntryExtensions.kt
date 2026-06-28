@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb.client
+package me.zhanghai.android.filesfork.provider.smb.client
 
 import com.hierynomus.mssmb2.SMB2MessageCommandCode
 import com.hierynomus.mssmb2.SMBApiException
@@ -11,7 +11,7 @@ import com.hierynomus.protocol.commons.buffer.Buffer
 import com.hierynomus.protocol.commons.buffer.Endian
 import com.hierynomus.smbj.common.SMBRuntimeException
 import com.hierynomus.smbj.share.DiskEntry
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.util.hasBits
 
 // @see https://github.com/torvalds/linux/blob/master/fs/cifs/smbfsctl.h
 private const val FSCTL_SET_REPARSE_POINT = 0x000900A4

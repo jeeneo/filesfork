@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -29,19 +29,19 @@ import com.leinardi.android.speeddial.FabWithLabelView
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.compat.createCompat
-import me.zhanghai.android.files.compat.drawableCompat
-import me.zhanghai.android.files.compat.foregroundCompat
-import me.zhanghai.android.files.compat.setTextAppearanceCompat
-import me.zhanghai.android.files.util.ParcelableState
-import me.zhanghai.android.files.util.asColor
-import me.zhanghai.android.files.util.dpToDimensionPixelSize
-import me.zhanghai.android.files.util.getColorByAttr
-import me.zhanghai.android.files.util.getParcelableSafe
-import me.zhanghai.android.files.util.getResourceIdByAttr
-import me.zhanghai.android.files.util.isMaterial3Theme
-import me.zhanghai.android.files.util.shortAnimTime
-import me.zhanghai.android.files.util.withModulatedAlpha
+import me.zhanghai.android.filesfork.compat.createCompat
+import me.zhanghai.android.filesfork.compat.drawableCompat
+import me.zhanghai.android.filesfork.compat.foregroundCompat
+import me.zhanghai.android.filesfork.compat.setTextAppearanceCompat
+import me.zhanghai.android.filesfork.util.ParcelableState
+import me.zhanghai.android.filesfork.util.asColor
+import me.zhanghai.android.filesfork.util.dpToDimensionPixelSize
+import me.zhanghai.android.filesfork.util.getColorByAttr
+import me.zhanghai.android.filesfork.util.getParcelableSafe
+import me.zhanghai.android.filesfork.util.getResourceIdByAttr
+import me.zhanghai.android.filesfork.util.isMaterial3Theme
+import me.zhanghai.android.filesfork.util.shortAnimTime
+import me.zhanghai.android.filesfork.util.withModulatedAlpha
 
 class ThemedSpeedDialView : SpeedDialView {
     private var onChangeListener: OnChangeListener? = null

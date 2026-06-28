@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.system.OsConstants
 import java8.nio.file.attribute.FileAttribute
 import java8.nio.file.attribute.PosixFilePermission
-import me.zhanghai.android.files.util.enumSetOf
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.util.enumSetOf
+import me.zhanghai.android.filesfork.util.hasBits
 
 enum class PosixFileModeBit {
     SET_USER_ID,

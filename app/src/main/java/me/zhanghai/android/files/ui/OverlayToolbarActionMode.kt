@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
-import me.zhanghai.android.files.util.fadeInUnsafe
-import me.zhanghai.android.files.util.fadeOutUnsafe
+import me.zhanghai.android.filesfork.util.fadeInUnsafe
+import me.zhanghai.android.filesfork.util.fadeOutUnsafe
 
 class OverlayToolbarActionMode(bar: ViewGroup, toolbar: Toolbar) : ToolbarActionMode(bar, toolbar) {
     constructor(toolbar: Toolbar) : this(toolbar, toolbar)

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filejob
+package me.zhanghai.android.filesfork.filejob
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -20,27 +20,27 @@ import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.requireViewByIdCompat
-import me.zhanghai.android.files.databinding.FileJobErrorDialogViewBinding
-import me.zhanghai.android.files.provider.common.PosixFileStore
-import me.zhanghai.android.files.util.ActionState
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.ParcelableParceler
-import me.zhanghai.android.files.util.ParcelableState
-import me.zhanghai.android.files.util.RemoteCallback
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.getArgs
-import me.zhanghai.android.files.util.getState
-import me.zhanghai.android.files.util.isReady
-import me.zhanghai.android.files.util.isRunning
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.putState
-import me.zhanghai.android.files.util.readParcelable
-import me.zhanghai.android.files.util.showToast
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.requireViewByIdCompat
+import me.zhanghai.android.filesfork.databinding.FileJobErrorDialogViewBinding
+import me.zhanghai.android.filesfork.provider.common.PosixFileStore
+import me.zhanghai.android.filesfork.util.ActionState
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.ParcelableState
+import me.zhanghai.android.filesfork.util.RemoteCallback
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.getArgs
+import me.zhanghai.android.filesfork.util.getState
+import me.zhanghai.android.filesfork.util.isReady
+import me.zhanghai.android.filesfork.util.isRunning
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.putState
+import me.zhanghai.android.filesfork.util.readParcelable
+import me.zhanghai.android.filesfork.util.showToast
+import me.zhanghai.android.filesfork.util.viewModels
 
 class FileJobErrorDialogFragment : AppCompatDialogFragment() {
     private val args by args<Args>()

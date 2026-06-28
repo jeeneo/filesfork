@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.app.NotificationChannel
 import android.content.Context
@@ -15,7 +15,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
-import me.zhanghai.android.files.compat.getColorCompat
+import me.zhanghai.android.filesfork.compat.getColorCompat
 
 class NotificationTemplate(
     val channelTemplate: NotificationChannelTemplate,

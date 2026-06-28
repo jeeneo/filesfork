@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.annotation.AnyRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.app.defaultSharedPreferences
-import me.zhanghai.android.files.compat.PreferenceManagerCompat
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.app.defaultSharedPreferences
+import me.zhanghai.android.filesfork.compat.PreferenceManagerCompat
 
 abstract class SettingLiveData<T>(
     nameSuffix: String?,

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import me.zhanghai.android.files.databinding.StandardDirectoryListFragmentBinding
+import me.zhanghai.android.filesfork.databinding.StandardDirectoryListFragmentBinding
 
 class StandardDirectoryListFragment : Fragment() {
     private lateinit var binding: StandardDirectoryListFragmentBinding

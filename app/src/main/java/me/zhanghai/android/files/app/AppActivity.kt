@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.app
+package me.zhanghai.android.filesfork.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import me.zhanghai.android.files.theme.custom.CustomThemeHelper
-import me.zhanghai.android.files.theme.night.NightModeHelper
+import me.zhanghai.android.filesfork.theme.custom.CustomThemeHelper
+import me.zhanghai.android.filesfork.theme.night.NightModeHelper
 
 abstract class AppActivity : AppCompatActivity() {
     private var isDelegateCreated = false

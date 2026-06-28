@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.app.Activity
 import android.content.Context
@@ -12,10 +12,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.commit
-import me.zhanghai.android.files.app.AppActivity
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.putArgs
+import me.zhanghai.android.filesfork.app.AppActivity
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.putArgs
 
 class EditSmbServerActivity : AppActivity() {
     private val args by args<EditSmbServerFragment.Args>()

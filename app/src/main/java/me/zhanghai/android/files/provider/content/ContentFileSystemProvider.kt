@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.content
+package me.zhanghai.android.filesfork.provider.content
 
 import android.content.ContentResolver
 import android.os.Build
@@ -25,15 +25,15 @@ import java8.nio.file.attribute.BasicFileAttributes
 import java8.nio.file.attribute.FileAttribute
 import java8.nio.file.attribute.FileAttributeView
 import java8.nio.file.spi.FileSystemProvider
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.provider.common.ByteStringPath
-import me.zhanghai.android.files.provider.common.PathObservable
-import me.zhanghai.android.files.provider.common.PathObservableProvider
-import me.zhanghai.android.files.provider.common.open
-import me.zhanghai.android.files.provider.common.toAccessModes
-import me.zhanghai.android.files.provider.common.toOpenOptions
-import me.zhanghai.android.files.provider.content.resolver.Resolver
-import me.zhanghai.android.files.provider.content.resolver.ResolverException
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.provider.common.ByteStringPath
+import me.zhanghai.android.filesfork.provider.common.PathObservable
+import me.zhanghai.android.filesfork.provider.common.PathObservableProvider
+import me.zhanghai.android.filesfork.provider.common.open
+import me.zhanghai.android.filesfork.provider.common.toAccessModes
+import me.zhanghai.android.filesfork.provider.common.toOpenOptions
+import me.zhanghai.android.filesfork.provider.content.resolver.Resolver
+import me.zhanghai.android.filesfork.provider.content.resolver.ResolverException
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream

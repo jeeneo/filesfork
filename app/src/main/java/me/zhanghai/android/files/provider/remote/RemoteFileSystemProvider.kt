@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import android.os.Bundle
 import android.os.Parcel
@@ -21,20 +21,20 @@ import java8.nio.file.attribute.BasicFileAttributes
 import java8.nio.file.attribute.FileAttribute
 import java8.nio.file.spi.FileSystemProvider
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.provider.common.PathObservable
-import me.zhanghai.android.files.provider.common.PathObservableProvider
-import me.zhanghai.android.files.provider.common.Searchable
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.RemoteCallback
-import me.zhanghai.android.files.util.getArgs
+import me.zhanghai.android.filesfork.provider.common.PathObservable
+import me.zhanghai.android.filesfork.provider.common.PathObservableProvider
+import me.zhanghai.android.filesfork.provider.common.Searchable
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.RemoteCallback
+import me.zhanghai.android.filesfork.util.getArgs
 import java.io.IOException
 import java.io.InputStream
 import java.io.InterruptedIOException
 import java.io.Serializable
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 abstract class RemoteFileSystemProvider(
     private val remoteInterface: RemoteInterface<IRemoteFileSystemProvider>
@@ -47,18 +47,14 @@ abstract class RemoteFileSystemProvider(
 
     @Throws(IOException::class)
     override fun newFileChannel(
-        file: Path,
-        options: Set<OpenOption>,
-        vararg attributes: FileAttribute<*>
+        file: Path, options: Set<OpenOption>, vararg attributes: FileAttribute<*>
     ): FileChannel {
         throw UnsupportedOperationException()
     }
 
     @Throws(IOException::class)
     override fun newByteChannel(
-        file: Path,
-        options: Set<OpenOption>,
-        vararg attributes: FileAttribute<*>
+        file: Path, options: Set<OpenOption>, vararg attributes: FileAttribute<*>
     ): SeekableByteChannel {
         val options = when (options) {
             is Serializable -> options
@@ -73,8 +69,7 @@ abstract class RemoteFileSystemProvider(
 
     @Throws(IOException::class)
     override fun newDirectoryStream(
-        directory: Path,
-        filter: DirectoryStream.Filter<in Path>
+        directory: Path, filter: DirectoryStream.Filter<in Path>
     ): DirectoryStream<Path> {
         val filter = when (filter) {
             is Parcelable -> filter
@@ -115,17 +110,16 @@ abstract class RemoteFileSystemProvider(
     }
 
     @Throws(IOException::class)
-    override fun readSymbolicLink(link: Path): Path =
-        remoteInterface.get().call { exception ->
-            readSymbolicLink(link.toParcelable(), exception)
-        }.value()
+    override fun readSymbolicLink(link: Path): Path = remoteInterface.get().call { exception ->
+        readSymbolicLink(link.toParcelable(), exception)
+    }.value()
 
     @Throws(IOException::class)
     override fun copy(source: Path, target: Path, vararg options: CopyOption) {
         var interruptible: RemoteCallback? = null
         try {
             runBlocking<Unit> {
-                suspendCoroutine { continuation ->
+                suspendCancellableCoroutine { continuation ->
                     val callback = RemoteCallback {
                         val exception = it.getArgs<CallbackArgs>().exception.value
                         if (exception != null) {
@@ -136,7 +130,9 @@ abstract class RemoteFileSystemProvider(
                     }
                     interruptible = remoteInterface.get().call {
                         copy(
-                            source.toParcelable(), target.toParcelable(), options.toParcelable(),
+                            source.toParcelable(),
+                            target.toParcelable(),
+                            options.toParcelable(),
                             callback
                         )
                     }
@@ -153,7 +149,7 @@ abstract class RemoteFileSystemProvider(
         var interruptible: RemoteCallback? = null
         try {
             runBlocking<Unit> {
-                suspendCoroutine { continuation ->
+                suspendCancellableCoroutine { continuation ->
                     val callback = RemoteCallback {
                         val exception = it.getArgs<CallbackArgs>().exception.value
                         if (exception != null) {
@@ -164,7 +160,9 @@ abstract class RemoteFileSystemProvider(
                     }
                     interruptible = remoteInterface.get().call {
                         move(
-                            source.toParcelable(), target.toParcelable(), options.toParcelable(),
+                            source.toParcelable(),
+                            target.toParcelable(),
+                            options.toParcelable(),
                             callback
                         )
                     }
@@ -187,10 +185,9 @@ abstract class RemoteFileSystemProvider(
         remoteInterface.get().call { exception -> isHidden(path.toParcelable(), exception) }
 
     @Throws(IOException::class)
-    override fun getFileStore(path: Path): FileStore =
-        remoteInterface.get().call {
-            exception -> getFileStore(path.toParcelable(), exception)
-        }.value()
+    override fun getFileStore(path: Path): FileStore = remoteInterface.get().call { exception ->
+        getFileStore(path.toParcelable(), exception)
+    }.value()
 
     @Throws(IOException::class)
     override fun checkAccess(path: Path, vararg modes: AccessMode) {
@@ -201,31 +198,23 @@ abstract class RemoteFileSystemProvider(
 
     @Throws(IOException::class)
     override fun <A : BasicFileAttributes> readAttributes(
-        path: Path,
-        type: Class<A>,
-        vararg options: LinkOption
-    ): A =
-        remoteInterface.get().call { exception ->
-            readAttributes(
-                path.toParcelable(), type.toParcelable(), options.toParcelable(), exception
-            )
-        }.value()
+        path: Path, type: Class<A>, vararg options: LinkOption
+    ): A = remoteInterface.get().call { exception ->
+        readAttributes(
+            path.toParcelable(), type.toParcelable(), options.toParcelable(), exception
+        )
+    }.value()
 
     @Throws(IOException::class)
     override fun readAttributes(
-        path: Path,
-        attributes: String,
-        vararg options: LinkOption
+        path: Path, attributes: String, vararg options: LinkOption
     ): Map<String, Any> {
         throw UnsupportedOperationException()
     }
 
     @Throws(IOException::class)
     override fun setAttribute(
-        path: Path,
-        attribute: String,
-        value: Any,
-        vararg options: LinkOption
+        path: Path, attribute: String, value: Any, vararg options: LinkOption
     ) {
         throw UnsupportedOperationException()
     }
@@ -238,15 +227,12 @@ abstract class RemoteFileSystemProvider(
 
     @Throws(IOException::class)
     override fun search(
-        directory: Path,
-        query: String,
-        intervalMillis: Long,
-        listener: (List<Path>) -> Unit
+        directory: Path, query: String, intervalMillis: Long, listener: (List<Path>) -> Unit
     ) {
         var interruptible: RemoteCallback? = null
         try {
             runBlocking<Unit> {
-                suspendCoroutine { continuation ->
+                suspendCancellableCoroutine { continuation ->
                     val callback = RemoteCallback {
                         val exception = it.getArgs<CallbackArgs>().exception.value
                         if (exception != null) {
@@ -257,8 +243,11 @@ abstract class RemoteFileSystemProvider(
                     }
                     interruptible = remoteInterface.get().call {
                         search(
-                            directory.toParcelable(), query, intervalMillis,
-                            listener.toParcelable(), callback
+                            directory.toParcelable(),
+                            query,
+                            intervalMillis,
+                            listener.toParcelable(),
+                            callback
                         )
                     }
                 }

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.document.resolver
+package me.zhanghai.android.filesfork.provider.document.resolver
 
 import android.database.ContentObserver
 import android.database.Cursor
@@ -18,17 +18,17 @@ import androidx.annotation.RequiresApi
 import java8.nio.file.NoSuchFileException
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
-import me.zhanghai.android.files.app.contentResolver
-import me.zhanghai.android.files.compat.DocumentsContractCompat
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.provider.common.copyTo
-import me.zhanghai.android.files.provider.content.resolver.Resolver
-import me.zhanghai.android.files.provider.content.resolver.ResolverException
-import me.zhanghai.android.files.provider.content.resolver.getLong
-import me.zhanghai.android.files.provider.content.resolver.getString
-import me.zhanghai.android.files.provider.content.resolver.moveToFirstOrThrow
-import me.zhanghai.android.files.provider.content.resolver.requireString
-import me.zhanghai.android.files.util.AbstractLocalCursor
+import me.zhanghai.android.filesfork.app.contentResolver
+import me.zhanghai.android.filesfork.compat.DocumentsContractCompat
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.provider.common.copyTo
+import me.zhanghai.android.filesfork.provider.content.resolver.Resolver
+import me.zhanghai.android.filesfork.provider.content.resolver.ResolverException
+import me.zhanghai.android.filesfork.provider.content.resolver.getLong
+import me.zhanghai.android.filesfork.provider.content.resolver.getString
+import me.zhanghai.android.filesfork.provider.content.resolver.moveToFirstOrThrow
+import me.zhanghai.android.filesfork.provider.content.resolver.requireString
+import me.zhanghai.android.filesfork.util.AbstractLocalCursor
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream

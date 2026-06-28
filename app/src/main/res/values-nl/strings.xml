@@ -50,7 +50,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">Er is geen app die deze actie kan uitvoeren</string>
     <string name="open_settings">Instellingen openen</string>
-    <string name="shortcut_created">De snelkoppeling is gemaakt</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="one">%1$,d byte</item>
@@ -216,7 +215,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">Er is een fout opgetreden tijdens het herstellen van de SELinux-context van ‘%1$s’.\n%2$s</string>
     <string name="file_job_write_error_title">Fout tijdens wegschrijven</string>
     <string name="file_job_write_error_message_format">Er is een fout opgetreden tijdens het wegschrijven van ‘%1$s’.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">Er is een fout opgetreden tijdens het verkrijgen van informatie over ‘%1$s’.</string>
     <string name="file_job_remount_format">‘%1$s’ opnieuw aankoppelen als beschrijfbaar</string>
     <string name="file_job_remount_loading_format">Bezig met opnieuw aankoppelen van ‘%1$s’…</string>
     <string name="file_job_remount_success_format">‘%1$s’ is opnieuw aangekoppeld als beschrijfbaar</string>
@@ -337,7 +335,6 @@
     <string name="file_properties_basic_parent_directory">Bovenliggende map</string>
     <string name="file_properties_basic_archive_file">Archiefbestand</string>
     <string name="file_properties_basic_archive_entry">Archiefitem</string>
-    <string name="file_properties_basic_free_space">Vrije ruimte</string>
     <string name="file_properties_permission">Rechten</string>
     <string name="file_properties_permission_owner">Eigenaar</string>
     <string name="file_properties_permission_group">Groep</string>
@@ -585,11 +582,7 @@
     <string name="save_as_error">Fout tijdens opslaan van bestand</string>
     <string name="save_as_success_format">“%1$s” is opgeslagen in ‘%2$s’</string>
     <string name="text_editor_title">Tekstbewerker</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">Opgeslagen</string>
     <string name="text_editor_reload_message">Weet je zeker dat je wilt herladen? Niet-opgeslagen wijzigingen gaan verloren.</string>
-    <string name="text_editor_encoding">Versleuteling</string>
     <string name="text_editor_close_message">Weet je zeker dat je de niet-opgeslagen wijzigingen wilt verwerpen?</string>
 
     <string name="ftp_server_title">FTP-server</string>

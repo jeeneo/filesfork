@@ -48,7 +48,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">Bu eylemi gerçekleştirecek uygulama bulunamadı</string>
     <string name="open_settings">Ayarları aç</string>
-    <string name="shortcut_created">Kısayol oluşturuldu</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="one">%1$,d bayt</item>
@@ -206,7 +205,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">“%1$s” için SELinux durumu geri yüklenirken bir hata oluştu.\n %2$s</string>
     <string name="file_job_write_error_title">Yazılırken hata oluştu</string>
     <string name="file_job_write_error_message_format">“%1$s” yazılırken bir hata oluştu.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">“%1$s” ile ilgili bilgi alınırken hata oluştu.</string>
     <string name="file_job_remount_format">“%1$s”`i okuma ve yazma modunda tekrar bağla</string>
     <string name="file_job_remount_loading_format">“%1$s” okuma ve yazma modunda tekrar bağlanıyor…</string>
     <string name="file_job_remount_success_format">“%1$s” okuma ve yazma modunda tekrar bağlandı</string>
@@ -294,7 +292,6 @@
     <string name="file_properties_basic_parent_directory">Ana Klasör</string>
     <string name="file_properties_basic_archive_file">Arşiv dosyası</string>
     <string name="file_properties_basic_archive_entry">Arşiv Girdisi</string>
-    <string name="file_properties_basic_free_space">Boş alan</string>
     <string name="file_properties_image">Görüntü</string>
     <string name="file_properties_media_dimensions">Boyutlar</string>
     <string name="file_properties_media_dimensions_format">%1$d \u00d7 %2$d</string>
@@ -465,11 +462,7 @@
     <string name="image_viewer_title">Resim görüntüleyici</string>
     <string name="image_viewer_subtitle_format">%1$,d/%2$,d</string>
     <string name="text_editor_title">Metin düzenleyici</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">Kaydedildi</string>
     <string name="text_editor_reload_message">Yeniden yüklemek istediğinizden emin misiniz? Bu belgedeki kaydedilmemiş değişiklikler kaybedilecek.</string>
-    <string name="text_editor_encoding">Kodlama</string>
     <string name="text_editor_close_message">Bu belgedeki kaydedilmemiş değişiklikleri atmak istediğinizden emin misiniz?</string>
 
     <string name="ftp_server_title">FTP sunucusu</string>

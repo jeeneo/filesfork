@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.Service
 import androidx.core.app.ServiceCompat
-import me.zhanghai.android.files.app.notificationManager
-import me.zhanghai.android.files.compat.stopForegroundCompat
+import me.zhanghai.android.filesfork.app.notificationManager
+import me.zhanghai.android.filesfork.compat.stopForegroundCompat
 
 class ForegroundNotificationManager(private val service: Service) {
     private val notifications = mutableMapOf<Int, Notification>()

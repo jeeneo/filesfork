@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.app
+package me.zhanghai.android.filesfork.app
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -14,10 +14,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.NotificationChannelTemplate
-import me.zhanghai.android.files.util.NotificationTemplate
-import me.zhanghai.android.files.util.startActivitySafe
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.NotificationChannelTemplate
+import me.zhanghai.android.filesfork.util.NotificationTemplate
+import me.zhanghai.android.filesfork.util.startActivitySafe
 
 val backgroundActivityStartNotificationTemplate =
     NotificationTemplate(

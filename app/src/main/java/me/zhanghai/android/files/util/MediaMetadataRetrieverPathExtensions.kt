@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.media.MediaDataSource
 import android.media.MediaMetadataRetriever
@@ -11,11 +11,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java8.nio.channels.SeekableByteChannel
 import java8.nio.file.Path
-import me.zhanghai.android.files.provider.common.newByteChannel
-import me.zhanghai.android.files.provider.document.isDocumentPath
-import me.zhanghai.android.files.provider.document.resolver.DocumentResolver
-import me.zhanghai.android.files.provider.ftp.isFtpPath
-import me.zhanghai.android.files.provider.linux.isLinuxPath
+import me.zhanghai.android.filesfork.provider.common.newByteChannel
+import me.zhanghai.android.filesfork.provider.document.isDocumentPath
+import me.zhanghai.android.filesfork.provider.document.resolver.DocumentResolver
+import me.zhanghai.android.filesfork.provider.ftp.isFtpPath
+import me.zhanghai.android.filesfork.provider.linux.isLinuxPath
 import java.io.IOException
 import java.nio.ByteBuffer
 

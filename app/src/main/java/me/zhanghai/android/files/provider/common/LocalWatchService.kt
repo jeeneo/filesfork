@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import java8.nio.channels.SeekableByteChannel
 import java8.nio.file.Path
 import java8.nio.file.StandardWatchEventKinds
 import java8.nio.file.WatchEvent
-import me.zhanghai.android.files.provider.FileSystemProviders
+import me.zhanghai.android.filesfork.provider.FileSystemProviders
 import java.io.IOException
 import java.io.OutputStream
 import java.nio.ByteBuffer

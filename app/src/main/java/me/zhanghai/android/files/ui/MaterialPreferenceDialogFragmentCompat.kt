@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.app.Dialog
 import android.content.Context
@@ -21,11 +21,11 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.preference.DialogPreference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.util.ParcelableState
-import me.zhanghai.android.files.util.getState
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.putState
-import me.zhanghai.android.files.util.toBitmapDrawable
+import me.zhanghai.android.filesfork.util.ParcelableState
+import me.zhanghai.android.filesfork.util.getState
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.putState
+import me.zhanghai.android.filesfork.util.toBitmapDrawable
 
 /**
  * @see androidx.preference.PreferenceDialogFragmentCompat

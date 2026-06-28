@@ -3,18 +3,18 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.DrawableRes
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.provider.smb.client.Authority
-import me.zhanghai.android.files.provider.smb.createSmbRootPath
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.putArgs
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.provider.smb.client.Authority
+import me.zhanghai.android.filesfork.provider.smb.createSmbRootPath
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.putArgs
 import kotlin.random.Random
 
 @Parcelize

@@ -1,7 +1,7 @@
-package me.zhanghai.android.files.theme.custom
+package me.zhanghai.android.filesfork.theme.custom
 
 import androidx.annotation.ColorRes
-import me.zhanghai.android.files.R
+import me.zhanghai.android.filesfork.R
 
 enum class ThemeColor(@ColorRes val resourceId: Int) {
     COLOR_PRIMARY(R.color.color_primary),

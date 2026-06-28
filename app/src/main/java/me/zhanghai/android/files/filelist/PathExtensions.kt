@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import java8.nio.file.Path
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.file.isSupportedArchive
-import me.zhanghai.android.files.provider.archive.archiveFile
-import me.zhanghai.android.files.provider.archive.isArchivePath
-import me.zhanghai.android.files.provider.document.isDocumentPath
-import me.zhanghai.android.files.provider.document.resolver.DocumentResolver
-import me.zhanghai.android.files.provider.linux.isLinuxPath
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.file.isSupportedArchive
+import me.zhanghai.android.filesfork.provider.archive.archiveFile
+import me.zhanghai.android.filesfork.provider.archive.isArchivePath
+import me.zhanghai.android.filesfork.provider.document.isDocumentPath
+import me.zhanghai.android.filesfork.provider.document.resolver.DocumentResolver
+import me.zhanghai.android.filesfork.provider.linux.isLinuxPath
 
 val Path.name: String
     get() = fileName?.toString() ?: if (isArchivePath) archiveFile.fileName.toString() else "/"

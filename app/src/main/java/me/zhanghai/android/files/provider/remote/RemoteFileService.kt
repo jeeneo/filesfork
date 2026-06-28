@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import java8.nio.file.FileSystem
-import me.zhanghai.android.files.provider.common.PosixFileAttributeView
-import me.zhanghai.android.files.provider.common.PosixFileStore
+import me.zhanghai.android.filesfork.provider.common.PosixFileAttributeView
+import me.zhanghai.android.filesfork.provider.common.PosixFileStore
 
 abstract class RemoteFileService(private val remoteInterface: RemoteInterface<IRemoteFileService>) {
     @Throws(RemoteFileSystemException::class)

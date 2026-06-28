@@ -3,19 +3,19 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.SwitchPreferenceCompat
-import me.zhanghai.android.files.compat.getDrawableCompat
-import me.zhanghai.android.files.compat.setTintCompat
-import me.zhanghai.android.files.navigation.StandardDirectoriesLiveData
-import me.zhanghai.android.files.navigation.StandardDirectory
-import me.zhanghai.android.files.navigation.getExternalStorageDirectory
-import me.zhanghai.android.files.ui.PreferenceFragmentCompat
-import me.zhanghai.android.files.util.getColorByAttr
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.compat.getDrawableCompat
+import me.zhanghai.android.filesfork.compat.setTintCompat
+import me.zhanghai.android.filesfork.navigation.StandardDirectoriesLiveData
+import me.zhanghai.android.filesfork.navigation.StandardDirectory
+import me.zhanghai.android.filesfork.navigation.getExternalStorageDirectory
+import me.zhanghai.android.filesfork.ui.PreferenceFragmentCompat
+import me.zhanghai.android.filesfork.util.getColorByAttr
+import me.zhanghai.android.filesfork.util.valueCompat
 
 class StandardDirectoryListPreferenceFragment : PreferenceFragmentCompat(),
     Preference.OnPreferenceClickListener {

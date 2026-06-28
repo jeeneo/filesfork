@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.content
+package me.zhanghai.android.filesfork.provider.content
 
 import android.net.Uri
 import android.os.Parcelable
 import java8.nio.file.attribute.FileTime
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.provider.common.AbstractContentProviderFileAttributes
-import me.zhanghai.android.files.provider.common.EPOCH
-import me.zhanghai.android.files.provider.common.FileTimeParceler
+import me.zhanghai.android.filesfork.provider.common.AbstractContentProviderFileAttributes
+import me.zhanghai.android.filesfork.provider.common.EPOCH
+import me.zhanghai.android.filesfork.provider.common.FileTimeParceler
 
 @Parcelize
 internal class ContentFileAttributes(

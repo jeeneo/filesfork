@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux.syscall
+package me.zhanghai.android.filesfork.provider.linux.syscall
 
 import android.os.Build
 import android.system.ErrnoException
@@ -13,9 +13,9 @@ import android.system.OsConstants
 import android.system.StructPollfd
 import android.system.StructStatVfs
 import androidx.annotation.Size
-import me.zhanghai.android.files.compat.SELinuxCompat
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.moveToByteString
+import me.zhanghai.android.filesfork.compat.SELinuxCompat
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.moveToByteString
 import me.zhanghai.android.libselinux.SeLinux
 import java.io.FileDescriptor
 import java.io.InterruptedIOException

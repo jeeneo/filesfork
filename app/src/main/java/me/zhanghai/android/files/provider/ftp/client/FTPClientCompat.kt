@@ -1,4 +1,4 @@
-package me.zhanghai.android.files.provider.ftp.client
+package me.zhanghai.android.filesfork.provider.ftp.client
 
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPCmd

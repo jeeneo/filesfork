@@ -3,26 +3,26 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.system.OsConstants
 import android.system.StructStatVfs
 import java8.nio.file.attribute.FileAttributeView
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringBuilder
-import me.zhanghai.android.files.provider.common.FileStoreNotFoundException
-import me.zhanghai.android.files.provider.common.PosixFileStore
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.provider.linux.syscall.Constants
-import me.zhanghai.android.files.provider.linux.syscall.Int32Ref
-import me.zhanghai.android.files.provider.linux.syscall.StructMntent
-import me.zhanghai.android.files.provider.linux.syscall.Syscall
-import me.zhanghai.android.files.provider.linux.syscall.SyscallException
-import me.zhanghai.android.files.util.andInv
-import me.zhanghai.android.files.util.hasBits
-import me.zhanghai.android.files.util.readParcelable
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringBuilder
+import me.zhanghai.android.filesfork.provider.common.FileStoreNotFoundException
+import me.zhanghai.android.filesfork.provider.common.PosixFileStore
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.linux.syscall.Constants
+import me.zhanghai.android.filesfork.provider.linux.syscall.Int32Ref
+import me.zhanghai.android.filesfork.provider.linux.syscall.StructMntent
+import me.zhanghai.android.filesfork.provider.linux.syscall.Syscall
+import me.zhanghai.android.filesfork.provider.linux.syscall.SyscallException
+import me.zhanghai.android.filesfork.util.andInv
+import me.zhanghai.android.filesfork.util.hasBits
+import me.zhanghai.android.filesfork.util.readParcelable
 import java.io.IOException
 
 internal class LocalLinuxFileStore : PosixFileStore, Parcelable {

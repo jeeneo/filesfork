@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb
+package me.zhanghai.android.filesfork.provider.smb
 
 import com.hierynomus.msdtyp.FileTime
 import com.hierynomus.msfscc.FileAttributes
@@ -13,12 +13,12 @@ import java8.nio.file.FileAlreadyExistsException
 import java8.nio.file.FileSystemException
 import java8.nio.file.NoSuchFileException
 import java8.nio.file.StandardCopyOption
-import me.zhanghai.android.files.provider.common.CopyOptions
-import me.zhanghai.android.files.provider.smb.client.Client
-import me.zhanghai.android.files.provider.smb.client.ClientException
-import me.zhanghai.android.files.provider.smb.client.FileInformation
-import me.zhanghai.android.files.util.enumSetOf
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.provider.common.CopyOptions
+import me.zhanghai.android.filesfork.provider.smb.client.Client
+import me.zhanghai.android.filesfork.provider.smb.client.ClientException
+import me.zhanghai.android.filesfork.provider.smb.client.FileInformation
+import me.zhanghai.android.filesfork.util.enumSetOf
+import me.zhanghai.android.filesfork.util.hasBits
 import java.io.IOException
 import java.io.InterruptedIOException
 

@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.file
+package me.zhanghai.android.filesfork.file
 
 import android.net.Uri
 import android.os.Parcelable
 import android.provider.DocumentsContract
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.compat.DocumentsContractCompat
-import me.zhanghai.android.files.util.StableUriParceler
-import me.zhanghai.android.files.util.takeIfNotEmpty
+import me.zhanghai.android.filesfork.compat.DocumentsContractCompat
+import me.zhanghai.android.filesfork.util.StableUriParceler
+import me.zhanghai.android.filesfork.util.takeIfNotEmpty
 
 @Parcelize
 @JvmInline

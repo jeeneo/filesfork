@@ -3,12 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.compat.reversedCompat
-import me.zhanghai.android.files.file.FileItem
+import me.zhanghai.android.filesfork.compat.reversedCompat
+import me.zhanghai.android.filesfork.file.FileItem
+import java8.nio.file.Path
 
 @Parcelize
 data class FileSortOptions(
@@ -16,7 +17,7 @@ data class FileSortOptions(
     val order: Order,
     val isDirectoriesFirst: Boolean
 ) : Parcelable {
-    fun createComparator(): Comparator<FileItem> {
+    fun createComparator(folderSizes: Map<Path, Long> = emptyMap()): Comparator<FileItem> {
         var comparator = compareBy<FileItem> {
             NAME_UNIMPORTANT_PREFIXES.any { prefix -> it.name.startsWith(prefix) }
         }.thenBy { it.nameCollationKey }
@@ -27,7 +28,11 @@ data class FileSortOptions(
                 comparator = compareBy<FileItem, String>(String.CASE_INSENSITIVE_ORDER) {
                     it.extension
                 }.then(comparator)
-            By.SIZE -> comparator = compareBy<FileItem> { it.attributes.size() }.then(comparator)
+            // on purposely marked as inverted for default of "ascending" in UI so that largest is on top - if this bothers you greatly can use 'compareBy'
+            By.SIZE -> comparator = compareByDescending<FileItem> {
+                if (it.attributes.isDirectory) folderSizes[it.path] ?: -1L
+                else it.attributes.size()
+            }.then(comparator)
             By.LAST_MODIFIED ->
                 comparator = compareBy<FileItem> { it.attributes.lastModifiedTime() }
                     .then(comparator)

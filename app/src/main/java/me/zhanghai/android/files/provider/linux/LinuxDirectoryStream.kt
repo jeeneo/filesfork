@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import java8.nio.file.DirectoryIteratorException
 import java8.nio.file.DirectoryStream
 import java8.nio.file.Path
-import me.zhanghai.android.files.provider.common.toByteString
-import me.zhanghai.android.files.provider.linux.syscall.Syscall
-import me.zhanghai.android.files.provider.linux.syscall.SyscallException
+import me.zhanghai.android.filesfork.provider.common.toByteString
+import me.zhanghai.android.filesfork.provider.linux.syscall.Syscall
+import me.zhanghai.android.filesfork.provider.linux.syscall.SyscallException
 import java.io.IOException
 
 internal class LinuxDirectoryStream(

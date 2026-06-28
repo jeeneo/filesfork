@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
 import android.os.Parcel
 import android.os.Parcelable
 import java8.nio.file.CopyOption
 import java8.nio.file.LinkOption
-import me.zhanghai.android.files.compat.readSerializableCompat
+import me.zhanghai.android.filesfork.compat.readSerializableCompat
 import java.io.Serializable
 
 class ParcelableCopyOptions(val value: Array<out CopyOption>) : Parcelable {

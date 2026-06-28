@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.os.Parcel
 import android.os.Parcelable
-import me.zhanghai.android.files.util.hash
-import me.zhanghai.android.files.util.readParcelable
+import me.zhanghai.android.filesfork.util.hash
+import me.zhanghai.android.filesfork.util.readParcelable
 import java.security.Principal
 
 abstract class PosixPrincipal(val id: Int, name: ByteString?) : Parcelable, Principal {

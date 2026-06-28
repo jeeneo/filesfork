@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.webdav.client
+package me.zhanghai.android.filesfork.provider.webdav.client
 
 import at.bitfire.dav4jvm.DavResource
 import at.bitfire.dav4jvm.DavResourceAccessor
@@ -11,7 +11,7 @@ import at.bitfire.dav4jvm.QuotedStringUtils
 import at.bitfire.dav4jvm.ResponseCallback
 import at.bitfire.dav4jvm.exception.DavException
 import at.bitfire.dav4jvm.exception.HttpException
-import me.zhanghai.android.files.provider.common.DelegateOutputStream
+import me.zhanghai.android.filesfork.provider.common.DelegateOutputStream
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Headers

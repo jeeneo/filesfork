@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties
+package me.zhanghai.android.filesfork.fileproperties
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,14 +15,14 @@ import androidx.annotation.StringRes
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import me.zhanghai.android.files.databinding.FilePropertiesTabFragmentBinding
-import me.zhanghai.android.files.databinding.FilePropertiesTabItemBinding
-import me.zhanghai.android.files.util.Failure
-import me.zhanghai.android.files.util.Loading
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.fadeToVisibilityUnsafe
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.showToast
+import me.zhanghai.android.filesfork.databinding.FilePropertiesTabFragmentBinding
+import me.zhanghai.android.filesfork.databinding.FilePropertiesTabItemBinding
+import me.zhanghai.android.filesfork.util.Failure
+import me.zhanghai.android.filesfork.util.Loading
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.fadeToVisibilityUnsafe
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.showToast
 
 abstract class FilePropertiesTabFragment : Fragment() {
     protected lateinit var binding: FilePropertiesTabFragmentBinding

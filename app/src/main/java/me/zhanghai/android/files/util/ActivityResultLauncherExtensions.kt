@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.content.ActivityNotFoundException
 import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
-import me.zhanghai.android.files.R
+import me.zhanghai.android.filesfork.R
 
 fun <I> ActivityResultLauncher<I>.launchSafe(input: I, context: Context) {
     try {

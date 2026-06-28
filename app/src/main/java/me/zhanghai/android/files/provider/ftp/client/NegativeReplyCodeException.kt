@@ -1,9 +1,9 @@
-package me.zhanghai.android.files.provider.ftp.client
+package me.zhanghai.android.filesfork.provider.ftp.client
 
 import java8.nio.file.AccessDeniedException
 import java8.nio.file.FileSystemException
 import java8.nio.file.NoSuchFileException
-import me.zhanghai.android.files.provider.common.InvalidFileNameException
+import me.zhanghai.android.filesfork.provider.common.InvalidFileNameException
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPReply
 import java.io.IOException

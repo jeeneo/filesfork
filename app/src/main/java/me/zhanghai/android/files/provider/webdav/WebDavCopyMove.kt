@@ -3,19 +3,19 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.webdav
+package me.zhanghai.android.filesfork.provider.webdav
 
 import at.bitfire.dav4jvm.exception.DavException
 import java8.nio.file.FileAlreadyExistsException
 import java8.nio.file.NoSuchFileException
 import java8.nio.file.StandardCopyOption
-import me.zhanghai.android.files.provider.common.CopyOptions
-import me.zhanghai.android.files.provider.common.copyTo
-import me.zhanghai.android.files.provider.webdav.client.Client
-import me.zhanghai.android.files.provider.webdav.client.isDirectory
-import me.zhanghai.android.files.provider.webdav.client.isSymbolicLink
-import me.zhanghai.android.files.provider.webdav.client.lastModifiedTime
-import me.zhanghai.android.files.provider.webdav.client.size
+import me.zhanghai.android.filesfork.provider.common.CopyOptions
+import me.zhanghai.android.filesfork.provider.common.copyTo
+import me.zhanghai.android.filesfork.provider.webdav.client.Client
+import me.zhanghai.android.filesfork.provider.webdav.client.isDirectory
+import me.zhanghai.android.filesfork.provider.webdav.client.isSymbolicLink
+import me.zhanghai.android.filesfork.provider.webdav.client.lastModifiedTime
+import me.zhanghai.android.filesfork.provider.webdav.client.size
 import java.io.IOException
 
 internal object WebDavCopyMove {

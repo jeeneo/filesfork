@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.content
+package me.zhanghai.android.filesfork.provider.content
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -15,8 +15,8 @@ import java8.nio.file.PathMatcher
 import java8.nio.file.WatchService
 import java8.nio.file.attribute.UserPrincipalLookupService
 import java8.nio.file.spi.FileSystemProvider
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.ByteStringListPathCreator
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.ByteStringListPathCreator
 import java.io.IOException
 
 internal class ContentFileSystem(private val provider: ContentFileSystemProvider) : FileSystem(),

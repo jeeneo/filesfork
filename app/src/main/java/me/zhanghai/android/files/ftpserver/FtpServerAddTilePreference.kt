@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ftpserver
+package me.zhanghai.android.filesfork.ftpserver
 
 import android.app.StatusBarManager
 import android.content.Context
@@ -13,11 +13,11 @@ import androidx.annotation.AttrRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.preference.Preference
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.getSystemServiceCompat
-import me.zhanghai.android.files.compat.mainExecutorCompat
-import me.zhanghai.android.files.util.requestAddTileService
-import me.zhanghai.android.files.util.showToast
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.getSystemServiceCompat
+import me.zhanghai.android.filesfork.compat.mainExecutorCompat
+import me.zhanghai.android.filesfork.util.requestAddTileService
+import me.zhanghai.android.filesfork.util.showToast
 
 class FtpServerAddTilePreference : Preference {
     constructor(context: Context) : super(context)

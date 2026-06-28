@@ -3,6 +3,6 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 class ClosedDirectoryObserverException : IllegalStateException()

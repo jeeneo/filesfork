@@ -25,43 +25,23 @@
 
             <include layout="@layout/name_dialog_name_include" />
 
-            <me.zhanghai.android.files.filelist.CreateArchiveTypeRadioGroup
-                android:id="@+id/typeGroup"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/typeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:paddingStart="@dimen/dialog_padding_minus_6dp"
-                android:paddingEnd="@dimen/dialog_padding"
-                android:orientation="horizontal">
+                android:layout_marginStart="?dialogPreferredPadding"
+                android:layout_marginEnd="?dialogPreferredPadding"
+                android:hint="@string/file_create_archive_type"
+                app:expandedHintEnabled="false"
+                style="?textInputOutlinedExposedDropdownMenuStyle">
 
-                <RadioButton
-                    android:id="@+id/zipRadio"
-                    android:layout_width="0dp"
+                <AutoCompleteTextView
+                    android:id="@+id/typeDropdown"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="@dimen/dense_single_line_list_item_height"
-                    android:layout_weight="1"
-                    android:text="@string/file_create_archive_type_zip"
-                    android:textAppearance="?textAppearanceListItem" />
-
-                <RadioButton
-                    android:id="@+id/tarXzRadio"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:minHeight="@dimen/dense_single_line_list_item_height"
-                    android:layout_weight="1"
-                    android:text="@string/file_create_archive_type_tar_xz"
-                    android:textAppearance="?textAppearanceListItem" />
-
-                <RadioButton
-                    android:id="@+id/sevenZRadio"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:minHeight="@dimen/dense_single_line_list_item_height"
-                    android:layout_weight="1"
-                    android:text="@string/file_create_archive_type_7z"
-                    android:textAppearance="?textAppearanceListItem"
-                    android:visibility="@integer/create_archive_type_seven_z_visibility" />
-            </me.zhanghai.android.files.filelist.CreateArchiveTypeRadioGroup>
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordLayout"
@@ -79,6 +59,32 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/compressionLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="?dialogPreferredPadding"
+                android:layout_marginEnd="?dialogPreferredPadding"
+                android:layout_marginTop="4dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/compressionLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/file_create_archive_compression_level" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/compressionSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:value="6"
+                    android:valueFrom="0"
+                    android:valueTo="9"
+                    android:stepSize="1" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

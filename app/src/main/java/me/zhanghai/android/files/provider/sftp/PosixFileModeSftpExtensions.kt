@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.sftp
+package me.zhanghai.android.filesfork.provider.sftp
 
-import me.zhanghai.android.files.provider.common.PosixFileModeBit
-import me.zhanghai.android.files.provider.common.toInt
+import me.zhanghai.android.filesfork.provider.common.PosixFileModeBit
+import me.zhanghai.android.filesfork.provider.common.toInt
 import net.schmizz.sshj.sftp.FileAttributes
 
 fun Set<PosixFileModeBit>.toSftpAttributes(): FileAttributes =

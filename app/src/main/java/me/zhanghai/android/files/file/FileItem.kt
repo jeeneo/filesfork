@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.file
+package me.zhanghai.android.filesfork.file
 
 import android.os.Parcelable
 import androidx.annotation.WorkerThread
@@ -12,13 +12,13 @@ import java8.nio.file.Path
 import java8.nio.file.attribute.BasicFileAttributes
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.filelist.getCollationKeyForFileName
-import me.zhanghai.android.files.filelist.name
-import me.zhanghai.android.files.provider.common.AndroidFileTypeDetector
-import me.zhanghai.android.files.provider.common.isHidden
-import me.zhanghai.android.files.provider.common.readAttributes
-import me.zhanghai.android.files.provider.common.readSymbolicLinkByteString
-import me.zhanghai.android.files.util.ParcelableParceler
+import me.zhanghai.android.filesfork.filelist.getCollationKeyForFileName
+import me.zhanghai.android.filesfork.filelist.name
+import me.zhanghai.android.filesfork.provider.common.AndroidFileTypeDetector
+import me.zhanghai.android.filesfork.provider.common.isHidden
+import me.zhanghai.android.filesfork.provider.common.readAttributes
+import me.zhanghai.android.filesfork.provider.common.readSymbolicLinkByteString
+import me.zhanghai.android.filesfork.util.ParcelableParceler
 import java.io.IOException
 import java.text.CollationKey
 import java.text.Collator

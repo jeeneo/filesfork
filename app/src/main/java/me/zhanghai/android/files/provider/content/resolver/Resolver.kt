@@ -3,17 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.content.resolver
+package me.zhanghai.android.filesfork.provider.content.resolver
 
 import android.content.res.AssetFileDescriptor
 import android.database.Cursor
 import android.net.Uri
 import android.os.ParcelFileDescriptor
 import android.provider.OpenableColumns
-import me.zhanghai.android.files.app.contentResolver
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.util.closeSafe
-import me.zhanghai.android.files.util.takeIfNotEmpty
+import me.zhanghai.android.filesfork.app.contentResolver
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.util.closeSafe
+import me.zhanghai.android.filesfork.util.takeIfNotEmpty
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream

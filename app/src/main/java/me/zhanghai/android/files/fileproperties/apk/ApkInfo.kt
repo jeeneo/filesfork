@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.apk
+package me.zhanghai.android.filesfork.fileproperties.apk
 
 import android.content.pm.PackageInfo
 

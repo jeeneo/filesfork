@@ -3,18 +3,18 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.sftp
+package me.zhanghai.android.filesfork.provider.sftp
 
 import java8.nio.file.LinkOption
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.PosixFileAttributeView
-import me.zhanghai.android.files.provider.common.PosixFileModeBit
-import me.zhanghai.android.files.provider.common.PosixGroup
-import me.zhanghai.android.files.provider.common.PosixUser
-import me.zhanghai.android.files.provider.common.toInt
-import me.zhanghai.android.files.provider.sftp.client.Client
-import me.zhanghai.android.files.provider.sftp.client.ClientException
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.PosixFileAttributeView
+import me.zhanghai.android.filesfork.provider.common.PosixFileModeBit
+import me.zhanghai.android.filesfork.provider.common.PosixGroup
+import me.zhanghai.android.filesfork.provider.common.PosixUser
+import me.zhanghai.android.filesfork.provider.common.toInt
+import me.zhanghai.android.filesfork.provider.sftp.client.Client
+import me.zhanghai.android.filesfork.provider.sftp.client.ClientException
 import net.schmizz.sshj.sftp.FileAttributes
 import java.io.IOException
 

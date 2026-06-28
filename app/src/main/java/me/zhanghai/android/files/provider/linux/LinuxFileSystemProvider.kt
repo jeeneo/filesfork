@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import java8.nio.file.attribute.FileAttributeView
-import me.zhanghai.android.files.provider.root.RootFileSystemProvider
-import me.zhanghai.android.files.provider.root.RootableFileSystemProvider
+import me.zhanghai.android.filesfork.provider.root.RootFileSystemProvider
+import me.zhanghai.android.filesfork.provider.root.RootableFileSystemProvider
 
 object LinuxFileSystemProvider : RootableFileSystemProvider(
     { LocalLinuxFileSystemProvider(it as LinuxFileSystemProvider) },

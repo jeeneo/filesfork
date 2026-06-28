@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.ftp
+package me.zhanghai.android.filesfork.provider.ftp
 
 import java8.nio.file.StandardOpenOption
-import me.zhanghai.android.files.provider.common.OpenOptions
+import me.zhanghai.android.filesfork.provider.common.OpenOptions
 
 internal fun OpenOptions.checkForFtp() {
     if (deleteOnClose) {

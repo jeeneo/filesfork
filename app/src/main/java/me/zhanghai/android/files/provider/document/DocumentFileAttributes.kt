@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.document
+package me.zhanghai.android.filesfork.provider.document
 
 import android.net.Uri
 import android.os.Parcelable
@@ -11,8 +11,8 @@ import java.time.Instant
 import java8.nio.file.attribute.FileTime
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.provider.common.AbstractContentProviderFileAttributes
-import me.zhanghai.android.files.provider.common.FileTimeParceler
+import me.zhanghai.android.filesfork.provider.common.AbstractContentProviderFileAttributes
+import me.zhanghai.android.filesfork.provider.common.FileTimeParceler
 
 @Parcelize
 internal class DocumentFileAttributes(

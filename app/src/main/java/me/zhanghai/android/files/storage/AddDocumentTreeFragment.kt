@@ -3,17 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import me.zhanghai.android.files.file.DocumentTreeUri
-import me.zhanghai.android.files.file.asDocumentTreeUriOrNull
-import me.zhanghai.android.files.file.takePersistablePermission
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.launchSafe
+import me.zhanghai.android.filesfork.file.DocumentTreeUri
+import me.zhanghai.android.filesfork.file.asDocumentTreeUriOrNull
+import me.zhanghai.android.filesfork.file.takePersistablePermission
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.launchSafe
 
 class AddDocumentTreeFragment : Fragment() {
     private val openDocumentTreeLauncher = registerForActivityResult(

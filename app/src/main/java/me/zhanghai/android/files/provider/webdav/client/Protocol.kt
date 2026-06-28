@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.webdav.client
+package me.zhanghai.android.filesfork.provider.webdav.client
 
 enum class Protocol(val scheme: String, val httpScheme: String, val defaultPort: Int) {
     DAV("dav", "http", 80),

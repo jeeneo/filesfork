@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 import android.app.Dialog
 import android.os.Bundle
@@ -16,22 +16,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
-import me.zhanghai.android.files.databinding.SetPrincipalDialogBinding
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.provider.common.PosixFileAttributes
-import me.zhanghai.android.files.provider.common.PosixPrincipal
-import me.zhanghai.android.files.util.Failure
-import me.zhanghai.android.files.util.Loading
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.SelectionLiveData
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.Success
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.fadeInUnsafe
-import me.zhanghai.android.files.util.fadeOutUnsafe
-import me.zhanghai.android.files.util.fadeToVisibilityUnsafe
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.databinding.SetPrincipalDialogBinding
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.provider.common.PosixFileAttributes
+import me.zhanghai.android.filesfork.provider.common.PosixPrincipal
+import me.zhanghai.android.filesfork.util.Failure
+import me.zhanghai.android.filesfork.util.Loading
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.SelectionLiveData
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.Success
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.fadeInUnsafe
+import me.zhanghai.android.filesfork.util.fadeOutUnsafe
+import me.zhanghai.android.filesfork.util.fadeToVisibilityUnsafe
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.valueCompat
 
 abstract class SetPrincipalDialogFragment : AppCompatDialogFragment() {
     private val args by args<Args>()

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.os.AsyncTask
 import jcifs.context.SingletonContext
@@ -16,14 +16,14 @@ import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import me.zhanghai.android.files.util.CloseableLiveData
-import me.zhanghai.android.files.util.Failure
-import me.zhanghai.android.files.util.Loading
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.Success
-import me.zhanghai.android.files.util.getLocalAddress
-import me.zhanghai.android.files.util.toLinkedSet
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.util.CloseableLiveData
+import me.zhanghai.android.filesfork.util.Failure
+import me.zhanghai.android.filesfork.util.Loading
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.Success
+import me.zhanghai.android.filesfork.util.getLocalAddress
+import me.zhanghai.android.filesfork.util.toLinkedSet
+import me.zhanghai.android.filesfork.util.valueCompat
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.UnknownHostException

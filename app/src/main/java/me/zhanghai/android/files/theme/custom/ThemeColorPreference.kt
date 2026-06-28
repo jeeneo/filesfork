@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.theme.custom
+package me.zhanghai.android.filesfork.theme.custom
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -12,9 +12,9 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 import com.takisoft.preferencex.PreferenceFragmentCompat
-import me.zhanghai.android.files.colorpicker.BaseColorPreference
-import me.zhanghai.android.files.colorpicker.ColorPreferenceDialogFragment
-import me.zhanghai.android.files.compat.getColorCompat
+import me.zhanghai.android.filesfork.colorpicker.BaseColorPreference
+import me.zhanghai.android.filesfork.colorpicker.ColorPreferenceDialogFragment
+import me.zhanghai.android.filesfork.compat.getColorCompat
 
 class ThemeColorPreference : BaseColorPreference {
     private lateinit var _stringValue: String

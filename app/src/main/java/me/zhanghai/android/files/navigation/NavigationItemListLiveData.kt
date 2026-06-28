@@ -3,11 +3,11 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import androidx.lifecycle.MediatorLiveData
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.storage.StorageVolumeListLiveData
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.storage.StorageVolumeListLiveData
 
 object NavigationItemListLiveData : MediatorLiveData<List<NavigationItem?>>() {
     init {

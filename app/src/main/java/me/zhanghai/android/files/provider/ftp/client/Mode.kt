@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.ftp.client
+package me.zhanghai.android.filesfork.provider.ftp.client
 
 enum class Mode {
     ACTIVE,

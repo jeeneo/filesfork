@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.app
+package me.zhanghai.android.filesfork.app
 
 import androidx.core.content.edit
-import me.zhanghai.android.files.BuildConfig
+import me.zhanghai.android.filesfork.BuildConfig
 
 private const val KEY_VERSION_CODE = "key_version_code"
 

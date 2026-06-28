@@ -52,11 +52,9 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">Não existe uma aplicação para gerir esta ação</string>
     <string name="open_settings">Abrir definições</string>
-    <string name="shortcut_created">Atalho criado</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="one">%1$,d byte</item>
-        <item quantity="many">%1$,d bytes</item>
         <item quantity="other">%1$,d bytes</item>
     </plurals>
 
@@ -81,114 +79,94 @@
 
     <plurals name="file_job_archive_scan_notification_title_format">
         <item quantity="one">A preparar para comprimir %1$,d ficheiro (%2$s)</item>
-        <item quantity="many">A preparar para comprimir %1$,d ficheiros (%2$s)</item>
         <item quantity="other">A preparar para comprimir %1$,d ficheiros (%2$s)</item>
     </plurals>
     <string name="file_job_archive_notification_title_one_format">A comprimir “%1$s” para “%2$s”</string>
     <plurals name="file_job_archive_notification_title_multiple_format">
         <item quantity="one">A comprimir %1$,d ficheiro para “%2$s”</item>
-        <item quantity="many">A comprimir %1$,d ficheiros para “%2$s”</item>
         <item quantity="other">A comprimir %1$,d ficheiros para “%2$s”</item>
     </plurals>
     <plurals name="file_job_copy_scan_notification_title_format">
         <item quantity="one">A preparar para copiar %1$,d ficheiro (%2$s)</item>
-        <item quantity="many">A preparar para copiar %1$,d ficheiros (%2$s)</item>
         <item quantity="other">A preparar para copiar %1$,d ficheiros (%2$s)</item>
     </plurals>
     <string name="file_job_copy_notification_title_one_format">A copiar “%1$s” para “%2$s”</string>
     <plurals name="file_job_copy_notification_title_multiple_format">
         <item quantity="one">A copiar %1$,d ficheiro para “%2$s”</item>
-        <item quantity="many">A copiar %1$,d ficheiros para “%2$s”</item>
         <item quantity="other">A copiar %1$,d ficheiros para “%2$s”</item>
     </plurals>
     <plurals name="file_job_extract_scan_notification_title_format">
         <item quantity="one">A preparar para extrair %1$,d ficheiro (%2$s)</item>
-        <item quantity="many">A preparar para extrair %1$,d ficheiros (%2$s)</item>
         <item quantity="other">A preparar para extrair %1$,d ficheiros (%2$s)</item>
     </plurals>
     <string name="file_job_extract_notification_title_one_format">A extrair “%1$s” para “%2$s”</string>
     <plurals name="file_job_extract_notification_title_multiple_format">
         <item quantity="one">A extrair %1$,d ficheiro para “%2$s”</item>
-        <item quantity="many">A extrair %1$,d ficheiros para “%2$s”</item>
         <item quantity="other">A extrair %1$,d ficheiros para “%2$s”</item>
     </plurals>
     <plurals name="file_job_move_scan_notification_title_format">
         <item quantity="one">A preparar para mover %1$,d ficheiro (%2$s)</item>
-        <item quantity="many">A preparar para mover %1$,d ficheiros (%2$s)</item>
         <item quantity="other">A preparar para mover %1$,d ficheiros (%2$s)</item>
     </plurals>
     <string name="file_job_move_notification_title_one_format">A mover “%1$s” para “%2$s”</string>
     <plurals name="file_job_move_notification_title_multiple_format">
         <item quantity="one">A mover %1$,d ficheiro para “%2$s”</item>
-        <item quantity="many">A mover %1$,d ficheiros para “%2$s”</item>
         <item quantity="other">A mover %1$,d ficheiros para “%2$s”</item>
     </plurals>
     <string name="file_job_transfer_size_notification_text_one_format">%1$s / %2$s</string>
     <string name="file_job_transfer_size_notification_text_multiple_format">%1$,d / %2$,d</string>
     <plurals name="file_job_delete_scan_notification_title_format">
         <item quantity="one">A preparar para eliminar %1$,d ficheiro</item>
-        <item quantity="many">A preparar para eliminar %1$,d ficheiros</item>
         <item quantity="other">A preparar para eliminar %1$,d ficheiros</item>
     </plurals>
     <string name="file_job_delete_notification_title_one_format">A eliminar “%1$s”</string>
     <plurals name="file_job_delete_notification_title_multiple_format">
         <item quantity="one">A eliminar %1$,d ficheiro</item>
-        <item quantity="many">A eliminar %1$,d ficheiros</item>
         <item quantity="other">A eliminar %1$,d ficheiros</item>
     </plurals>
     <plurals name="file_job_set_owner_scan_notification_title_format">
         <item quantity="one">A preparar para alterar o proprietário de %1$,d ficheiro</item>
-        <item quantity="many">A preparar para alterar o proprietário de %1$,d ficheiros</item>
         <item quantity="other">A preparar para alterar o proprietário de %1$,d ficheiros</item>
     </plurals>
     <string name="file_job_set_owner_notification_title_one_format">A alterar proprietário de “%1$s”</string>
     <plurals name="file_job_set_owner_notification_title_multiple_format">
         <item quantity="one">A alterar proprietário de %1$,d ficheiro</item>
-        <item quantity="many">A alterar proprietário de %1$,d ficheiros</item>
         <item quantity="other">A alterar proprietário de %1$,d ficheiros</item>
     </plurals>
     <plurals name="file_job_set_group_scan_notification_title_format">
         <item quantity="one">A preparar parar alterar o grupo de %1$,d ficheiro</item>
-        <item quantity="many">A preparar parar alterar o grupo de %1$,d ficheiros</item>
         <item quantity="other">A preparar parar alterar o grupo de %1$,d ficheiros</item>
     </plurals>
     <string name="file_job_set_group_notification_title_one_format">A alterar o grupo de “%1$s”</string>
     <plurals name="file_job_set_group_notification_title_multiple_format">
         <item quantity="one">A alterar o grupo de %1$,d ficheiro</item>
-        <item quantity="many">A alterar o grupo de %1$,d ficheiros</item>
         <item quantity="other">A alterar o grupo de %1$,d ficheiros</item>
     </plurals>
     <plurals name="file_job_set_mode_scan_notification_title_format">
         <item quantity="one">A preparar para alterar o modo de %1$,d ficheiro</item>
-        <item quantity="many">A preparar para alterar o modo de %1$,d ficheiros</item>
         <item quantity="other">A preparar para alterar o modo de %1$,d ficheiros</item>
     </plurals>
     <string name="file_job_set_mode_notification_title_one_format">A alterar modo de “%1$s”</string>
     <plurals name="file_job_set_mode_notification_title_multiple_format">
         <item quantity="one">A alterar o modo de %1$,d ficheiro</item>
-        <item quantity="many">A alterar o modo de %1$,d ficheiros</item>
         <item quantity="other">A alterar o modo de %1$,d ficheiros</item>
     </plurals>
     <plurals name="file_job_set_selinux_context_scan_notification_title_format">
         <item quantity="one"> A preparar para alterar o contexto SELinux de %1$,d ficheiro</item>
-        <item quantity="many"> A preparar para alterar o contexto SELinux de %1$,d ficheiros</item>
         <item quantity="other"> A preparar para alterar o contexto SELinux de %1$,d ficheiros</item>
     </plurals>
     <string name="file_job_set_selinux_context_notification_title_one_format">A alterar contexto SELinux de “%1$s”</string>
     <plurals name="file_job_set_selinux_context_notification_title_multiple_format">
         <item quantity="one">A alterar contexto SELinux de %1$,d ficheiro</item>
-        <item quantity="many">A alterar contexto SELinux de %1$,d ficheiros</item>
         <item quantity="other">A alterar contexto SELinux de %1$,d ficheiros</item>
     </plurals>
     <plurals name="file_job_restore_selinux_context_scan_notification_title_format">
         <item quantity="one">A preparar para repor o contexto SELinux de %1$,d ficheiro</item>
-        <item quantity="many">A preparar para repor o contexto SELinux de %1$,d ficheiros</item>
         <item quantity="other">A preparar para repor o contexto SELinux de %1$,d ficheiros</item>
     </plurals>
     <string name="file_job_restore_selinux_context_notification_title_one_format">A repor contexto SELinux de “%1$s”</string>
     <plurals name="file_job_restore_selinux_context_notification_title_multiple_format">
         <item quantity="one">A repor contexto SELinux de %1$,d ficheiro</item>
-        <item quantity="many">A repor contexto SELinux de %1$,d ficheiros</item>
         <item quantity="other">A repor contexto SELinux de %1$,d ficheiros</item>
     </plurals>
     <string name="file_job_transfer_count_notification_text_multiple_format">%1$,d / %2$,d</string>
@@ -239,7 +217,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">Ocorreu um erro ao repor o contexto SELinux para “%1$s”.\n%2$s</string>
     <string name="file_job_write_error_title">Erro ao escrever</string>
     <string name="file_job_write_error_message_format">Ocorreu um erro ao escrever “%1$s”.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">Ocorreu um erro ao obter informação de “%1$s”.</string>
     <string name="file_job_remount_format">Remontar “%1$s” como apenas leitura</string>
     <string name="file_job_remount_loading_format">A remontar “%1$s” como apenas leitura…</string>
     <string name="file_job_remount_success_format">“%1$s” foi remontado como apenas leitura</string>
@@ -265,17 +242,14 @@
     <string name="file_delete_message_directory_format">Eliminar a pasta “%1$s” e todo o seu conteúdo?</string>
     <plurals name="file_delete_message_multiple_files_format">
         <item quantity="one">Eliminar %1$,d ficheiro?</item>
-        <item quantity="many">Eliminar %1$,d ficheiros?</item>
         <item quantity="other">Eliminar %1$,d ficheiros?</item>
     </plurals>
     <plurals name="file_delete_message_multiple_directories_format">
         <item quantity="one">Eliminar %1$,d pasta e todo o seu conteúdo?</item>
-        <item quantity="many">Eliminar %1$,d pastas e todo o seu conteúdo?</item>
         <item quantity="other">Eliminar %1$,d pastas e todo o seu conteúdo?</item>
     </plurals>
     <plurals name="file_delete_message_multiple_mixed_format">
         <item quantity="one">Eliminar %1$,d item?</item>
-        <item quantity="many">Eliminar %1$,d itens?</item>
         <item quantity="other">Eliminar %1$,d itens?</item>
     </plurals>
     <string name="file_create_archive_title">Criar arquivo</string>
@@ -290,12 +264,10 @@
     <string name="file_list_title">Ficheiros</string>
     <plurals name="file_list_subtitle_directory_count_format">
         <item quantity="one">%1$,d pasta</item>
-        <item quantity="many">%1$,d pastas</item>
         <item quantity="other">%1$,d pastas</item>
     </plurals>
     <plurals name="file_list_subtitle_file_count_format">
         <item quantity="one">%1$,d ficheiro</item>
-        <item quantity="many">%1$,d ficheiros</item>
         <item quantity="other">%1$,d ficheiros</item>
     </plurals>
     <string name="file_list_subtitle_separator">,\u0020</string>
@@ -347,14 +319,12 @@
     <string name="file_properties_basic_contents">Conteúdo</string>
     <plurals name="file_properties_basic_contents_format">
         <item quantity="one">%1$,d item, tamanho: %2$s</item>
-        <item quantity="many">%1$,d itens, tamanho: %2$s</item>
         <item quantity="other">%1$,d itens, tamanho: %2$s</item>
     </plurals>
     <string name="file_properties_basic_last_modification_time">Última modificação</string>
     <string name="file_properties_basic_parent_directory">Pasta principal</string>
     <string name="file_properties_basic_archive_file">Arquivo</string>
     <string name="file_properties_basic_archive_entry">Entrada de arquivo</string>
-    <string name="file_properties_basic_free_space">Espaço livre</string>
     <string name="file_properties_image">Imagem</string>
     <string name="file_properties_media_dimensions">Dimensões</string>
     <string name="file_properties_media_dimensions_format">%1$d \u00d7 %2$d</string>
@@ -404,7 +374,6 @@
     <string name="file_properties_apk_requested_permissions_zero">Não necessita de permissões</string>
     <plurals name="file_properties_apk_requested_permissions_positive_format">
         <item quantity="one">Necessita de %1$,d permissão</item>
-        <item quantity="many">Necessita de %1$,d permissões</item>
         <item quantity="other">Necessita de %1$,d permissões</item>
     </plurals>
     <string name="file_properties_apk_signature_digests">Assinaturas</string>
@@ -556,11 +525,7 @@
     <string name="image_viewer_title">Visualizador de imagens</string>
     <string name="image_viewer_subtitle_format">%1$,d/%2$,d</string>
     <string name="text_editor_title">Editor de texto</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">Guardado</string>
     <string name="text_editor_reload_message">Tem a certeza de que deseja recarregar? As alterações não guardadas serão perdidas.</string>
-    <string name="text_editor_encoding">Codificação</string>
     <string name="text_editor_close_message">Tem certeza de que deseja descartar as alterações efetuadas a este documento?</string>
 
     <string name="ftp_server_title">Servidor FTP</string>
@@ -617,7 +582,6 @@
     <string name="settings_root_strategy_title">Modo de acesso root</string>
     <plurals name="settings_root_strategy_message_format">
         <item quantity="one">Tem %1$,d operação de ficheiro em execução e se alterar o modo de acesso root agora podem ocorrer erros inesperados. Tem a certeza de que deseja alterar agora?</item>
-        <item quantity="many">Tem %1$,d operações de ficheiro em execução e se alterar o modo de acesso root agora podem ocorrer erros inesperados. Tem a certeza de que deseja alterar agora?</item>
         <item quantity="other">Tem %1$,d operações de ficheiro em execução e se alterar o modo de acesso root agora podem ocorrer erros inesperados. Tem a certeza de que deseja alterar agora?</item>
     </plurals>
     <string-array name="settings_root_strategy_entries">

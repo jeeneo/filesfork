@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive
+package me.zhanghai.android.filesfork.provider.archive
 
 import android.os.Parcelable
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.ParcelableParceler
 
 @Parcelize
 internal data class ArchiveFileKey(

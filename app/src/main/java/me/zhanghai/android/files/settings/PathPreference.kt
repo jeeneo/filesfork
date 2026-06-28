@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,11 +17,11 @@ import androidx.preference.Preference
 import com.takisoft.preferencex.PreferenceActivityResultListener
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import java8.nio.file.Path
-import me.zhanghai.android.files.filelist.FileListActivity
-import me.zhanghai.android.files.filelist.toUserFriendlyString
-import me.zhanghai.android.files.navigation.NavigationRootMapLiveData
-import me.zhanghai.android.files.util.startActivityForResultSafe
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.filelist.FileListActivity
+import me.zhanghai.android.filesfork.filelist.toUserFriendlyString
+import me.zhanghai.android.filesfork.navigation.NavigationRootMapLiveData
+import me.zhanghai.android.filesfork.util.startActivityForResultSafe
+import me.zhanghai.android.filesfork.util.valueCompat
 
 abstract class PathPreference : Preference, PreferenceActivityResultListener {
     private val openPathContract = FileListActivity.OpenDirectoryContract()

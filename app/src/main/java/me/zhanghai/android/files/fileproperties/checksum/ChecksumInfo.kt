@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.checksum
+package me.zhanghai.android.filesfork.fileproperties.checksum
 
 import androidx.annotation.StringRes
-import me.zhanghai.android.files.R
+import me.zhanghai.android.filesfork.R
 import java.security.MessageDigest
 
 class ChecksumInfo(val checksums: Map<Algorithm, String>) {

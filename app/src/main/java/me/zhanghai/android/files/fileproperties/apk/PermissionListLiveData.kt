@@ -3,17 +3,17 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.apk
+package me.zhanghai.android.filesfork.fileproperties.apk
 
 import android.os.AsyncTask
 import androidx.lifecycle.MutableLiveData
-import me.zhanghai.android.files.app.packageManager
-import me.zhanghai.android.files.util.Failure
-import me.zhanghai.android.files.util.Loading
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.Success
-import me.zhanghai.android.files.util.getPermissionInfoOrNull
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.app.packageManager
+import me.zhanghai.android.filesfork.util.Failure
+import me.zhanghai.android.filesfork.util.Loading
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.Success
+import me.zhanghai.android.filesfork.util.getPermissionInfoOrNull
+import me.zhanghai.android.filesfork.util.valueCompat
 
 class PermissionListLiveData(
     private val permissionNames: Array<String>

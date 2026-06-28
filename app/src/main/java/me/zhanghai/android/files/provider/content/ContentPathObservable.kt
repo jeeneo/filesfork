@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.content
+package me.zhanghai.android.filesfork.provider.content
 
 import android.database.ContentObserver
 import android.database.Cursor
 import android.net.Uri
-import me.zhanghai.android.files.provider.common.AbstractPathObservable
-import me.zhanghai.android.files.provider.content.resolver.Resolver
-import me.zhanghai.android.files.provider.content.resolver.ResolverException
+import me.zhanghai.android.filesfork.provider.common.AbstractPathObservable
+import me.zhanghai.android.filesfork.provider.content.resolver.Resolver
+import me.zhanghai.android.filesfork.provider.content.resolver.ResolverException
 
 internal class ContentPathObservable(
     uri: Uri,

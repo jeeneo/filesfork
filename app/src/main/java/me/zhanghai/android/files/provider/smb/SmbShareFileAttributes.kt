@@ -3,18 +3,18 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb
+package me.zhanghai.android.filesfork.provider.smb
 
 import android.os.Parcelable
 import java8.nio.file.attribute.FileTime
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.provider.common.AbstractBasicFileAttributes
-import me.zhanghai.android.files.provider.common.BasicFileType
-import me.zhanghai.android.files.provider.common.EPOCH
-import me.zhanghai.android.files.provider.common.FileTimeParceler
-import me.zhanghai.android.files.provider.smb.client.ShareInformation
-import me.zhanghai.android.files.provider.smb.client.ShareType
+import me.zhanghai.android.filesfork.provider.common.AbstractBasicFileAttributes
+import me.zhanghai.android.filesfork.provider.common.BasicFileType
+import me.zhanghai.android.filesfork.provider.common.EPOCH
+import me.zhanghai.android.filesfork.provider.common.FileTimeParceler
+import me.zhanghai.android.filesfork.provider.smb.client.ShareInformation
+import me.zhanghai.android.filesfork.provider.smb.client.ShareType
 
 @Parcelize
 internal class SmbShareFileAttributes(

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.content.res.Resources
 import android.graphics.Canvas
@@ -11,7 +11,7 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.appcompat.graphics.drawable.DrawableWrapperCompat
-import me.zhanghai.android.files.compat.layoutDirectionCompat
+import me.zhanghai.android.filesfork.compat.layoutDirectionCompat
 
 class AutoMirrorDrawable(drawable: Drawable) : DrawableWrapperCompat(drawable) {
     override fun draw(canvas: Canvas) {

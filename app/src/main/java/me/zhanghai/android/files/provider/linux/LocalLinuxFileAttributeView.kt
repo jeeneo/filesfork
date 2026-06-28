@@ -3,20 +3,20 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.linux
+package me.zhanghai.android.filesfork.provider.linux
 
 import android.system.OsConstants
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.provider.common.ByteString
-import me.zhanghai.android.files.provider.common.PosixFileAttributeView
-import me.zhanghai.android.files.provider.common.PosixFileModeBit
-import me.zhanghai.android.files.provider.common.PosixGroup
-import me.zhanghai.android.files.provider.common.PosixUser
-import me.zhanghai.android.files.provider.common.toInt
-import me.zhanghai.android.files.provider.linux.syscall.Constants
-import me.zhanghai.android.files.provider.linux.syscall.StructTimespec
-import me.zhanghai.android.files.provider.linux.syscall.Syscall
-import me.zhanghai.android.files.provider.linux.syscall.SyscallException
+import me.zhanghai.android.filesfork.provider.common.ByteString
+import me.zhanghai.android.filesfork.provider.common.PosixFileAttributeView
+import me.zhanghai.android.filesfork.provider.common.PosixFileModeBit
+import me.zhanghai.android.filesfork.provider.common.PosixGroup
+import me.zhanghai.android.filesfork.provider.common.PosixUser
+import me.zhanghai.android.filesfork.provider.common.toInt
+import me.zhanghai.android.filesfork.provider.linux.syscall.Constants
+import me.zhanghai.android.filesfork.provider.linux.syscall.StructTimespec
+import me.zhanghai.android.filesfork.provider.linux.syscall.Syscall
+import me.zhanghai.android.filesfork.provider.linux.syscall.SyscallException
 import java.io.IOException
 
 internal class LocalLinuxFileAttributeView(

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.storage
+package me.zhanghai.android.filesfork.storage
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,16 +13,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.databinding.AddLanSmbServerFragmentBinding
-import me.zhanghai.android.files.ui.StaticAdapter
-import me.zhanghai.android.files.util.Failure
-import me.zhanghai.android.files.util.Loading
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.fadeToVisibilityUnsafe
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.launchSafe
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.databinding.AddLanSmbServerFragmentBinding
+import me.zhanghai.android.filesfork.ui.StaticAdapter
+import me.zhanghai.android.filesfork.util.Failure
+import me.zhanghai.android.filesfork.util.Loading
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.fadeToVisibilityUnsafe
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.launchSafe
+import me.zhanghai.android.filesfork.util.viewModels
 
 class AddLanSmbServerFragment : Fragment() {
     private val addSmbServerLauncher = registerForActivityResult(

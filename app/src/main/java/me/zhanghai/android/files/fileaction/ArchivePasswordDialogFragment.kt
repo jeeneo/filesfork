@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileaction
+package me.zhanghai.android.filesfork.fileaction
 
 import android.app.Dialog
 import android.content.Context
@@ -22,26 +22,26 @@ import java8.nio.file.Path
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.requireViewByIdCompat
-import me.zhanghai.android.files.databinding.ArchivePasswordDialogBinding
-import me.zhanghai.android.files.provider.archive.archiveAddPassword
-import me.zhanghai.android.files.provider.archive.archiveFile
-import me.zhanghai.android.files.ui.AllowSoftInputHackAlertDialogCustomView
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.ParcelableParceler
-import me.zhanghai.android.files.util.ParcelableState
-import me.zhanghai.android.files.util.RemoteCallback
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.getArgs
-import me.zhanghai.android.files.util.getState
-import me.zhanghai.android.files.util.hideTextInputLayoutErrorOnTextChange
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.putState
-import me.zhanghai.android.files.util.readParcelable
-import me.zhanghai.android.files.util.setOnEditorConfirmActionListener
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.requireViewByIdCompat
+import me.zhanghai.android.filesfork.databinding.ArchivePasswordDialogBinding
+import me.zhanghai.android.filesfork.provider.archive.archiveAddPassword
+import me.zhanghai.android.filesfork.provider.archive.archiveFile
+import me.zhanghai.android.filesfork.ui.AllowSoftInputHackAlertDialogCustomView
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.ParcelableState
+import me.zhanghai.android.filesfork.util.RemoteCallback
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.getArgs
+import me.zhanghai.android.filesfork.util.getState
+import me.zhanghai.android.filesfork.util.hideTextInputLayoutErrorOnTextChange
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.putState
+import me.zhanghai.android.filesfork.util.readParcelable
+import me.zhanghai.android.filesfork.util.setOnEditorConfirmActionListener
 
 class ArchivePasswordDialogFragment : AppCompatDialogFragment() {
     private val args by args<Args>()

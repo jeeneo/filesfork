@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive
+package me.zhanghai.android.filesfork.provider.archive
 
 import android.system.OsConstants
 import java8.nio.file.FileSystemException
 import java8.nio.file.Path
-import me.zhanghai.android.files.provider.common.DelegateInputStream
+import me.zhanghai.android.filesfork.provider.common.DelegateInputStream
 import me.zhanghai.android.libarchive.ArchiveException
 import java.io.IOException
 import java.io.InputStream

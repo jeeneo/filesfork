@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.common
+package me.zhanghai.android.filesfork.provider.common
 
 import android.os.Parcelable
 import java8.nio.file.attribute.BasicFileAttributes
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.file.MimeType
+import me.zhanghai.android.filesfork.file.MimeType
 
 interface ContentProviderFileAttributes : BasicFileAttributes {
     override fun lastAccessTime(): FileTime = lastModifiedTime()

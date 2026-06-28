@@ -3,26 +3,28 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.os.Environment
 import android.text.TextUtils
 import java8.nio.file.Path
 import java8.nio.file.Paths
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.compat.EnvironmentCompat2
-import me.zhanghai.android.files.filelist.FileSortOptions
-import me.zhanghai.android.files.filelist.FileViewType
-import me.zhanghai.android.files.filelist.OpenApkDefaultAction
-import me.zhanghai.android.files.navigation.BookmarkDirectory
-import me.zhanghai.android.files.navigation.StandardDirectorySettings
-import me.zhanghai.android.files.provider.root.RootStrategy
-import me.zhanghai.android.files.storage.FileSystemRoot
-import me.zhanghai.android.files.storage.PrimaryStorageVolume
-import me.zhanghai.android.files.storage.Storage
-import me.zhanghai.android.files.theme.custom.ThemeColor
-import me.zhanghai.android.files.theme.night.NightMode
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.compat.EnvironmentCompat2
+import me.zhanghai.android.filesfork.filelist.CalcSizesOption
+import me.zhanghai.android.filesfork.filelist.ArchiveType
+import me.zhanghai.android.filesfork.filelist.FileSortOptions
+import me.zhanghai.android.filesfork.filelist.FileViewType
+import me.zhanghai.android.filesfork.filelist.OpenApkDefaultAction
+import me.zhanghai.android.filesfork.navigation.BookmarkDirectory
+import me.zhanghai.android.filesfork.navigation.StandardDirectorySettings
+import me.zhanghai.android.filesfork.provider.root.RootStrategy
+import me.zhanghai.android.filesfork.storage.FileSystemRoot
+import me.zhanghai.android.filesfork.storage.PrimaryStorageVolume
+import me.zhanghai.android.filesfork.storage.Storage
+import me.zhanghai.android.filesfork.theme.custom.ThemeColor
+import me.zhanghai.android.filesfork.theme.night.NightMode
 import java.io.File
 
 object Settings {
@@ -63,8 +65,16 @@ object Settings {
             FileSortOptions(FileSortOptions.By.NAME, FileSortOptions.Order.ASCENDING, true)
         )
 
-    val CREATE_ARCHIVE_TYPE: SettingLiveData<Int> =
-        ResourceIdSettingLiveData(R.string.pref_key_create_archive_type, R.id.zipRadio)
+    val CREATE_ARCHIVE_TYPE: SettingLiveData<ArchiveType> =
+        ArchiveTypeSettingLiveData(
+            R.string.pref_key_create_archive_type, R.string.pref_default_value_create_archive_type
+        )
+
+    val CREATE_ARCHIVE_COMPRESSION_LEVEL: SettingLiveData<Int> =
+        IntegerSettingLiveData(
+            R.string.pref_key_create_archive_compression_level,
+            R.integer.pref_default_value_create_archive_compression_level
+        )
 
     val FTP_SERVER_ANONYMOUS_LOGIN: SettingLiveData<Boolean> =
         BooleanSettingLiveData(
@@ -124,6 +134,18 @@ object Settings {
     val FILE_LIST_ANIMATION: SettingLiveData<Boolean> =
         BooleanSettingLiveData(
             R.string.pref_key_file_list_animation, R.bool.pref_default_value_file_list_animation
+        )
+
+    val FILE_LIST_DENSE_LAYOUT: SettingLiveData<Boolean> =
+        BooleanSettingLiveData(
+            R.string.pref_key_file_list_dense_layout, R.bool.pref_default_value_file_list_dense_layout
+        )
+        
+    val FILE_LIST_CALC_SIZES: SettingLiveData<CalcSizesOption> =
+        EnumSettingLiveData(
+            R.string.pref_key_file_list_calc_sizes,
+            R.string.pref_default_value_file_list_calc_sizes,
+            CalcSizesOption::class.java
         )
 
     val FILE_NAME_ELLIPSIZE: SettingLiveData<TextUtils.TruncateAt> =

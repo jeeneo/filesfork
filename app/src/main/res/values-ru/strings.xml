@@ -52,7 +52,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">Приложение не найдено для обработки данного действия</string>
     <string name="open_settings">Открыть настройки</string>
-    <string name="shortcut_created">Ярлык создан</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="one">%1$,d байт</item>
@@ -260,7 +259,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">Произошла ошибка при восстановлении контекста SELinux для “%1$s”.\n%2$s</string>
     <string name="file_job_write_error_title">Ошибка во время записи</string>
     <string name="file_job_write_error_message_format">Произошла ошибка записи “%1$s”.\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">Произошла ошибка при получении информации о “%1$s”.</string>
     <string name="file_job_remount_format">Перемонтировать “%1$s” в режим чтение-запись</string>
     <string name="file_job_remount_loading_format">Перемонтирование “%1$s” в режим чтение-запись…</string>
     <string name="file_job_remount_success_format">“%1$s” был перемонтирован в режим чтение-запись</string>
@@ -397,7 +395,6 @@
     <string name="file_properties_basic_parent_directory">Родительская папка</string>
     <string name="file_properties_basic_archive_file">Файл архива</string>
     <string name="file_properties_basic_archive_entry">Элемент архива</string>
-    <string name="file_properties_basic_free_space">Свободное место</string>
     <string name="file_properties_permission">Разрешения</string>
     <string name="file_properties_permission_owner">Владелец</string>
     <string name="file_properties_permission_group">Группа</string>
@@ -647,11 +644,7 @@
     <string name="save_as_error">Ошибка при сохранении файла</string>
     <string name="save_as_success_format">“%1$s” было сохранено в “%2$s”</string>
     <string name="text_editor_title">Текстовый редактор</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">Сохранено</string>
     <string name="text_editor_reload_message">Вы уверены что хотите перезагрузить? Несохраненные изменения в  документе будут потеряны.</string>
-    <string name="text_editor_encoding">Кодировка</string>
     <string name="text_editor_close_message">Вы уверены что хотите отказаться от несохраненных изменений в документе?</string>
 
     <string name="ftp_server_title">FTP-сервер</string>

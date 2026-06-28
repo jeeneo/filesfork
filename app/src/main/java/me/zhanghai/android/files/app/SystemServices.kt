@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.app
+package me.zhanghai.android.filesfork.app
 
 import android.content.ClipboardManager
 import android.content.ContentResolver
@@ -15,8 +15,8 @@ import android.os.storage.StorageManager
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager
-import me.zhanghai.android.files.compat.getSystemServiceCompat
-import me.zhanghai.android.files.compat.mainExecutorCompat
+import me.zhanghai.android.filesfork.compat.getSystemServiceCompat
+import me.zhanghai.android.filesfork.compat.mainExecutorCompat
 import okhttp3.OkHttpClient
 import java.util.concurrent.Executor
 

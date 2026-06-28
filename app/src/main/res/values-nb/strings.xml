@@ -50,7 +50,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">Fant ingen apper som kan utføre denne handlingen</string>
     <string name="open_settings">Åpne innstillingene</string>
-    <string name="shortcut_created">Snarveien er opprettet</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="one">%1$,d byte</item>
@@ -216,7 +215,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">Det oppsto en feil under gjenoppretting av SELinux-kontekst for «%1$s».\n%2$s</string>
     <string name="file_job_write_error_title">Feil under skriving</string>
     <string name="file_job_write_error_message_format">Det oppsto en feil under skriving til «%1$s».\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">Det oppsto en feil under henting av informasjon om «%1$s».</string>
     <string name="file_job_remount_format">Koble til «%1$s» på nytt med lese- og skrivetilgang</string>
     <string name="file_job_remount_loading_format">Kobler til «%1$s» på nytt med lese- og skrivetilgang …</string>
     <string name="file_job_remount_success_format">«%1$s» er koblet til på nytt med lese- og skrivetilgang</string>
@@ -337,7 +335,6 @@
     <string name="file_properties_basic_parent_directory">Overordnet mappe</string>
     <string name="file_properties_basic_archive_file">Arkivfil</string>
     <string name="file_properties_basic_archive_entry">Arkivoppføring</string>
-    <string name="file_properties_basic_free_space">Ledig plass</string>
     <string name="file_properties_permission">Tillatelser</string>
     <string name="file_properties_permission_owner">Eier</string>
     <string name="file_properties_permission_group">Gruppe</string>
@@ -585,11 +582,7 @@
     <string name="save_as_error">Feil under lagring av fil</string>
     <string name="save_as_success_format">«%1$s» er lagret i «%2$s»</string>
     <string name="text_editor_title">Tekstredigering</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">Lagret</string>
     <string name="text_editor_reload_message">Er du sikker på at du vil laste inn på nytt? Ulagrede endringer i dette dokumentet vil gå tapt.</string>
-    <string name="text_editor_encoding">Tegnkoding</string>
     <string name="text_editor_close_message">Er du sikker på at du vil forkaste de ulagrede endringene i dette dokumentet?</string>
 
     <string name="ftp_server_title">FTP-tjener</string>

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filejob
+package me.zhanghai.android.filesfork.filejob
 
 import android.app.Dialog
 import android.content.Context
@@ -27,32 +27,32 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parceler
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.coil.AppIconPackageName
-import me.zhanghai.android.files.compat.requireViewByIdCompat
-import me.zhanghai.android.files.databinding.FileJobConflictDialogViewBinding
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.file.fileSize
-import me.zhanghai.android.files.file.formatShort
-import me.zhanghai.android.files.file.iconRes
-import me.zhanghai.android.files.file.lastModifiedInstant
-import me.zhanghai.android.files.filelist.appDirectoryPackageName
-import me.zhanghai.android.files.filelist.supportsThumbnail
-import me.zhanghai.android.files.provider.common.isEncrypted
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.ParcelableState
-import me.zhanghai.android.files.util.RemoteCallback
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.finish
-import me.zhanghai.android.files.util.getArgs
-import me.zhanghai.android.files.util.getState
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.putState
-import me.zhanghai.android.files.util.readParcelable
-import me.zhanghai.android.files.util.setTextWithSelection
-import me.zhanghai.android.files.util.shortAnimTime
-import me.zhanghai.android.files.util.showSoftInput
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.coil.AppIconPackageName
+import me.zhanghai.android.filesfork.compat.requireViewByIdCompat
+import me.zhanghai.android.filesfork.databinding.FileJobConflictDialogViewBinding
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.file.fileSize
+import me.zhanghai.android.filesfork.file.formatShort
+import me.zhanghai.android.filesfork.file.iconRes
+import me.zhanghai.android.filesfork.file.lastModifiedInstant
+import me.zhanghai.android.filesfork.filelist.appDirectoryPackageName
+import me.zhanghai.android.filesfork.filelist.supportsThumbnail
+import me.zhanghai.android.filesfork.provider.common.isEncrypted
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.ParcelableState
+import me.zhanghai.android.filesfork.util.RemoteCallback
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.finish
+import me.zhanghai.android.filesfork.util.getArgs
+import me.zhanghai.android.filesfork.util.getState
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.putState
+import me.zhanghai.android.filesfork.util.readParcelable
+import me.zhanghai.android.filesfork.util.setTextWithSelection
+import me.zhanghai.android.filesfork.util.shortAnimTime
+import me.zhanghai.android.filesfork.util.showSoftInput
 
 class FileJobConflictDialogFragment : AppCompatDialogFragment() {
     private val args by args<Args>()
@@ -145,7 +145,7 @@ class FileJobConflictDialogFragment : AppCompatDialogFragment() {
             }
     }
 
-    /** @see me.zhanghai.android.files.filelist.FileListAdapter.onBindViewHolder */
+    /** @see me.zhanghai.android.filesfork.filelist.FileListAdapter.onBindViewHolder */
     private fun bindFileItem(
         file: FileItem,
         iconImage: ImageView,

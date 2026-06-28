@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb
+package me.zhanghai.android.filesfork.provider.smb
 
 import android.os.Parcelable
 import com.hierynomus.msfscc.FileAttributes
@@ -11,11 +11,11 @@ import java.time.Instant
 import java8.nio.file.attribute.FileTime
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.provider.common.AbstractBasicFileAttributes
-import me.zhanghai.android.files.provider.common.BasicFileType
-import me.zhanghai.android.files.provider.common.FileTimeParceler
-import me.zhanghai.android.files.provider.smb.client.FileInformation
-import me.zhanghai.android.files.util.hasBits
+import me.zhanghai.android.filesfork.provider.common.AbstractBasicFileAttributes
+import me.zhanghai.android.filesfork.provider.common.BasicFileType
+import me.zhanghai.android.filesfork.provider.common.FileTimeParceler
+import me.zhanghai.android.filesfork.provider.smb.client.FileInformation
+import me.zhanghai.android.filesfork.util.hasBits
 
 @Parcelize
 internal class SmbFileAttributes(

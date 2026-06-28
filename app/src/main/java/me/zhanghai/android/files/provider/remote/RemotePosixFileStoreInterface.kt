@@ -3,9 +3,9 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
-import me.zhanghai.android.files.provider.common.PosixFileStore
+import me.zhanghai.android.filesfork.provider.common.PosixFileStore
 
 class RemotePosixFileStoreInterface(
     private val fileStore: PosixFileStore

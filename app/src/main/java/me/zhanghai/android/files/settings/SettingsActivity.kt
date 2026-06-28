@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,15 +17,15 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.app.AppActivity
-import me.zhanghai.android.files.theme.custom.CustomThemeHelper.OnThemeChangedListener
-import me.zhanghai.android.files.theme.night.NightModeHelper.OnNightModeChangedListener
-import me.zhanghai.android.files.util.BundleParceler
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.createIntent
-import me.zhanghai.android.files.util.getArgsOrNull
-import me.zhanghai.android.files.util.putArgs
-import me.zhanghai.android.files.util.startActivitySafe
+import me.zhanghai.android.filesfork.app.AppActivity
+import me.zhanghai.android.filesfork.theme.custom.CustomThemeHelper.OnThemeChangedListener
+import me.zhanghai.android.filesfork.theme.night.NightModeHelper.OnNightModeChangedListener
+import me.zhanghai.android.filesfork.util.BundleParceler
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.createIntent
+import me.zhanghai.android.filesfork.util.getArgsOrNull
+import me.zhanghai.android.filesfork.util.putArgs
+import me.zhanghai.android.filesfork.util.startActivitySafe
 
 class SettingsActivity : AppActivity(), OnThemeChangedListener, OnNightModeChangedListener {
     private var isRestarting = false

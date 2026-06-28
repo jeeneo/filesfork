@@ -3,31 +3,36 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive.archiver
+package me.zhanghai.android.filesfork.provider.archive.archiver
 
 import java8.nio.channels.SeekableByteChannel
 import java8.nio.file.LinkOption
 import java8.nio.file.Path
 import java8.nio.file.attribute.BasicFileAttributes
-import me.zhanghai.android.files.provider.common.PosixFileAttributes
-import me.zhanghai.android.files.provider.common.PosixFileMode
-import me.zhanghai.android.files.provider.common.PosixFileType
-import me.zhanghai.android.files.provider.common.copyTo
-import me.zhanghai.android.files.provider.common.getLastModifiedTime
-import me.zhanghai.android.files.provider.common.newInputStream
-import me.zhanghai.android.files.provider.common.readAttributes
-import me.zhanghai.android.files.provider.common.readSymbolicLinkByteString
-import me.zhanghai.android.files.provider.common.size
+import me.zhanghai.android.filesfork.provider.common.PosixFileAttributes
+import me.zhanghai.android.filesfork.provider.common.PosixFileMode
+import me.zhanghai.android.filesfork.provider.common.PosixFileType
+import me.zhanghai.android.filesfork.provider.common.copyTo
+import me.zhanghai.android.filesfork.provider.common.getLastModifiedTime
+import me.zhanghai.android.filesfork.provider.common.newInputStream
+import me.zhanghai.android.filesfork.provider.common.readAttributes
+import me.zhanghai.android.filesfork.provider.common.readSymbolicLinkByteString
+import me.zhanghai.android.filesfork.provider.common.size
+import me.zhanghai.android.filesfork.filelist.CompressionTarget
 import java.io.Closeable
 import java.io.IOException
+import java.io.InputStream
 
 class ArchiveWriter @Throws(IOException::class) constructor(
     channel: SeekableByteChannel,
     format: Int,
     filter: Int,
-    password: String?
+    compressionTarget: CompressionTarget,
+    password: String?,
+    compressionLevel: Int? = null
 ) : Closeable {
-    private val archive = WriteArchive(channel, format, filter, password)
+    private val archive =
+        WriteArchive(channel, format, filter, compressionTarget, password, compressionLevel)
 
     @Throws(IOException::class)
     fun write(file: Path, entryName: Path, intervalMillis: Long, listener: ((Long) -> Unit)?) {
@@ -68,6 +73,20 @@ class ArchiveWriter @Throws(IOException::class) constructor(
             }
         } else {
             listener?.invoke(attributes.size())
+        }
+    }
+
+    @Throws(IOException::class)
+    fun write(entry: ReadArchive.Entry, inputStream: InputStream?, listener: ((Long) -> Unit)?) {
+        archive.Entry(
+            entry.name, entry.lastModifiedTime, entry.lastAccessTime, entry.creationTime,
+            entry.type, entry.size, entry.owner, entry.group, entry.mode, entry.symbolicLinkTarget
+        ).use { archive.writeEntry(it) }
+        if (entry.type == PosixFileType.REGULAR_FILE) {
+            check(inputStream != null) { "inputStream == null" }
+            inputStream.copyTo(archive.newDataOutputStream(), 0, listener)
+        } else {
+            listener?.invoke(entry.size)
         }
     }
 

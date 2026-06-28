@@ -50,7 +50,6 @@
     <!-- android.R.string.app_not_found -->
     <string name="activity_not_found">未找到可處理此操作的程式</string>
     <string name="open_settings">開啟設定</string>
-    <string name="shortcut_created">已建立捷徑</string>
 
     <plurals name="size_in_bytes_format">
         <item quantity="other">%1$,d 位元組</item>
@@ -193,7 +192,6 @@
     <string name="file_job_restore_selinux_context_error_message_format">在還原「%1$s」的 SELinux 上下文時發生錯誤。\n%2$s</string>
     <string name="file_job_write_error_title">寫入時發生錯誤</string>
     <string name="file_job_write_error_message_format">在寫入「%1$s」時發生錯誤。\n%2$s</string>
-    <string name="file_job_get_information_error_message_format">在取得「%1$s」的資訊時發生錯誤。</string>
     <string name="file_job_remount_format">重新掛接「%1$s」為讀寫模式</string>
     <string name="file_job_remount_loading_format">正在重新掛接「%1$s」為讀寫模式…</string>
     <string name="file_job_remount_success_format">「%1$s」已被重新掛接為讀寫模式</string>
@@ -306,7 +304,6 @@
     <string name="file_properties_basic_parent_directory">父資料夾</string>
     <string name="file_properties_basic_archive_file">封存檔</string>
     <string name="file_properties_basic_archive_entry">封存條目</string>
-    <string name="file_properties_basic_free_space">可用空間</string>
     <string name="file_properties_permission">權限</string>
     <string name="file_properties_permission_owner">擁有者</string>
     <string name="file_properties_permission_group">群組</string>
@@ -555,11 +552,7 @@
     <string name="save_as_error">儲存時發生錯誤</string>
     <string name="save_as_success_format">已將「%1$s」儲存到「%2$s」</string>
     <string name="text_editor_title">文字編輯器</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
-    <string name="text_editor_save_success">已儲存</string>
     <string name="text_editor_reload_message">您確定要重新載入嗎？對此文件未儲存的變更將丟失。</string>
-    <string name="text_editor_encoding">編碼</string>
     <string name="text_editor_close_message">您確定要捨棄對此文件未儲存的變更嗎？</string>
 
     <string name="ftp_server_title">FTP 伺服器</string>

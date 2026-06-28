@@ -3,9 +3,9 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
-import me.zhanghai.android.files.file.MimeType
+import me.zhanghai.android.filesfork.file.MimeType
 
 class PickOptions(
     val mode: Mode,

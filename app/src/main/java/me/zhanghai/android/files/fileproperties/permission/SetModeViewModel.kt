@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.permission
+package me.zhanghai.android.filesfork.fileproperties.permission
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import me.zhanghai.android.files.provider.common.PosixFileModeBit
-import me.zhanghai.android.files.util.toEnumSet
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.provider.common.PosixFileModeBit
+import me.zhanghai.android.filesfork.util.toEnumSet
+import me.zhanghai.android.filesfork.util.valueCompat
 
 class SetModeViewModel(mode: Set<PosixFileModeBit>) : ViewModel() {
     private val _modeLiveData: MutableLiveData<Set<PosixFileModeBit>> = MutableLiveData(mode)

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.sftp.client
+package me.zhanghai.android.filesfork.provider.sftp.client
 
 import java8.nio.file.AccessDeniedException
 import java8.nio.file.DirectoryNotEmptyException
@@ -12,9 +12,9 @@ import java8.nio.file.FileSystemException
 import java8.nio.file.FileSystemLoopException
 import java8.nio.file.NoSuchFileException
 import java8.nio.file.NotDirectoryException
-import me.zhanghai.android.files.provider.common.InvalidFileNameException
-import me.zhanghai.android.files.provider.common.IsDirectoryException
-import me.zhanghai.android.files.provider.common.ReadOnlyFileSystemException
+import me.zhanghai.android.filesfork.provider.common.InvalidFileNameException
+import me.zhanghai.android.filesfork.provider.common.IsDirectoryException
+import me.zhanghai.android.filesfork.provider.common.ReadOnlyFileSystemException
 import net.schmizz.sshj.sftp.Response
 import net.schmizz.sshj.sftp.SFTPException
 

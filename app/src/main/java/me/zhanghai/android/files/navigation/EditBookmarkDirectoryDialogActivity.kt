@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.commit
-import me.zhanghai.android.files.app.AppActivity
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.putArgs
+import me.zhanghai.android.filesfork.app.AppActivity
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.putArgs
 
 class EditBookmarkDirectoryDialogActivity : AppActivity() {
     private val args by args<EditBookmarkDirectoryDialogFragment.Args>()

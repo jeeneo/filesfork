@@ -3,15 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.smb
+package me.zhanghai.android.filesfork.provider.smb
 
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.msfscc.FileAttributes
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2CreateOptions
 import com.hierynomus.mssmb2.SMB2ShareAccess
-import me.zhanghai.android.files.provider.common.OpenOptions
-import me.zhanghai.android.files.util.enumSetOf
+import me.zhanghai.android.filesfork.provider.common.OpenOptions
+import me.zhanghai.android.filesfork.util.enumSetOf
 
 internal fun OpenOptions.toSmbDesiredAccess(): Set<AccessMask> =
     enumSetOf<AccessMask>().apply {

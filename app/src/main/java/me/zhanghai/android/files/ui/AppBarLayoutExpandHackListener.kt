@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.ui
+package me.zhanghai.android.filesfork.ui
 
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView

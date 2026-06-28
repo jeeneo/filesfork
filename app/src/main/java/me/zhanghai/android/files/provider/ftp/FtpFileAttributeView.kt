@@ -3,12 +3,12 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.ftp
+package me.zhanghai.android.filesfork.provider.ftp
 
 import java8.nio.file.LinkOption
 import java8.nio.file.attribute.BasicFileAttributeView
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.provider.ftp.client.Client
+import me.zhanghai.android.filesfork.provider.ftp.client.Client
 import java.io.IOException
 
 internal class FtpFileAttributeView(

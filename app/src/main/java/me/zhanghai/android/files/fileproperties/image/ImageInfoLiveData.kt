@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.image
+package me.zhanghai.android.filesfork.fileproperties.image
 
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
@@ -11,15 +11,15 @@ import android.util.Size
 import androidx.exifinterface.media.ExifInterface
 import com.caverock.androidsvg.SVG
 import java8.nio.file.Path
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.fileproperties.PathObserverLiveData
-import me.zhanghai.android.files.provider.common.getLastModifiedTime
-import me.zhanghai.android.files.provider.common.newInputStream
-import me.zhanghai.android.files.util.Failure
-import me.zhanghai.android.files.util.Loading
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.Success
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.fileproperties.PathObserverLiveData
+import me.zhanghai.android.filesfork.provider.common.getLastModifiedTime
+import me.zhanghai.android.filesfork.provider.common.newInputStream
+import me.zhanghai.android.filesfork.util.Failure
+import me.zhanghai.android.filesfork.util.Loading
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.Success
+import me.zhanghai.android.filesfork.util.valueCompat
 import okio.buffer
 import okio.source
 import kotlin.math.roundToInt

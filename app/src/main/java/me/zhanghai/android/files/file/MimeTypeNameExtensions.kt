@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.file
+package me.zhanghai.android.filesfork.file
 
 import android.content.Context
-import me.zhanghai.android.files.R
+import me.zhanghai.android.filesfork.R
 
 fun MimeType.getName(extension: String, context: Context): String {
     val nameRes = specialPosixFileTypeToNameResMap[this]

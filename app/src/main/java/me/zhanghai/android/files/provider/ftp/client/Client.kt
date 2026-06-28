@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.ftp.client
+package me.zhanghai.android.filesfork.provider.ftp.client
 
 import java8.nio.file.Path as Java8Path
 import java.io.IOException
@@ -17,11 +17,11 @@ import java.util.Collections
 import java.util.Locale
 import java.util.WeakHashMap
 import java8.nio.channels.SeekableByteChannel
-import me.zhanghai.android.files.provider.common.DelegateInputStream
-import me.zhanghai.android.files.provider.common.DelegateOutputStream
-import me.zhanghai.android.files.provider.common.LocalWatchService
-import me.zhanghai.android.files.provider.common.NotifyEntryModifiedOutputStream
-import me.zhanghai.android.files.provider.common.NotifyEntryModifiedSeekableByteChannel
+import me.zhanghai.android.filesfork.provider.common.DelegateInputStream
+import me.zhanghai.android.filesfork.provider.common.DelegateOutputStream
+import me.zhanghai.android.filesfork.provider.common.LocalWatchService
+import me.zhanghai.android.filesfork.provider.common.NotifyEntryModifiedOutputStream
+import me.zhanghai.android.filesfork.provider.common.NotifyEntryModifiedSeekableByteChannel
 import org.apache.commons.net.ftp.FTPClient
 import org.apache.commons.net.ftp.FTPClientConfig
 import org.apache.commons.net.ftp.FTPCmd

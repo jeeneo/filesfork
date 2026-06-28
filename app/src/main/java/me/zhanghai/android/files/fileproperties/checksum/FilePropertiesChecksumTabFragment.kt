@@ -3,22 +3,22 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.checksum
+package me.zhanghai.android.filesfork.fileproperties.checksum
 
 import androidx.core.widget.doAfterTextChanged
 import java8.nio.file.Path
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.WriteWith
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.databinding.FilePropertiesChecksumCompareItemBinding
-import me.zhanghai.android.files.file.FileItem
-import me.zhanghai.android.files.fileproperties.FilePropertiesTabFragment
-import me.zhanghai.android.files.util.ParcelableArgs
-import me.zhanghai.android.files.util.ParcelableParceler
-import me.zhanghai.android.files.util.Stateful
-import me.zhanghai.android.files.util.args
-import me.zhanghai.android.files.util.layoutInflater
-import me.zhanghai.android.files.util.viewModels
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.databinding.FilePropertiesChecksumCompareItemBinding
+import me.zhanghai.android.filesfork.file.FileItem
+import me.zhanghai.android.filesfork.fileproperties.FilePropertiesTabFragment
+import me.zhanghai.android.filesfork.util.ParcelableArgs
+import me.zhanghai.android.filesfork.util.ParcelableParceler
+import me.zhanghai.android.filesfork.util.Stateful
+import me.zhanghai.android.filesfork.util.args
+import me.zhanghai.android.filesfork.util.layoutInflater
+import me.zhanghai.android.filesfork.util.viewModels
 
 class FilePropertiesChecksumTabFragment : FilePropertiesTabFragment() {
     private val args by args<Args>()

@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.remote
+package me.zhanghai.android.filesfork.provider.remote
 
-import me.zhanghai.android.files.provider.common.ParcelableFileTime
-import me.zhanghai.android.files.provider.common.ParcelablePosixFileMode
-import me.zhanghai.android.files.provider.common.PosixFileAttributeView
-import me.zhanghai.android.files.provider.common.PosixGroup
-import me.zhanghai.android.files.provider.common.PosixUser
+import me.zhanghai.android.filesfork.provider.common.ParcelableFileTime
+import me.zhanghai.android.filesfork.provider.common.ParcelablePosixFileMode
+import me.zhanghai.android.filesfork.provider.common.PosixFileAttributeView
+import me.zhanghai.android.filesfork.provider.common.PosixGroup
+import me.zhanghai.android.filesfork.provider.common.PosixUser
 
 class RemotePosixFileAttributeViewInterface(
     private val attributeView: PosixFileAttributeView

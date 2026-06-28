@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import java8.nio.file.Path
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.util.valueCompat
 
 class DefaultDirectoryPreference : PathPreference {
     constructor(context: Context) : super(context)

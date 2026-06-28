@@ -1,4 +1,4 @@
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.os.CancellationSignal
 import kotlinx.coroutines.DelicateCoroutinesApi

@@ -1,7 +1,7 @@
-package me.zhanghai.android.files.provider.ftp
+package me.zhanghai.android.filesfork.provider.ftp
 
 import java8.nio.file.FileSystemException
-import me.zhanghai.android.files.provider.ftp.client.NegativeReplyCodeException
+import me.zhanghai.android.filesfork.provider.ftp.client.NegativeReplyCodeException
 import java.io.IOException
 
 fun IOException.toFileSystemExceptionForFtp(

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.app.StatusBarManager
 import android.content.ComponentName
@@ -12,8 +12,8 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
-import me.zhanghai.android.files.app.application
-import me.zhanghai.android.files.app.packageManager
+import me.zhanghai.android.filesfork.app.application
+import me.zhanghai.android.filesfork.app.packageManager
 import java.util.concurrent.Executor
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)

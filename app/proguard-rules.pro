@@ -27,15 +27,15 @@
 }
 
 # App
--keep class me.zhanghai.android.files.** implements androidx.appcompat.view.CollapsibleActionView { *; }
--keep class me.zhanghai.android.files.provider.common.ByteString { *; }
--keep class me.zhanghai.android.files.provider.linux.syscall.** { *; }
+-keep class me.zhanghai.android.filesfork.** implements androidx.appcompat.view.CollapsibleActionView { *; }
+-keep class me.zhanghai.android.filesfork.provider.common.ByteString { *; }
+-keep class me.zhanghai.android.filesfork.provider.linux.syscall.** { *; }
 -keepnames class * extends java.lang.Exception
 # For Class.getEnumConstants()
 -keepclassmembers enum * {
     public static **[] values();
 }
--keepnames class me.zhanghai.android.files.** implements android.os.Parcelable
+-keepnames class me.zhanghai.android.filesfork.** implements android.os.Parcelable
 
 # Apache FtpServer
 -keepclassmembers class * implements org.apache.mina.core.service.IoProcessor {

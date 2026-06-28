@@ -3,15 +3,15 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.content
+package me.zhanghai.android.filesfork.provider.content
 
 import android.os.Parcel
 import android.os.Parcelable
 import java8.nio.file.attribute.BasicFileAttributeView
 import java8.nio.file.attribute.FileTime
-import me.zhanghai.android.files.provider.content.resolver.Resolver
-import me.zhanghai.android.files.provider.content.resolver.ResolverException
-import me.zhanghai.android.files.util.readParcelable
+import me.zhanghai.android.filesfork.provider.content.resolver.Resolver
+import me.zhanghai.android.filesfork.provider.content.resolver.ResolverException
+import me.zhanghai.android.filesfork.util.readParcelable
 import java.io.IOException
 
 internal class ContentFileAttributeView(

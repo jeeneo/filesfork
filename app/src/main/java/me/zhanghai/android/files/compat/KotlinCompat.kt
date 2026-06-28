@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.compat
+package me.zhanghai.android.filesfork.compat
 
 import kotlin.comparisons.reversed as kotlinReversed
 import kotlin.collections.removeFirst as kotlinRemoveFirst

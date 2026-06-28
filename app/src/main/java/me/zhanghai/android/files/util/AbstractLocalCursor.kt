@@ -1,4 +1,4 @@
-package me.zhanghai.android.files.util
+package me.zhanghai.android.filesfork.util
 
 import android.content.ContentResolver
 import android.database.CharArrayBuffer

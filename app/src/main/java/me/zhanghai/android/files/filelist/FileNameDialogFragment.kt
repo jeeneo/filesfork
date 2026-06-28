@@ -3,10 +3,10 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.filelist
+package me.zhanghai.android.filesfork.filelist
 
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.asFileNameOrNull
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.asFileNameOrNull
 
 abstract class FileNameDialogFragment : NameDialogFragment() {
     override val listener: Listener

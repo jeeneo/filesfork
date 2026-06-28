@@ -3,14 +3,14 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.archive
+package me.zhanghai.android.filesfork.provider.archive
 
 import java8.nio.file.Path
 import java8.nio.file.attribute.FileAttributeView
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.file.guessFromPath
-import me.zhanghai.android.files.provider.common.PosixFileStore
-import me.zhanghai.android.files.provider.common.size
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.file.guessFromPath
+import me.zhanghai.android.filesfork.provider.common.PosixFileStore
+import me.zhanghai.android.filesfork.provider.common.size
 import java.io.IOException
 
 internal class ArchiveFileStore(private val archiveFile: Path) : PosixFileStore() {

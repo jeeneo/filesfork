@@ -14,9 +14,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
-import me.zhanghai.android.files.R;
-import me.zhanghai.android.files.compat.ContextCompatKt;
-import me.zhanghai.android.files.util.ContextExtensionsKt;
+import me.zhanghai.android.filesfork.R;
+import me.zhanghai.android.filesfork.compat.ContextCompatKt;
+import me.zhanghai.android.filesfork.util.ContextExtensionsKt;
 
 public class ThemedSwipeRefreshLayout extends SwipeRefreshLayout {
     public ThemedSwipeRefreshLayout(@NonNull Context context) {

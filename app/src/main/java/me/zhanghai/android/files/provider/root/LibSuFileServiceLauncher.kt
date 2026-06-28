@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.root
+package me.zhanghai.android.filesfork.provider.root
 
 import android.content.ComponentName
 import android.content.Context
@@ -19,10 +19,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
-import me.zhanghai.android.files.provider.remote.IRemoteFileService
-import me.zhanghai.android.files.provider.remote.RemoteFileServiceInterface
-import me.zhanghai.android.files.provider.remote.RemoteFileSystemException
-import me.zhanghai.android.files.util.createIntent
+import me.zhanghai.android.filesfork.BuildConfig
+import me.zhanghai.android.filesfork.provider.remote.IRemoteFileService
+import me.zhanghai.android.filesfork.provider.remote.RemoteFileServiceInterface
+import me.zhanghai.android.filesfork.provider.remote.RemoteFileSystemException
+import me.zhanghai.android.filesfork.util.createIntent
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
@@ -32,7 +33,7 @@ object LibSuFileServiceLauncher {
     private val lock = Any()
 
     init {
-        Shell.enableVerboseLogging = true
+        Shell.enableVerboseLogging = BuildConfig.DEBUG
         Shell.setDefaultBuilder(
             Shell.Builder.create()
                 .setInitializers(LibSuShellInitializer::class.java)

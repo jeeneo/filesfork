@@ -3,16 +3,16 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.settings
+package me.zhanghai.android.filesfork.settings
 
 import android.os.Build
 import android.os.Bundle
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.theme.custom.CustomThemeHelper
-import me.zhanghai.android.files.theme.custom.ThemeColor
-import me.zhanghai.android.files.theme.night.NightMode
-import me.zhanghai.android.files.theme.night.NightModeHelper
-import me.zhanghai.android.files.ui.PreferenceFragmentCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.theme.custom.CustomThemeHelper
+import me.zhanghai.android.filesfork.theme.custom.ThemeColor
+import me.zhanghai.android.filesfork.theme.night.NightMode
+import me.zhanghai.android.filesfork.theme.night.NightModeHelper
+import me.zhanghai.android.filesfork.ui.PreferenceFragmentCompat
 
 class SettingsPreferenceFragment : PreferenceFragmentCompat() {
     private lateinit var localePreference: LocalePreference

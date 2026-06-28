@@ -3,13 +3,13 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.fileproperties.image
+package me.zhanghai.android.filesfork.fileproperties.image
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import java8.nio.file.Path
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.util.Stateful
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.util.Stateful
 
 class FilePropertiesImageTabViewModel(path: Path, mimeType: MimeType) : ViewModel() {
     private val _imageInfoLiveData = ImageInfoLiveData(path, mimeType)

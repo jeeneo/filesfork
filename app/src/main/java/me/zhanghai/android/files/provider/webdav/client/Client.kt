@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.provider.webdav.client
+package me.zhanghai.android.filesfork.provider.webdav.client
 
 import java8.nio.file.Path as Java8Path
 import okhttp3.Response as OkHttpResponse
@@ -32,10 +32,10 @@ import java.time.Instant
 import java.util.Collections
 import java.util.WeakHashMap
 import java8.nio.channels.SeekableByteChannel
-import me.zhanghai.android.files.app.okHttpClient
-import me.zhanghai.android.files.provider.common.LocalWatchService
-import me.zhanghai.android.files.provider.common.NotifyEntryModifiedOutputStream
-import me.zhanghai.android.files.provider.common.NotifyEntryModifiedSeekableByteChannel
+import me.zhanghai.android.filesfork.app.okHttpClient
+import me.zhanghai.android.filesfork.provider.common.LocalWatchService
+import me.zhanghai.android.filesfork.provider.common.NotifyEntryModifiedOutputStream
+import me.zhanghai.android.filesfork.provider.common.NotifyEntryModifiedSeekableByteChannel
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

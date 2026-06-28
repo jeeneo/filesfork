@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.navigation
+package me.zhanghai.android.filesfork.navigation
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import java8.nio.file.Path
-import me.zhanghai.android.files.databinding.NavigationFragmentBinding
-import me.zhanghai.android.files.util.startActivitySafe
+import me.zhanghai.android.filesfork.databinding.NavigationFragmentBinding
+import me.zhanghai.android.filesfork.util.startActivitySafe
 
 class NavigationFragment : Fragment(), NavigationItem.Listener {
     private lateinit var binding: NavigationFragmentBinding

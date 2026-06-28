@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package me.zhanghai.android.files.coil
+package me.zhanghai.android.filesfork.coil
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -21,38 +21,38 @@ import coil.request.Options
 import coil.size.Dimension
 import java8.nio.file.Path
 import java8.nio.file.attribute.BasicFileAttributes
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.compat.use
-import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.file.asMimeType
-import me.zhanghai.android.files.file.isApk
-import me.zhanghai.android.files.file.isImage
-import me.zhanghai.android.files.file.isMedia
-import me.zhanghai.android.files.file.isPdf
-import me.zhanghai.android.files.file.isVideo
-import me.zhanghai.android.files.file.lastModifiedInstant
-import me.zhanghai.android.files.filelist.isRemotePath
-import me.zhanghai.android.files.provider.common.AndroidFileTypeDetector
-import me.zhanghai.android.files.provider.common.newInputStream
-import me.zhanghai.android.files.provider.content.resolver.ResolverException
-import me.zhanghai.android.files.provider.document.documentSupportsThumbnail
-import me.zhanghai.android.files.provider.document.isDocumentPath
-import me.zhanghai.android.files.provider.document.resolver.DocumentResolver
-import me.zhanghai.android.files.provider.ftp.isFtpPath
-import me.zhanghai.android.files.provider.linux.isLinuxPath
-import me.zhanghai.android.files.settings.Settings
-import me.zhanghai.android.files.util.getDimensionPixelSize
-import me.zhanghai.android.files.util.getPackageArchiveInfoCompat
-import me.zhanghai.android.files.util.isGetPackageArchiveInfoCompatible
-import me.zhanghai.android.files.util.isMediaMetadataRetrieverCompatible
-import me.zhanghai.android.files.util.runWithCancellationSignal
-import me.zhanghai.android.files.util.setDataSource
-import me.zhanghai.android.files.util.valueCompat
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.compat.use
+import me.zhanghai.android.filesfork.file.MimeType
+import me.zhanghai.android.filesfork.file.asMimeType
+import me.zhanghai.android.filesfork.file.isApk
+import me.zhanghai.android.filesfork.file.isImage
+import me.zhanghai.android.filesfork.file.isMedia
+import me.zhanghai.android.filesfork.file.isPdf
+import me.zhanghai.android.filesfork.file.isVideo
+import me.zhanghai.android.filesfork.file.lastModifiedInstant
+import me.zhanghai.android.filesfork.filelist.isRemotePath
+import me.zhanghai.android.filesfork.provider.common.AndroidFileTypeDetector
+import me.zhanghai.android.filesfork.provider.common.newInputStream
+import me.zhanghai.android.filesfork.provider.content.resolver.ResolverException
+import me.zhanghai.android.filesfork.provider.document.documentSupportsThumbnail
+import me.zhanghai.android.filesfork.provider.document.isDocumentPath
+import me.zhanghai.android.filesfork.provider.document.resolver.DocumentResolver
+import me.zhanghai.android.filesfork.provider.ftp.isFtpPath
+import me.zhanghai.android.filesfork.provider.linux.isLinuxPath
+import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.util.getDimensionPixelSize
+import me.zhanghai.android.filesfork.util.getPackageArchiveInfoCompat
+import me.zhanghai.android.filesfork.util.isGetPackageArchiveInfoCompatible
+import me.zhanghai.android.filesfork.util.isMediaMetadataRetrieverCompatible
+import me.zhanghai.android.filesfork.util.runWithCancellationSignal
+import me.zhanghai.android.filesfork.util.setDataSource
+import me.zhanghai.android.filesfork.util.valueCompat
 import okio.buffer
 import okio.source
 import java.io.Closeable
 import java.io.IOException
-import me.zhanghai.android.files.util.setDataSource as appSetDataSource
+import me.zhanghai.android.filesfork.util.setDataSource as appSetDataSource
 
 class PathAttributesKeyer : Keyer<Pair<Path, BasicFileAttributes>> {
     override fun key(data: Pair<Path, BasicFileAttributes>, options: Options): String {
