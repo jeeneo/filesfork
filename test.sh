@@ -1,4 +1,5 @@
-#!/usr/bin/sh bash
+#!/bin/sh
+set -e
 
 ANDROID_HOME="$HOME/android/sdk"
 
@@ -19,12 +20,13 @@ mkdir -p "$ANDROID_HOME"
 echo "export ANDROID_HOME=$ANDROID_HOME" >> "$HOME/.bashrc"
 echo "export JAVA_HOME=/data/data/com.termux/files/usr/lib/jvm/java-21-openjdk" >> "$HOME/.bashrc"
 echo 'export GRADLE_OPTS="-Dorg.gradle.project.android.aapt2FromMavenOverride=${ANDROID_HOME}/build-tools/36.0.0/aapt2"' >> "$HOME/.bashrc"
-source "$HOME/.bashrc"
 
 if ! command -v bsdtar >/dev/null 2>&1; then
     # install bsdtar temporarily
-    pkg install bsdtar -y  &> /dev/null
+    pkg install bsdtar -y &> /dev/null
     installed_bsdtar=true
+else
+    installed_bsdtar=false
 fi
 
 # assume these aren't installed
@@ -36,9 +38,8 @@ pkg install $packages -y &> /dev/null
 
 # https://github.com/lzhiyong/termux-ndk
 echo "downloading NDK"
-# curl --progress-bar -L -o ndk.7z https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r29-aarch64.7z
+curl --progress-bar -L -o ndk.7z https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r29-aarch64.7z
 echo "extracting NDK"
-# echo "extracting NDK" >> "$logfile"
 mkdir -p "$HOME/.installtemp/ndk"
 bsdtar -C "$HOME/.installtemp/ndk" -xf ndk.7z
 
@@ -50,7 +51,7 @@ mv "$HOME/.installtemp/ndk/android-ndk-r29" "$ANDROID_HOME/ndk/29.0.14206865"
 # === BUILD TOOLS ===
 
 echo "downloading build-tools"
-# curl --progress-bar -L -o android-build-tools.rpm "https://download.copr.fedorainfracloud.org/results/curtisy/android-build-tools/fedora-44-aarch64/Packages/a/android-build-tools-36.1.0-1.fc44.aarch64.rpm"
+curl --progress-bar -L -o android-build-tools.rpm "https://download.copr.fedorainfracloud.org/results/curtisy/android-build-tools/fedora-44-aarch64/Packages/a/android-build-tools-36.1.0-1.fc44.aarch64.rpm"
 echo "installing build-tools"
 mkdir -p "$HOME/.installtemp/build-tools"
 bsdtar -C "$HOME/.installtemp/build-tools" -xf android-build-tools.rpm
@@ -89,8 +90,8 @@ done
 # === CMDLINE TOOLS
 
 echo "downloading cmdline-tools"
-# cmdlinetoolsURL=$(curl -s https://developer.android.com/studio | grep -oE "https://dl.google.com/android/repository/commandlinetools-linux-[0-9]+_latest\.zip")
-# curl --progress-bar -L -o commandlinetools.zip "$cmdlinetoolsURL"
+cmdlinetoolsURL=$(curl -s https://developer.android.com/studio | grep -oE "https://dl.google.com/android/repository/commandlinetools-linux-[0-9]+_latest\.zip")
+curl --progress-bar -L -o commandlinetools.zip "$cmdlinetoolsURL"
 
 echo "extracting cmdline-tools"
 bsdtar -C "$HOME/.installtemp" -xf commandlinetools.zip
@@ -99,9 +100,10 @@ mkdir -p "$ANDROID_HOME/cmdline-tools"
 mv "$HOME/.installtemp/cmdline-tools" "$ANDROID_HOME/cmdline-tools/$num"
 
 echo "accepting licenses"
-yes | $ANDROID_HOME/cmdline-tools/$num/bin/sdkmanager --licenses &> /dev/null
+yes | $ANDROID_HOME/cmdline-tools/$num/bin/sdkmanager --licenses > /dev/null
 
 echo "cleaning up"
+
 rm -rf "$HOME/.installtemp"
 if $installed_bsdtar; then
     pkg uninstall bsdtar -y  &> /dev/null
