@@ -82,6 +82,11 @@
       "languageConfiguration": "textmate/languages/javascript/language-configuration.json"
     },
     {
+      "grammar": "textmate/languages/log/syntaxes/log.tmLanguage.json",
+      "name": "log",
+      "scopeName": "text.log"
+    },
+    {
       "name": "markdown",
       "scopeName": "text.html.markdown",
       "grammar": "textmate/languages/markdown/syntaxes/markdown.tmLanguage.json",
@@ -91,7 +96,8 @@
         "source.js": "javascript",
         "meta.embedded.block.java": "java",
         "meta.embedded.block.xml": "xml",
-        "meta.embedded.block.python": "python"
+        "meta.embedded.block.python": "python",
+        "source.shell": "shellscript"
       }
     }
   ]

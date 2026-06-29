@@ -1,5 +1,6 @@
 package me.zhanghai.android.filesfork.viewer.text
 
+import android.graphics.Typeface
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -55,6 +56,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -66,21 +68,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.rosemoe.sora.event.ContentChangeEvent
+import io.github.rosemoe.sora.event.ScrollEvent
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage
 import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
 import io.github.rosemoe.sora.widget.CodeEditor
 import io.github.rosemoe.sora.widget.EditorSearcher
 import java8.nio.file.Path
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,8 +89,8 @@ fun TextEditorScreen(
     path: Path, onNavigateUp: () -> Unit, viewModel: TextEditorViewModel = viewModel()
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
-
     var editorRef by remember { mutableStateOf<CodeEditor?>(null) }
     var showSearchPanel by rememberSaveable { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
@@ -98,17 +99,27 @@ fun TextEditorScreen(
     val canUndo = remember { mutableStateOf(false) }
     val canRedo = remember { mutableStateOf(false) }
     val showSettingsDialog = rememberSaveable { mutableStateOf(false) }
-    var selectedTheme by rememberSaveable { mutableStateOf("darcula") }
-    var forceLanguage by rememberSaveable { mutableStateOf("auto") }
-    LaunchedEffect(path) { viewModel.load(path) }
+    val typefaceToLoad = remember {
+        try {
+            Typeface.createFromAsset(context.assets, "fonts/SourceCodePro-Regular.ttf")
+        } catch (_: Exception) {
+            Typeface.MONOSPACE
+        }
+    }
+
+    fun refreshUndoRedo() {
+        canUndo.value = editorRef?.canUndo() ?: false
+        canRedo.value = editorRef?.canRedo() ?: false
+    }
     LaunchedEffect(viewModel.loadState) {
         if (viewModel.loadState is LoadState.Success) {
-            editorRef?.setText(viewModel.editorState.content)
+            editorRef?.setText(viewModel.content)
         }
     }
     LaunchedEffect(viewModel.wordWrap) { editorRef?.isWordwrap = viewModel.wordWrap }
-    val targetScope = remember(path, forceLanguage, TextEditorInitializer.grammarReady) {
-        if (!TextEditorInitializer.grammarReady) return@remember null
+    var forceLanguage by rememberSaveable { mutableStateOf("auto") }
+    val resolvedTargetScope = remember(path, forceLanguage, viewModel.appLoadState) {
+        if (viewModel.appLoadState != AppLoadState.GrammarReady) return@remember null
         if (forceLanguage == "none") return@remember null
         if (forceLanguage != "auto") {
             return@remember LanguageRegistry.scopeForLanguage(forceLanguage)
@@ -116,31 +127,22 @@ fun TextEditorScreen(
         val ext = path.fileName?.toString()?.substringAfterLast('.', "")?.lowercase()
         ext?.let { LanguageRegistry.scopeForExtension(it) }
     }
-
-    LaunchedEffect(targetScope, viewModel.syntaxHighlight) {
-        if (viewModel.syntaxHighlight && targetScope != null) {
-            withContext(Dispatchers.IO) {
-                while (!TextEditorInitializer.grammarReady) {
-                    delay(50)
-                }
-            }
-            editorRef?.setEditorLanguage(TextMateLanguage.create(targetScope, true))
+    LaunchedEffect(resolvedTargetScope, viewModel.syntaxHighlight, viewModel.appLoadState) {
+        if (viewModel.syntaxHighlight && resolvedTargetScope != null && viewModel.appLoadState == AppLoadState.GrammarReady) {
+            editorRef?.setEditorLanguage(TextMateLanguage.create(resolvedTargetScope, true))
         } else {
             editorRef?.setEditorLanguage(null)
         }
     }
-
-    LaunchedEffect(selectedTheme) {
-        ThemeRegistry.getInstance().setTheme(selectedTheme)
+    LaunchedEffect(viewModel.selectedTheme) {
+        ThemeRegistry.getInstance().setTheme(viewModel.selectedTheme)
         editorRef?.colorScheme = TextMateColorScheme.create(ThemeRegistry.getInstance())
         editorRef?.invalidate()
     }
-
     val title = buildString {
         if (viewModel.isModified) append("*")
         append(path.fileName?.toString() ?: "")
     }
-
     BackHandler(enabled = showSearchPanel || viewModel.isModified) {
         when {
             showSearchPanel -> {
@@ -151,6 +153,18 @@ fun TextEditorScreen(
             viewModel.isModified -> showUnsavedDialog.value = true
         }
     }
+    DisposableEffect(editorRef) {
+        val editor = editorRef ?: return@DisposableEffect onDispose {}
+        if (viewModel.textSizePx > 0f) editor.setTextSizePx(viewModel.textSizePx)
+        val receipt = editor.subscribeEvent(ScrollEvent::class.java) { _, _ ->
+            viewModel.saveTextSize(editor.textSizePx)
+        }
+        onDispose {
+            receipt.unsubscribe()
+            viewModel.saveTextSize(editor.textSizePx)
+        }
+    }
+
 
     if (showUnsavedDialog.value) {
         AlertDialog(
@@ -187,16 +201,19 @@ fun TextEditorScreen(
 
     if (showSettingsDialog.value) {
         EditorSettingsDialog(
-            selectedTheme = selectedTheme,
-            onThemeSelected = { selectedTheme = it },
+            selectedTheme = viewModel.selectedTheme,
+            onThemeSelected = { viewModel.setTheme(it) },
             forceLanguage = forceLanguage,
             onLanguageSelected = { forceLanguage = it },
             onDismiss = { showSettingsDialog.value = false })
     }
 
-    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }, topBar = {
-        TopAppBar(
-            title = { Text(title, maxLines = 1) }, navigationIcon = {
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        contentWindowInsets = WindowInsets.ime,
+        topBar = {
+            TopAppBar(
+                title = { Text(title, maxLines = 1) }, navigationIcon = {
                 IconButton(onClick = {
                     if (viewModel.isModified) showReloadDialog.value = true
                     else onNavigateUp()
@@ -225,10 +242,20 @@ fun TextEditorScreen(
                 ) {
                     Icon(Icons.Filled.Save, contentDescription = "Save")
                 }
-                IconButton(onClick = { editorRef?.undo() }, enabled = canUndo.value) {
+                IconButton(
+                    onClick = {
+                        editorRef?.undo()
+                        refreshUndoRedo()
+                    }, enabled = canUndo.value
+                ) {
                     Icon(Icons.AutoMirrored.Filled.Undo, contentDescription = "Undo")
                 }
-                IconButton(onClick = { editorRef?.redo() }, enabled = canRedo.value) {
+                IconButton(
+                    onClick = {
+                        editorRef?.redo()
+                        refreshUndoRedo()
+                    }, enabled = canRedo.value
+                ) {
                     Icon(Icons.AutoMirrored.Filled.Redo, contentDescription = "Redo")
                 }
                 IconButton(onClick = { showSearchPanel = !showSearchPanel }) {
@@ -240,9 +267,7 @@ fun TextEditorScreen(
                         expanded = showOverflowMenu,
                         onDismissRequest = { showOverflowMenu = false }) {
                         DropdownMenuItem(text = { Text("Word wrap") }, trailingIcon = {
-                            Checkbox(
-                                checked = viewModel.wordWrap, onCheckedChange = null
-                            )
+                            Checkbox(checked = viewModel.wordWrap, onCheckedChange = null)
                         }, onClick = {
                             viewModel.toggleWordWrap()
                             showOverflowMenu = false
@@ -275,8 +300,8 @@ fun TextEditorScreen(
                 titleContentColor = MaterialTheme.colorScheme.onSurface,
                 actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        )
-    }) { paddingValues ->
+            )
+        }) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -300,19 +325,23 @@ fun TextEditorScreen(
                 }
 
                 is LoadState.Success -> {
-                    AndroidView(
-                        factory = { ctx ->
+                    if (viewModel.prefsLoaded) {
+                        AndroidView(
+                            factory = { ctx ->
                             CodeEditor(ctx).apply {
+                                typefaceText = typefaceToLoad
+                                typefaceLineNumber = typefaceToLoad
                                 colorScheme =
                                     TextMateColorScheme.create(ThemeRegistry.getInstance())
                                 setEditorLanguage(
-                                    if (viewModel.syntaxHighlight && targetScope != null) TextMateLanguage.create(
-                                        targetScope, true
+                                    if (viewModel.syntaxHighlight && resolvedTargetScope != null) TextMateLanguage.create(
+                                        resolvedTargetScope, true
                                     )
                                     else null
                                 )
                                 isWordwrap = viewModel.wordWrap
-                                setText(viewModel.editorState.content)
+                                if (viewModel.textSizePx > 0f) setTextSizePx(viewModel.textSizePx)
+                                setText(viewModel.content)
                                 subscribeEvent(ContentChangeEvent::class.java) { _, _ ->
                                     canUndo.value = canUndo()
                                     canRedo.value = canRedo()
@@ -320,23 +349,19 @@ fun TextEditorScreen(
                                 }
                             }.also { editorRef = it }
                         },
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        onRelease = { it.release() })
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth(),
+                            onRelease = { it.release() })
+                    }
                 }
             }
             AnimatedVisibility(
                 visible = showSearchPanel,
                 enter = slideInVertically { it },
                 exit = slideOutVertically { it },
-                modifier = Modifier.windowInsetsPadding(
-                    WindowInsets.ime.exclude(WindowInsets.navigationBars)
-                )
             ) {
-                SearchReplacePanel(
-                    editor = editorRef
-                )
+                SearchReplacePanel(editor = editorRef)
             }
         }
     }
@@ -386,9 +411,7 @@ private fun EditorSettingsDialog(
 }
 
 @Composable
-private fun SettingsClickRow(
-    label: String, value: String, onClick: () -> Unit
-) {
+private fun SettingsClickRow(label: String, value: String, onClick: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -398,9 +421,7 @@ private fun SettingsClickRow(
     ) {
         Row(modifier = Modifier.weight(1f)) {
             Text(label, style = MaterialTheme.typography.bodyMedium)
-            Text(
-                " (${value})"
-            )
+            Text(" (${value})")
         }
         Icon(
             Icons.AutoMirrored.Filled.ArrowForward,
@@ -431,11 +452,10 @@ private fun SingleChoiceDialog(
                             onDismiss()
                         }
                         .padding(vertical = 4.dp)) {
-                    RadioButton(
-                        selected = option == selected, onClick = {
-                            onSelect(option)
-                            onDismiss()
-                        })
+                    RadioButton(selected = option == selected, onClick = {
+                        onSelect(option)
+                        onDismiss()
+                    })
                     Spacer(Modifier.width(8.dp))
                     Text(option)
                 }
@@ -447,9 +467,7 @@ private fun SingleChoiceDialog(
 }
 
 @Composable
-private fun SearchReplacePanel(
-    editor: CodeEditor?
-) {
+private fun SearchReplacePanel(editor: CodeEditor?) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
     var replaceText by rememberSaveable { mutableStateOf("") }
     var useRegex by rememberSaveable { mutableStateOf(false) }
@@ -470,9 +488,7 @@ private fun SearchReplacePanel(
             return
         }
         try {
-            editor?.searcher?.search(
-                query, EditorSearcher.SearchOptions(isIgnoreCase, isUseRegex)
-            )
+            editor?.searcher?.search(query, EditorSearcher.SearchOptions(isIgnoreCase, isUseRegex))
             regexError = null
             matchCount = if (isUseRegex) {
                 try {
@@ -509,6 +525,7 @@ private fun SearchReplacePanel(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .windowInsetsPadding(WindowInsets.navigationBars.exclude(WindowInsets.ime))
                 .padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Row(
@@ -521,7 +538,6 @@ private fun SearchReplacePanel(
                         modifier = Modifier.rotate(chevronRotation)
                     )
                 }
-
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it; performSearch(it) },
@@ -553,7 +569,6 @@ private fun SearchReplacePanel(
                                     ignoreCase = newValue
                                     performSearch(isIgnoreCase = newValue)
                                 })
-
                                 DropdownMenuItem(text = {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Checkbox(checked = useRegex, onCheckedChange = null)
@@ -598,7 +613,6 @@ private fun SearchReplacePanel(
                     onClick = { if (searchQuery.isNotEmpty()) editor?.searcher?.gotoPrevious() },
                     enabled = searchQuery.isNotEmpty()
                 ) { Text("Prev") }
-
                 TextButton(
                     onClick = { if (searchQuery.isNotEmpty()) editor?.searcher?.gotoNext() },
                     enabled = searchQuery.isNotEmpty()

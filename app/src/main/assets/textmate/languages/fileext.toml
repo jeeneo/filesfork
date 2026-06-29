@@ -39,3 +39,6 @@ extensions = ["ts", "tsx"]
 
 [markdown]
 extensions = ["md", "markdown", "mkdown", "mkd", "mdown"]
+
+[log]
+extensions = ["log", "logfile"]

@@ -318,8 +318,8 @@
 
         <activity
             android:name="me.zhanghai.android.filesfork.viewer.text.TextEditorActivity"
-            android:windowSoftInputMode="adjustNothing"
             android:configChanges="uiMode|orientation|screenSize|screenLayout|keyboardHidden"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"
             android:label="@string/text_editor_title"
             android:theme="@style/Theme.MaterialFiles">

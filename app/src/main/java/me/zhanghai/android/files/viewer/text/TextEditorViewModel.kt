@@ -1,23 +1,46 @@
 package me.zhanghai.android.filesfork.viewer.text
 
+import android.app.Application
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.rosemoe.sora.text.Content
-import io.github.rosemoe.sora.widget.CodeEditor
 import java8.nio.file.Files
 import java8.nio.file.Path
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
-data class CodeEditorState(
-    val editor: CodeEditor? = null, val initialContent: Content = Content()
-) {
-    var content by mutableStateOf(initialContent)
+private val android.content.Context.editorPrefsDataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "text_editor_prefs"
+)
+
+sealed interface AppLoadState {
+    data object Idle : AppLoadState
+    data object Ready : AppLoadState          // prefs + theme done, file loading
+    data object GrammarReady : AppLoadState  // grammar also done
+    data class Error(val message: String) : AppLoadState
+}
+
+
+private object PrefKeys {
+    val WORD_WRAP = booleanPreferencesKey("word_wrap")
+    val SYNTAX_HIGHLIGHT = booleanPreferencesKey("syntax_highlight")
+    val SELECTED_THEME = stringPreferencesKey("selected_theme")
+    val TEXT_SIZE_PX = floatPreferencesKey("text_size_px")
 }
 
 sealed interface LoadState {
@@ -26,8 +49,9 @@ sealed interface LoadState {
     data class Error(val message: String) : LoadState
 }
 
-class TextEditorViewModel : ViewModel() {
-    val editorState = CodeEditorState()
+class TextEditorViewModel(application: Application) : AndroidViewModel(application) {
+    var appLoadState: AppLoadState by mutableStateOf(AppLoadState.Idle)
+        private set
     var loadState: LoadState by mutableStateOf(LoadState.Loading)
         private set
     var isModified: Boolean by mutableStateOf(false)
@@ -36,26 +60,99 @@ class TextEditorViewModel : ViewModel() {
         private set
     var wordWrap: Boolean by mutableStateOf(false)
         private set
+    var selectedTheme: String by mutableStateOf("darcula")
+        private set
+    var prefsLoaded: Boolean by mutableStateOf(false)
+        private set
+    var textSizePx: Float by mutableFloatStateOf(0f)
+        private set
+    var content: Content by mutableStateOf(Content())
+        private set
 
     private var originalContent: String = ""
-    private var currentPath: Path? = null
+    private val dataStore get() = getApplication<Application>().editorPrefsDataStore
+
+    fun initialize(path: Path) {
+        viewModelScope.launch {
+            val app = getApplication<Application>()
+            TextEditorInitializer.initThemeAndPrefs(app)
+            loadPrefs()
+            appLoadState = AppLoadState.Ready
+            load(path)
+            launch {
+                TextEditorInitializer.initGrammars(app)
+                appLoadState = AppLoadState.GrammarReady
+            }
+        }
+    }
+
+    private suspend fun loadPrefs() {
+        val prefs = dataStore.data.first()
+        wordWrap = prefs[PrefKeys.WORD_WRAP] ?: false
+        syntaxHighlight = prefs[PrefKeys.SYNTAX_HIGHLIGHT] ?: true
+        selectedTheme = prefs[PrefKeys.SELECTED_THEME] ?: "darcula"
+        textSizePx = prefs[PrefKeys.TEXT_SIZE_PX] ?: 0f
+        prefsLoaded = true
+    }
+
+
+    private fun savePrefs() {
+        viewModelScope.launch {
+            dataStore.edit { prefs ->
+                prefs[PrefKeys.WORD_WRAP] = wordWrap
+                prefs[PrefKeys.SYNTAX_HIGHLIGHT] = syntaxHighlight
+                prefs[PrefKeys.SELECTED_THEME] = selectedTheme
+            }
+        }
+    }
+
+    fun toggleWordWrap() {
+        wordWrap = !wordWrap
+        savePrefs()
+    }
+
+    fun toggleSyntaxHighlight() {
+        syntaxHighlight = !syntaxHighlight
+        savePrefs()
+    }
+
+    fun setTheme(theme: String) {
+        selectedTheme = theme
+        savePrefs()
+    }
+
+    fun saveTextSize(px: Float) {
+        textSizePx = px
+        viewModelScope.launch {
+            dataStore.edit { it[PrefKeys.TEXT_SIZE_PX] = px }
+        }
+    }
+
 
     fun load(path: Path) {
-        currentPath = path
         loadState = LoadState.Loading
         isModified = false
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val text = withContext(Dispatchers.IO) {
-                    Files.newBufferedReader(path, Charsets.UTF_8).use { it.readText() }
+                val decoder = Charsets.UTF_8.newDecoder()
+                    .onMalformedInput(java.nio.charset.CodingErrorAction.REPLACE)
+                    .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPLACE)
+                val text = Files.newInputStream(path).use { stream ->
+                    java.io.InputStreamReader(stream, decoder).readText()
                 }
                 originalContent = text
-                editorState.content = Content(text)
-                loadState = LoadState.Success
+                withContext(Dispatchers.Main) {
+                    content = Content(text)
+                    loadState = LoadState.Success
+                }
             } catch (e: OutOfMemoryError) {
-                loadState = LoadState.Error(e.localizedMessage ?: "Out of memory")
+                withContext(Dispatchers.Main) {
+                    loadState = LoadState.Error(e.localizedMessage ?: "Out of memory")
+                }
             } catch (e: IOException) {
-                loadState = LoadState.Error(e.localizedMessage ?: "Read error")
+                withContext(Dispatchers.Main) {
+                    loadState = LoadState.Error(e.localizedMessage ?: "Read error")
+                }
             }
         }
     }
@@ -80,13 +177,5 @@ class TextEditorViewModel : ViewModel() {
                 onError(e.localizedMessage ?: "Write error")
             }
         }
-    }
-
-    fun toggleSyntaxHighlight() {
-        syntaxHighlight = !syntaxHighlight
-    }
-
-    fun toggleWordWrap() {
-        wordWrap = !wordWrap
     }
 }

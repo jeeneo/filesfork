@@ -642,6 +642,8 @@ private val extensionToMimeTypeMap = mapOf(
     "koz" to "audio/vnd.audiokoz",
     "kpr" to "application/vnd.kde.kpresenter",
     "kpt" to "application/vnd.kde.kpresenter",
+    "kra" to "application/x-krita",
+    "krz" to "application/x-krita",
     "ksp" to "application/vnd.kde.kspread",
     "ktr" to "application/vnd.kahootz",
     "ktx" to "image/ktx",

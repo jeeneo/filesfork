@@ -64,7 +64,6 @@ android {
     externalNativeBuild {
         cmake {
             path("CMakeLists.txt")
-            version = "4.1.2"
         }
     }
     signingConfigs {
@@ -203,4 +202,5 @@ dependencies {
     implementation(libs.sora.editor)
     implementation(libs.sora.language.textmate)
     implementation(libs.xkoma)
+    implementation("androidx.datastore:datastore-preferences:1.2.1")
 }

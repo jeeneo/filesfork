@@ -631,6 +631,8 @@ kon application/vnd.kde.kontour
 koz audio/vnd.audiokoz
 kpr application/vnd.kde.kpresenter
 kpt application/vnd.kde.kpresenter
+kra application/x-krita
+krz application/x-krita
 ksp application/vnd.kde.kspread
 ktr application/vnd.kahootz
 ktx image/ktx

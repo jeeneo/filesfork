@@ -55,3 +55,9 @@
 
 # SMBJ-RPC
 -dontwarn java.rmi.UnmarshalException
+
+# TOML decoder
+-keep class me.zhanghai.android.filesfork.viewer.text.LanguageRegistry$LanguageEntry { *; }
+-keepclassmembers class me.zhanghai.android.filesfork.viewer.text.LanguageRegistry$LanguageEntry { *; }
+-keepattributes RuntimeVisibleAnnotations,RuntimeVisibleParameterAnnotations,AnnotationDefault
+-keep class kotlin.Metadata { *; }

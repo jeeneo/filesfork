@@ -4,41 +4,31 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.lifecycleScope
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.rosemoe.sora.langs.textmate.registry.FileProviderRegistry
 import io.github.rosemoe.sora.langs.textmate.registry.GrammarRegistry
 import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.zhanghai.android.filesfork.app.AppActivity
 import me.zhanghai.android.filesfork.theme.AppTheme
 import me.zhanghai.android.filesfork.util.extraPath
 
 object TextEditorInitializer {
     @Volatile
-    var themeReady = false
-        private set
+    private var done = false
 
-    var grammarReady by mutableStateOf(false)
-        private set
-
-    fun initializeThemes(context: Context) {
-        if (themeReady) return
-        FileProviderRegistry.getInstance().addFileProvider(
-            AssetsFileResolver(context.assets)
-        )
+    suspend fun initThemeAndPrefs(context: Context) = withContext(Dispatchers.IO) {
+        if (done) return@withContext
+        FileProviderRegistry.getInstance().addFileProvider(AssetsFileResolver(context.assets))
         ThemeManager.initialize(context)
-        themeReady = true
+        done = true
     }
 
-    fun initializeGrammars(context: Context) {
-        if (grammarReady) return
+    suspend fun initGrammars(context: Context) = withContext(Dispatchers.IO) {
         GrammarRegistry.getInstance().loadGrammars("textmate/languages/languages.json")
         LanguageRegistry.initialize(context)
-        grammarReady = true
     }
 }
 
@@ -47,14 +37,10 @@ class TextEditorActivity : AppActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val path = intent.extraPath ?: run { finish(); return }
-        TextEditorInitializer.initializeThemes(applicationContext)
-        if (!TextEditorInitializer.grammarReady) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                TextEditorInitializer.initializeGrammars(applicationContext)
-            }
-        }
         setContent {
             AppTheme {
+                val viewModel: TextEditorViewModel = viewModel()
+                LaunchedEffect(path) { viewModel.initialize(path) }
                 TextEditorScreen(path = path, onNavigateUp = { finish() })
             }
         }

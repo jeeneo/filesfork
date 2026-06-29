@@ -42,6 +42,15 @@
             ANDROID_SDK_ROOT = "${androidSdk}/libexec/android-sdk";
             ANDROID_NDK_ROOT = "${ANDROID_HOME}/ndk-bundle";
             GRADLE_OPTS = "-Dorg.gradle.project.android.aapt2FromMavenOverride=${ANDROID_HOME}/build-tools/${buildToolsVersion}/aapt2";
+            shellHook = ''
+              CMAKE_DIR=$(dirname $(dirname $(which cmake)))
+              PROPS_FILE="$(git rev-parse --show-toplevel 2>/dev/null || pwd)/local.properties"
+              if grep -q "^cmake\.dir=" "$PROPS_FILE" 2>/dev/null; then
+                sed -i "s|^cmake\.dir=.*|cmake.dir=$CMAKE_DIR|" "$PROPS_FILE"
+              else
+                echo "cmake.dir=$CMAKE_DIR" >> "$PROPS_FILE"
+              fi
+            '';
 
             # shellHook = ''
             #   PROPS_FILE="$(git rev-parse --show-toplevel 2>/dev/null || pwd)/gradle.properties"
