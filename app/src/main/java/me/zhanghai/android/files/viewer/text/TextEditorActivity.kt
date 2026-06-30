@@ -1,7 +1,9 @@
 package me.zhanghai.android.filesfork.viewer.text
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect

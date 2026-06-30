@@ -19,7 +19,7 @@ composeBom = "2026.06.00"
 lifecycleViewmodelCompose = "2.11.0"
 bouncyCastle = "1.84"
 coil = "2.7.0"
-soraEditor = "0.24.6"
+#soraEditor = "0.24.6"
 androidsvg = "1.4"
 drakeetDrawer = "1.0.3"
 materialShadow = "1.0.0"
@@ -108,9 +108,9 @@ coil-gif = { group = "io.coil-kt", name = "coil-gif" }
 coil-svg = { group = "io.coil-kt", name = "coil-svg" }
 coil-video = { group = "io.coil-kt", name = "coil-video" }
 
-sora-editor-bom = { group = "io.github.rosemoe", name = "editor-bom", version.ref = "soraEditor" }
-sora-editor = { group = "io.github.rosemoe", name = "editor" }
-sora-language-textmate = { group = "io.github.rosemoe", name = "language-textmate" }
+#sora-editor-bom = { group = "io.github.rosemoe", name = "editor-bom", version.ref = "soraEditor" }
+#sora-editor = { group = "io.github.rosemoe", name = "editor" }
+#sora-language-textmate = { group = "io.github.rosemoe", name = "language-textmate" }
 
 androidsvg = { module = "com.caverock:androidsvg-aar", version.ref = "androidsvg" }
 drakeet-drawer = { module = "com.drakeet.drawer:drawer", version.ref = "drakeetDrawer" }

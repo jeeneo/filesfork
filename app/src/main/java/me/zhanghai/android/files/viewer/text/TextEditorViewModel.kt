@@ -15,10 +15,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.rosemoe.sora.text.Content
+import io.github.rosemoe.sora.widget.CodeEditor
 import java8.nio.file.Files
 import java8.nio.file.Path
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,8 +30,8 @@ private val android.content.Context.editorPrefsDataStore: DataStore<Preferences>
 
 sealed interface AppLoadState {
     data object Idle : AppLoadState
-    data object Ready : AppLoadState          // prefs + theme done, file loading
-    data object GrammarReady : AppLoadState  // grammar also done
+    data object Ready : AppLoadState
+    data object GrammarReady : AppLoadState
     data class Error(val message: String) : AppLoadState
 }
 
@@ -39,6 +39,8 @@ sealed interface AppLoadState {
 private object PrefKeys {
     val WORD_WRAP = booleanPreferencesKey("word_wrap")
     val SYNTAX_HIGHLIGHT = booleanPreferencesKey("syntax_highlight")
+    val MINIMAP_SHOWN = booleanPreferencesKey("minimap_shown")
+    val MINIMAP_BLOCKS = booleanPreferencesKey("minimap_blocks")
     val SELECTED_THEME = stringPreferencesKey("selected_theme")
     val TEXT_SIZE_PX = floatPreferencesKey("text_size_px")
 }
@@ -56,9 +58,14 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         private set
     var isModified: Boolean by mutableStateOf(false)
         private set
+
     var syntaxHighlight: Boolean by mutableStateOf(true)
         private set
     var wordWrap: Boolean by mutableStateOf(false)
+        private set
+    var miniMap: Boolean by mutableStateOf(false)
+        private set
+    var miniMapBlocks: Boolean by mutableStateOf(false)
         private set
     var selectedTheme: String by mutableStateOf("darcula")
         private set
@@ -71,6 +78,10 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
 
     private var originalContent: String = ""
     private val dataStore get() = getApplication<Application>().editorPrefsDataStore
+    private var pendingSelectionLeft: Int = -1
+    private var pendingSelectionRight: Int = -1
+    private var pendingScrollX: Int = 0
+    private var pendingScrollY: Int = 0
 
     fun initialize(path: Path) {
         viewModelScope.launch {
@@ -86,15 +97,39 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
+    fun saveCursorState(editor: CodeEditor) {
+        val cursor = editor.cursor
+        pendingSelectionLeft = cursor.left
+        pendingSelectionRight = cursor.right
+        pendingScrollX = editor.scroller.currX
+        pendingScrollY = editor.scroller.currY
+    }
+
+    fun restoreCursorState(editor: CodeEditor) {
+        if (pendingSelectionLeft < 0) return
+        val len = editor.text.length
+        val left = pendingSelectionLeft.coerceIn(0, len)
+        val right = pendingSelectionRight.coerceIn(0, len)
+        val leftPos = editor.text.indexer.getCharPosition(minOf(left, right))
+        val rightPos = editor.text.indexer.getCharPosition(maxOf(left, right))
+        editor.setSelectionRegion(
+            leftPos.line, leftPos.column, rightPos.line, rightPos.column, false
+        )
+        editor.scroller.startScroll(pendingScrollX, pendingScrollY, 0, 0, 0)
+        editor.scroller.abortAnimation()
+        editor.postInvalidate()
+    }
+
     private suspend fun loadPrefs() {
         val prefs = dataStore.data.first()
         wordWrap = prefs[PrefKeys.WORD_WRAP] ?: false
         syntaxHighlight = prefs[PrefKeys.SYNTAX_HIGHLIGHT] ?: true
         selectedTheme = prefs[PrefKeys.SELECTED_THEME] ?: "darcula"
         textSizePx = prefs[PrefKeys.TEXT_SIZE_PX] ?: 0f
+        miniMap = prefs[PrefKeys.MINIMAP_SHOWN] ?: false
+        miniMapBlocks = prefs[PrefKeys.MINIMAP_BLOCKS] ?: false
         prefsLoaded = true
     }
-
 
     private fun savePrefs() {
         viewModelScope.launch {
@@ -102,6 +137,8 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
                 prefs[PrefKeys.WORD_WRAP] = wordWrap
                 prefs[PrefKeys.SYNTAX_HIGHLIGHT] = syntaxHighlight
                 prefs[PrefKeys.SELECTED_THEME] = selectedTheme
+                prefs[PrefKeys.MINIMAP_SHOWN] = miniMap
+                prefs[PrefKeys.MINIMAP_BLOCKS] = miniMapBlocks
             }
         }
     }
@@ -128,6 +165,15 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
+    fun toggleMinimap() {
+        miniMap = !miniMap
+        savePrefs()
+    }
+
+    fun toggleMinimapBlocks() {
+        miniMapBlocks = !miniMapBlocks
+        savePrefs()
+    }
 
     fun load(path: Path) {
         loadState = LoadState.Loading

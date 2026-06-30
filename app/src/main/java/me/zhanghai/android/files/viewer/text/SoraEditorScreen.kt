@@ -9,6 +9,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -75,11 +77,17 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.rosemoe.sora.event.ContentChangeEvent
 import io.github.rosemoe.sora.event.ScrollEvent
+import io.github.rosemoe.sora.graphics.inlayHint.ColorInlayHintRenderer
+import io.github.rosemoe.sora.graphics.inlayHint.TextInlayHintRenderer
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage
 import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
 import io.github.rosemoe.sora.widget.CodeEditor
 import io.github.rosemoe.sora.widget.EditorSearcher
+import io.github.rosemoe.sora.widget.component.EditorAutoCompletion
+import io.github.rosemoe.sora.widget.ext.EditorSpanInteractionHandler
+import io.github.rosemoe.sora.widget.getComponent
+import io.github.rosemoe.sora.widget.minimap.MinimapConfig
 import java8.nio.file.Path
 import kotlinx.coroutines.launch
 
@@ -101,7 +109,7 @@ fun TextEditorScreen(
     val showSettingsDialog = rememberSaveable { mutableStateOf(false) }
     val typefaceToLoad = remember {
         try {
-            Typeface.createFromAsset(context.assets, "fonts/SourceCodePro-Regular.ttf")
+            Typeface.createFromAsset(context.assets, "fonts/JetBrainsMono-Regular.ttf")
         } catch (_: Exception) {
             Typeface.MONOSPACE
         }
@@ -111,12 +119,7 @@ fun TextEditorScreen(
         canUndo.value = editorRef?.canUndo() ?: false
         canRedo.value = editorRef?.canRedo() ?: false
     }
-    LaunchedEffect(viewModel.loadState) {
-        if (viewModel.loadState is LoadState.Success) {
-            editorRef?.setText(viewModel.content)
-        }
-    }
-    LaunchedEffect(viewModel.wordWrap) { editorRef?.isWordwrap = viewModel.wordWrap }
+
     var forceLanguage by rememberSaveable { mutableStateOf("auto") }
     val resolvedTargetScope = remember(path, forceLanguage, viewModel.appLoadState) {
         if (viewModel.appLoadState != AppLoadState.GrammarReady) return@remember null
@@ -127,6 +130,43 @@ fun TextEditorScreen(
         val ext = path.fileName?.toString()?.substringAfterLast('.', "")?.lowercase()
         ext?.let { LanguageRegistry.scopeForExtension(it) }
     }
+    val language = remember(resolvedTargetScope) {
+        resolvedTargetScope?.let {
+            TextMateLanguage.create(it, true)
+        }
+    }
+    LaunchedEffect(viewModel.loadState) {
+        if (viewModel.loadState is LoadState.Success) {
+            editorRef?.setText(viewModel.content)
+        }
+    }
+    LaunchedEffect(viewModel.wordWrap) { editorRef?.isWordwrap = viewModel.wordWrap }
+
+    LaunchedEffect(viewModel.miniMap) {
+        editorRef?.props?.showMinimap = viewModel.miniMap
+        editorRef?.invalidate()
+    }
+    LaunchedEffect(viewModel.miniMapBlocks) {
+        editorRef?.props?.minimapConfig =
+            MinimapConfig(minimapDrawTextAsBlocks = viewModel.miniMapBlocks)
+        editorRef?.invalidate()
+    }
+    LaunchedEffect(language, viewModel.syntaxHighlight) {
+        editorRef?.setEditorLanguage(
+            if (viewModel.syntaxHighlight) language else null
+        )
+    }
+    LaunchedEffect(viewModel.selectedTheme) {
+        ThemeRegistry.getInstance().setTheme(viewModel.selectedTheme)
+        val newScheme = buildColorScheme()
+        editorRef?.colorScheme = newScheme
+        editorRef?.let { editor ->
+            val (track, thumb) = deriveScrollbarDrawables(newScheme)
+            editor.renderer.verticalScrollbarTrackDrawable = track
+            editor.renderer.verticalScrollbarThumbDrawable = thumb
+            editor.invalidate()
+        }
+    }
     LaunchedEffect(resolvedTargetScope, viewModel.syntaxHighlight, viewModel.appLoadState) {
         if (viewModel.syntaxHighlight && resolvedTargetScope != null && viewModel.appLoadState == AppLoadState.GrammarReady) {
             editorRef?.setEditorLanguage(TextMateLanguage.create(resolvedTargetScope, true))
@@ -136,7 +176,7 @@ fun TextEditorScreen(
     }
     LaunchedEffect(viewModel.selectedTheme) {
         ThemeRegistry.getInstance().setTheme(viewModel.selectedTheme)
-        editorRef?.colorScheme = TextMateColorScheme.create(ThemeRegistry.getInstance())
+        editorRef?.colorScheme = buildColorScheme()
         editorRef?.invalidate()
     }
     val title = buildString {
@@ -164,7 +204,6 @@ fun TextEditorScreen(
             viewModel.saveTextSize(editor.textSizePx)
         }
     }
-
 
     if (showUnsavedDialog.value) {
         AlertDialog(
@@ -214,92 +253,120 @@ fun TextEditorScreen(
         topBar = {
             TopAppBar(
                 title = { Text(title, maxLines = 1) }, navigationIcon = {
-                IconButton(onClick = {
-                    if (viewModel.isModified) showReloadDialog.value = true
-                    else onNavigateUp()
-                }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                }
-            }, actions = {
-                IconButton(
-                    onClick = {
-                        editorRef?.let { editor ->
-                            viewModel.save(
-                                path = path,
-                                getText = { editor.text.toString() },
-                                onSuccess = {
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar("Saved")
-                                    }
-                                },
-                                onError = { msg ->
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar("Error: $msg")
-                                    }
-                                })
-                        }
-                    }, enabled = viewModel.isModified
-                ) {
-                    Icon(Icons.Filled.Save, contentDescription = "Save")
-                }
-                IconButton(
-                    onClick = {
-                        editorRef?.undo()
-                        refreshUndoRedo()
-                    }, enabled = canUndo.value
-                ) {
-                    Icon(Icons.AutoMirrored.Filled.Undo, contentDescription = "Undo")
-                }
-                IconButton(
-                    onClick = {
-                        editorRef?.redo()
-                        refreshUndoRedo()
-                    }, enabled = canRedo.value
-                ) {
-                    Icon(Icons.AutoMirrored.Filled.Redo, contentDescription = "Redo")
-                }
-                IconButton(onClick = { showSearchPanel = !showSearchPanel }) {
-                    Icon(Icons.Filled.Search, contentDescription = "Search")
-                }
-                IconButton(onClick = { showOverflowMenu = true }) {
-                    Icon(Icons.Filled.MoreVert, contentDescription = "More")
-                    DropdownMenu(
-                        expanded = showOverflowMenu,
-                        onDismissRequest = { showOverflowMenu = false }) {
-                        DropdownMenuItem(text = { Text("Word wrap") }, trailingIcon = {
-                            Checkbox(checked = viewModel.wordWrap, onCheckedChange = null)
-                        }, onClick = {
-                            viewModel.toggleWordWrap()
-                            showOverflowMenu = false
-                        })
-                        DropdownMenuItem(text = { Text("Syntax highlighting") }, trailingIcon = {
-                            Checkbox(
-                                checked = viewModel.syntaxHighlight, onCheckedChange = null
-                            )
-                        }, onClick = {
-                            viewModel.toggleSyntaxHighlight()
-                            showOverflowMenu = false
-                        })
-                        DropdownMenuItem(text = { Text("Reload") }, leadingIcon = {
-                            Icon(Icons.Filled.Refresh, contentDescription = null)
-                        }, onClick = {
-                            showOverflowMenu = false
-                            if (viewModel.isModified) showReloadDialog.value = true
-                            else viewModel.load(path)
-                        })
-                        DropdownMenuItem(text = { Text("Settings") }, leadingIcon = {
-                            Icon(Icons.Filled.Settings, contentDescription = null)
-                        }, onClick = {
-                            showOverflowMenu = false
-                            showSettingsDialog.value = true
-                        })
+                    IconButton(onClick = {
+                        if (viewModel.isModified) showReloadDialog.value = true
+                        else onNavigateUp()
+                    }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
-                }
-            }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-                titleContentColor = MaterialTheme.colorScheme.onSurface,
-                actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                }, actions = {
+                    IconButton(
+                        onClick = {
+                            editorRef?.let { editor ->
+                                viewModel.save(
+                                    path = path,
+                                    getText = { editor.text.toString() },
+                                    onSuccess = {
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar("Saved")
+                                        }
+                                    },
+                                    onError = { msg ->
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar("Error: $msg")
+                                        }
+                                    })
+                            }
+                        }, enabled = viewModel.isModified
+                    ) {
+                        Icon(Icons.Filled.Save, contentDescription = "Save")
+                    }
+                    IconButton(
+                        onClick = {
+                            editorRef?.undo()
+                            refreshUndoRedo()
+                        }, enabled = canUndo.value
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.Undo, contentDescription = "Undo")
+                    }
+                    IconButton(
+                        onClick = {
+                            editorRef?.redo()
+                            refreshUndoRedo()
+                        }, enabled = canRedo.value
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.Redo, contentDescription = "Redo")
+                    }
+                    IconButton(onClick = { showSearchPanel = !showSearchPanel }) {
+                        Icon(Icons.Filled.Search, contentDescription = "Search")
+                    }
+                    IconButton(onClick = { showOverflowMenu = true }) {
+                        Icon(Icons.Filled.MoreVert, contentDescription = "More")
+                        DropdownMenu(
+                            expanded = showOverflowMenu,
+                            onDismissRequest = { showOverflowMenu = false }) {
+                            DropdownMenuItem(text = { Text("Word wrap") }, trailingIcon = {
+                                Checkbox(checked = viewModel.wordWrap, onCheckedChange = null)
+                            }, onClick = {
+                                viewModel.toggleWordWrap()
+                                showOverflowMenu = false
+                            })
+                            DropdownMenuItem(
+                                text = { Text("Syntax highlighting") },
+                                trailingIcon = {
+                                    Checkbox(
+                                        checked = viewModel.syntaxHighlight, onCheckedChange = null
+                                    )
+                                },
+                                onClick = {
+                                    viewModel.toggleSyntaxHighlight()
+                                    showOverflowMenu = false
+                                })
+                            DropdownMenuItem(
+                                text = { Text("Show minimap") },
+                                trailingIcon = {
+                                    Checkbox(
+                                        checked = viewModel.miniMap, onCheckedChange = null
+                                    )
+                                },
+                                onClick = {
+                                    viewModel.toggleMinimap()
+                                    showOverflowMenu = false
+                                })
+                            if (viewModel.miniMap) {
+                                DropdownMenuItem(
+                                    text = { Text("Render characters") },
+                                    trailingIcon = {
+                                        Checkbox(
+                                            checked = !viewModel.miniMapBlocks,
+                                            onCheckedChange = null
+                                        )
+                                    },
+                                    onClick = {
+                                        viewModel.toggleMinimapBlocks()
+                                        showOverflowMenu = false
+                                    })
+                            }
+                            DropdownMenuItem(text = { Text("Reload") }, leadingIcon = {
+                                Icon(Icons.Filled.Refresh, contentDescription = null)
+                            }, onClick = {
+                                showOverflowMenu = false
+                                if (viewModel.isModified) showReloadDialog.value = true
+                                else viewModel.load(path)
+                            })
+                            DropdownMenuItem(text = { Text("Settings") }, leadingIcon = {
+                                Icon(Icons.Filled.Settings, contentDescription = null)
+                            }, onClick = {
+                                showOverflowMenu = false
+                                showSettingsDialog.value = true
+                            })
+                        }
+                    }
+                }, colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             )
         }) { paddingValues ->
         Column(
@@ -328,34 +395,64 @@ fun TextEditorScreen(
                     if (viewModel.prefsLoaded) {
                         AndroidView(
                             factory = { ctx ->
-                            CodeEditor(ctx).apply {
-                                typefaceText = typefaceToLoad
-                                typefaceLineNumber = typefaceToLoad
-                                colorScheme =
-                                    TextMateColorScheme.create(ThemeRegistry.getInstance())
-                                setEditorLanguage(
-                                    if (viewModel.syntaxHighlight && resolvedTargetScope != null) TextMateLanguage.create(
-                                        resolvedTargetScope, true
+                                CodeEditor(ctx).apply {
+                                    isWordwrap = viewModel.wordWrap
+                                    val initialScheme = buildColorScheme()
+                                    colorScheme = initialScheme
+                                    val (track, thumb) = deriveScrollbarDrawables(initialScheme)
+                                    renderer.verticalScrollbarTrackDrawable = track
+                                    renderer.verticalScrollbarThumbDrawable = thumb
+                                    renderer.horizontalScrollbarTrackDrawable = track
+                                    renderer.horizontalScrollbarThumbDrawable = thumb
+                                    typefaceText = typefaceToLoad
+                                    typefaceLineNumber = typefaceToLoad
+                                    setEditorLanguage(
+                                        if (viewModel.syntaxHighlight && resolvedTargetScope != null) TextMateLanguage.create(
+                                            resolvedTargetScope, true
+                                        )
+                                        else null
                                     )
-                                    else null
-                                )
-                                isWordwrap = viewModel.wordWrap
-                                if (viewModel.textSizePx > 0f) setTextSizePx(viewModel.textSizePx)
-                                setText(viewModel.content)
-                                subscribeEvent(ContentChangeEvent::class.java) { _, _ ->
-                                    canUndo.value = canUndo()
-                                    canRedo.value = canRedo()
-                                    viewModel.onContentChanged(text.toString())
-                                }
-                            }.also { editorRef = it }
-                        },
+                                    if (viewModel.textSizePx > 0f) setTextSizePx(viewModel.textSizePx)
+                                    setText(viewModel.content)
+                                    registerInlayHintRenderers(
+                                        TextInlayHintRenderer.DefaultInstance,
+                                        ColorInlayHintRenderer.DefaultInstance
+                                    )
+                                    props.showMinimap = viewModel.miniMap
+                                    props.minimapConfig =
+                                        MinimapConfig(minimapDrawTextAsBlocks = viewModel.miniMapBlocks)
+
+                                    setLineSpacing(2f, 1.1f)
+                                    // nonPrintablePaintingFlags = CodeEditor.FLAG_DRAW_WHITESPACE_LEADING or CodeEditor.FLAG_DRAW_LINE_SEPARATOR or CodeEditor.FLAG_DRAW_WHITESPACE_IN_SELECTION or CodeEditor.FLAG_DRAW_SOFT_WRAP
+                                    searcher.replaceOptions = EditorSearcher.ReplaceOptions(true)
+                                    EditorSpanInteractionHandler(this)
+                                    getComponent<EditorAutoCompletion>().setEnabledAnimation(true)
+                                    subscribeEvent(ContentChangeEvent::class.java) { _, _ ->
+                                        canUndo.value = canUndo()
+                                        canRedo.value = canRedo()
+                                        viewModel.onContentChanged(text.toString())
+                                    }
+                                    viewModel.restoreCursorState(this)
+                                }.also { editorRef = it }
+                            },
                             modifier = Modifier
                                 .weight(1f)
                                 .fillMaxWidth(),
-                            onRelease = { it.release() })
+                            onRelease = { editor ->
+                                viewModel.saveCursorState(editor)
+                                editor.release()
+                            },
+                        )
                     }
                 }
             }
+            SymbolInputBar(
+                editor = editorRef,
+                typeface = typefaceToLoad,
+                modifier = Modifier.windowInsetsPadding(
+                    WindowInsets.navigationBars.exclude(WindowInsets.ime)
+                )
+            )
             AnimatedVisibility(
                 visible = showSearchPanel,
                 enter = slideInVertically { it },
@@ -643,6 +740,72 @@ private fun SearchReplacePanel(editor: CodeEditor?) {
                         else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(end = 4.dp)
                     )
+                }
+            }
+        }
+    }
+}
+
+private val SYMBOLS = listOf(
+    "->" to "\t",
+    "{" to "{}",
+    "}" to "}",
+    "(" to "(",
+    ")" to ")",
+    "," to ",",
+    "." to ".",
+    ";" to ";",
+    "\"" to "\"",
+    "?" to "?",
+    "+" to "+",
+    "-" to "-",
+    "*" to "*",
+    "/" to "/",
+    "<" to "<",
+    ">" to ">",
+    "[" to "[",
+    "]" to "]",
+    ":" to ":"
+)
+
+private fun buildColorScheme(): TextMateColorScheme =
+    TextMateColorScheme.create(ThemeRegistry.getInstance())
+
+@Composable
+private fun SymbolInputBar(
+    editor: CodeEditor?,
+    typeface: Typeface,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        tonalElevation = 2.dp,
+        color = MaterialTheme.colorScheme.surfaceContainer
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(
+                    WindowInsets.navigationBars.exclude(WindowInsets.ime)
+                ),
+            contentPadding = PaddingValues(horizontal = 2.dp, vertical = 2.dp)
+        ) {
+            items(SYMBOLS) { (label, insert) ->
+                TextButton(
+                    onClick = {
+                        editor?.let {
+                            val cursor = it.cursor
+                            it.text.replace(
+                                cursor.leftLine,
+                                cursor.leftColumn,
+                                cursor.rightLine,
+                                cursor.rightColumn,
+                                insert
+                            )
+                        }
+                    }, modifier = Modifier.height(40.dp)
+                ) {
+                    Text(label, fontFamily = androidx.compose.ui.text.font.FontFamily(typeface))
                 }
             }
         }

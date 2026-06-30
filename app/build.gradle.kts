@@ -198,9 +198,8 @@ dependencies {
     implementation(libs.ftpserver.core)
     implementation(libs.mina.core)
     implementation(libs.slf4j.android)
-    implementation(platform(libs.sora.editor.bom))
-    implementation(libs.sora.editor)
-    implementation(libs.sora.language.textmate)
+    implementation(project(":sora-editor:editor"))
+    implementation(project(":sora-editor:language-textmate"))
     implementation(libs.xkoma)
     implementation("androidx.datastore:datastore-preferences:1.2.1")
 }

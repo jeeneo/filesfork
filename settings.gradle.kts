@@ -18,6 +18,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url = uri("https://jitpack.io") }
     }
+    includeBuild("sora-editor")
 }
 
 rootProject.name = "MaterialFiles"
