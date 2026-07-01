@@ -1,9 +1,7 @@
 package me.zhanghai.android.filesfork.viewer.text
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +22,7 @@ object TextEditorInitializer {
     suspend fun initThemeAndPrefs(context: Context) = withContext(Dispatchers.IO) {
         if (done) return@withContext
         FileProviderRegistry.getInstance().addFileProvider(AssetsFileResolver(context.assets))
-        ThemeManager.initialize(context)
+        ThemeRegistry.initialize(context)
         done = true
     }
 

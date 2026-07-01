@@ -2,43 +2,60 @@ package me.zhanghai.android.filesfork.viewer.text
 
 import android.graphics.Typeface
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.More
 import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Undo
+import androidx.compose.material.icons.automirrored.filled.WrapText
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.TextFormat
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
@@ -69,17 +86,23 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.PopupProperties
+import androidx.core.graphics.toColorInt
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.rosemoe.sora.event.ContentChangeEvent
 import io.github.rosemoe.sora.event.ScrollEvent
 import io.github.rosemoe.sora.graphics.inlayHint.ColorInlayHintRenderer
 import io.github.rosemoe.sora.graphics.inlayHint.TextInlayHintRenderer
-import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage
 import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
 import io.github.rosemoe.sora.widget.CodeEditor
@@ -88,6 +111,7 @@ import io.github.rosemoe.sora.widget.component.EditorAutoCompletion
 import io.github.rosemoe.sora.widget.ext.EditorSpanInteractionHandler
 import io.github.rosemoe.sora.widget.getComponent
 import io.github.rosemoe.sora.widget.minimap.MinimapConfig
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme
 import java8.nio.file.Path
 import kotlinx.coroutines.launch
 
@@ -97,7 +121,6 @@ fun TextEditorScreen(
     path: Path, onNavigateUp: () -> Unit, viewModel: TextEditorViewModel = viewModel()
 ) {
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     var editorRef by remember { mutableStateOf<CodeEditor?>(null) }
     var showSearchPanel by rememberSaveable { mutableStateOf(false) }
@@ -107,18 +130,24 @@ fun TextEditorScreen(
     val canUndo = remember { mutableStateOf(false) }
     val canRedo = remember { mutableStateOf(false) }
     val showSettingsDialog = rememberSaveable { mutableStateOf(false) }
-    val typefaceToLoad = remember {
-        try {
-            Typeface.createFromAsset(context.assets, "fonts/JetBrainsMono-Regular.ttf")
-        } catch (_: Exception) {
-            Typeface.MONOSPACE
-        }
+    val context = LocalContext.current
+    val typefaceToLoad = remember(viewModel.selectedFont) {
+        FontRegistry.loadTypeface(context, viewModel.selectedFont)
+    }
+    LaunchedEffect(typefaceToLoad) {
+        editorRef?.typefaceText = typefaceToLoad
+        editorRef?.typefaceLineNumber = typefaceToLoad
+        editorRef?.invalidate()
     }
 
     fun refreshUndoRedo() {
         canUndo.value = editorRef?.canUndo() ?: false
         canRedo.value = editorRef?.canRedo() ?: false
     }
+
+    editorRef?.colorScheme?.setColor(
+        EditorColorScheme.SELECTION_HANDLE, "#FF6B35".toColorInt()
+    )
 
     var forceLanguage by rememberSaveable { mutableStateOf("auto") }
     val resolvedTargetScope = remember(path, forceLanguage, viewModel.appLoadState) {
@@ -135,13 +164,13 @@ fun TextEditorScreen(
             TextMateLanguage.create(it, true)
         }
     }
+    LaunchedEffect(viewModel.wordWrap) { editorRef?.isWordwrap = viewModel.wordWrap }
+    LaunchedEffect(viewModel.lineNumbers) { editorRef?.isLineNumberEnabled = viewModel.lineNumbers }
     LaunchedEffect(viewModel.loadState) {
         if (viewModel.loadState is LoadState.Success) {
             editorRef?.setText(viewModel.content)
         }
     }
-    LaunchedEffect(viewModel.wordWrap) { editorRef?.isWordwrap = viewModel.wordWrap }
-
     LaunchedEffect(viewModel.miniMap) {
         editorRef?.props?.showMinimap = viewModel.miniMap
         editorRef?.invalidate()
@@ -179,10 +208,6 @@ fun TextEditorScreen(
         editorRef?.colorScheme = buildColorScheme()
         editorRef?.invalidate()
     }
-    val title = buildString {
-        if (viewModel.isModified) append("*")
-        append(path.fileName?.toString() ?: "")
-    }
     BackHandler(enabled = showSearchPanel || viewModel.isModified) {
         when {
             showSearchPanel -> {
@@ -204,7 +229,6 @@ fun TextEditorScreen(
             viewModel.saveTextSize(editor.textSizePx)
         }
     }
-
     if (showUnsavedDialog.value) {
         AlertDialog(
             onDismissRequest = { showUnsavedDialog.value = false },
@@ -237,16 +261,28 @@ fun TextEditorScreen(
                 TextButton(onClick = { showReloadDialog.value = false }) { Text("Cancel") }
             })
     }
-
     if (showSettingsDialog.value) {
         EditorSettingsDialog(
             selectedTheme = viewModel.selectedTheme,
             onThemeSelected = { viewModel.setTheme(it) },
             forceLanguage = forceLanguage,
             onLanguageSelected = { forceLanguage = it },
+            selectedFont = viewModel.selectedFont,
+            fontOptions = viewModel.fontOptions,
+            onFontSelected = { viewModel.setFont(it) },
+            onFontImported = { imported ->
+                viewModel.refreshFontOptions()
+                viewModel.setFont(imported.id)
+            },
+            onFontDeleted = { deleted ->
+                viewModel.deleteFont(deleted.id)
+            },
             onDismiss = { showSettingsDialog.value = false })
     }
-
+    val title = buildString {
+        if (viewModel.isModified) append("*")
+        append(path.fileName?.toString() ?: "")
+    }
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         contentWindowInsets = WindowInsets.ime,
@@ -282,84 +318,97 @@ fun TextEditorScreen(
                         Icon(Icons.Filled.Save, contentDescription = "Save")
                     }
                     IconButton(
-                        onClick = {
-                            editorRef?.undo()
-                            refreshUndoRedo()
-                        }, enabled = canUndo.value
+                        onClick = { editorRef?.undo(); refreshUndoRedo() }, enabled = canUndo.value
                     ) {
                         Icon(Icons.AutoMirrored.Filled.Undo, contentDescription = "Undo")
                     }
                     IconButton(
-                        onClick = {
-                            editorRef?.redo()
-                            refreshUndoRedo()
-                        }, enabled = canRedo.value
+                        onClick = { editorRef?.redo(); refreshUndoRedo() }, enabled = canRedo.value
                     ) {
                         Icon(Icons.AutoMirrored.Filled.Redo, contentDescription = "Redo")
                     }
-                    IconButton(onClick = { showSearchPanel = !showSearchPanel }) {
-                        Icon(Icons.Filled.Search, contentDescription = "Search")
+                    val flexibleActions = listOf(
+                        TopBarAction(
+                            "Reload", Icons.Filled.Refresh
+                        ) {
+                            if (viewModel.isModified) showReloadDialog.value = true
+                            else viewModel.load(path)
+                        },
+                        TopBarAction(
+                            "Settings", Icons.Filled.Settings
+                        ) {
+                            showSettingsDialog.value = true
+                        },
+                        TopBarAction("Search", Icons.Filled.Search) {
+                            showSearchPanel = !showSearchPanel
+                        },
+                        TopBarAction(
+                            "Word wrap",
+                            Icons.AutoMirrored.Filled.WrapText,
+                            checked = viewModel.wordWrap
+                        ) { viewModel.toggleWordWrap() },
+                        TopBarAction(
+                            "Symbols", Icons.AutoMirrored.Filled.More, checked = viewModel.symbolBar
+                        ) { viewModel.toggleSymbolBar() },
+                        TopBarAction(
+                            "Syntax highlighting",
+                            Icons.Filled.Palette,
+                            checked = viewModel.syntaxHighlight
+                        ) { viewModel.toggleSyntaxHighlight() },
+                        TopBarAction(
+                            "Show line numbers",
+                            Icons.Filled.FormatListNumbered,
+                            checked = viewModel.lineNumbers
+                        ) { viewModel.toggleLineNumbers(); },
+                        TopBarAction(
+                            "Show minimap", Icons.Filled.Map, checked = viewModel.miniMap
+                        ) { viewModel.toggleMinimap() },
+                    ) + if (viewModel.miniMap) {
+                        listOf(
+                            TopBarAction(
+                                "Render characters",
+                                Icons.Filled.TextFormat,
+                                checked = !viewModel.miniMapBlocks
+                            ) {
+                                viewModel.toggleMinimapBlocks()
+                            })
+                    } else emptyList()
+                    val maxVisibleActions = with(LocalDensity.current) {
+                        when (LocalWindowInfo.current.containerSize.width.toDp()) {
+                            in 0.dp..460.dp -> 0
+                            in 461.dp..840.dp -> 2
+                            else -> 4
+                        }
                     }
-                    IconButton(onClick = { showOverflowMenu = true }) {
-                        Icon(Icons.Filled.MoreVert, contentDescription = "More")
-                        DropdownMenu(
-                            expanded = showOverflowMenu,
-                            onDismissRequest = { showOverflowMenu = false }) {
-                            DropdownMenuItem(text = { Text("Word wrap") }, trailingIcon = {
-                                Checkbox(checked = viewModel.wordWrap, onCheckedChange = null)
-                            }, onClick = {
-                                viewModel.toggleWordWrap()
-                                showOverflowMenu = false
-                            })
-                            DropdownMenuItem(
-                                text = { Text("Syntax highlighting") },
-                                trailingIcon = {
-                                    Checkbox(
-                                        checked = viewModel.syntaxHighlight, onCheckedChange = null
-                                    )
-                                },
-                                onClick = {
-                                    viewModel.toggleSyntaxHighlight()
-                                    showOverflowMenu = false
-                                })
-                            DropdownMenuItem(
-                                text = { Text("Show minimap") },
-                                trailingIcon = {
-                                    Checkbox(
-                                        checked = viewModel.miniMap, onCheckedChange = null
-                                    )
-                                },
-                                onClick = {
-                                    viewModel.toggleMinimap()
-                                    showOverflowMenu = false
-                                })
-                            if (viewModel.miniMap) {
-                                DropdownMenuItem(
-                                    text = { Text("Render characters") },
-                                    trailingIcon = {
-                                        Checkbox(
-                                            checked = !viewModel.miniMapBlocks,
-                                            onCheckedChange = null
+                    val visibleActions = flexibleActions.take(maxVisibleActions)
+                    val overflowActions = flexibleActions.drop(maxVisibleActions)
+                    visibleActions.forEach { action ->
+                        IconButton(onClick = action.onClick, enabled = action.enabled) {
+                            Icon(action.icon, contentDescription = action.label)
+                        }
+                    }
+                    if (overflowActions.isNotEmpty()) {
+                        IconButton(onClick = { showOverflowMenu = true }) {
+                            Icon(Icons.Filled.MoreVert, contentDescription = "More")
+                            DropdownMenu(
+                                expanded = showOverflowMenu,
+                                onDismissRequest = { showOverflowMenu = false },
+                                properties = PopupProperties(
+                                    focusable = false, dismissOnBackPress = false
+                                )
+                            ) {
+                                overflowActions.forEach { action ->
+                                    DropdownMenuItem(text = { Text(action.label) }, leadingIcon = {
+                                        Icon(
+                                            action.icon, contentDescription = null
                                         )
-                                    },
-                                    onClick = {
-                                        viewModel.toggleMinimapBlocks()
-                                        showOverflowMenu = false
+                                    }, trailingIcon = action.checked?.let {
+                                        { Checkbox(checked = it, onCheckedChange = null) }
+                                    }, onClick = {
+                                        action.onClick()
                                     })
+                                }
                             }
-                            DropdownMenuItem(text = { Text("Reload") }, leadingIcon = {
-                                Icon(Icons.Filled.Refresh, contentDescription = null)
-                            }, onClick = {
-                                showOverflowMenu = false
-                                if (viewModel.isModified) showReloadDialog.value = true
-                                else viewModel.load(path)
-                            })
-                            DropdownMenuItem(text = { Text("Settings") }, leadingIcon = {
-                                Icon(Icons.Filled.Settings, contentDescription = null)
-                            }, onClick = {
-                                showOverflowMenu = false
-                                showSettingsDialog.value = true
-                            })
                         }
                     }
                 }, colors = TopAppBarDefaults.topAppBarColors(
@@ -396,16 +445,20 @@ fun TextEditorScreen(
                         AndroidView(
                             factory = { ctx ->
                                 CodeEditor(ctx).apply {
-                                    isWordwrap = viewModel.wordWrap
                                     val initialScheme = buildColorScheme()
                                     colorScheme = initialScheme
+
+                                    isWordwrap = viewModel.wordWrap
+                                    isLineNumberEnabled = viewModel.lineNumbers
+
                                     val (track, thumb) = deriveScrollbarDrawables(initialScheme)
                                     renderer.verticalScrollbarTrackDrawable = track
                                     renderer.verticalScrollbarThumbDrawable = thumb
                                     renderer.horizontalScrollbarTrackDrawable = track
                                     renderer.horizontalScrollbarThumbDrawable = thumb
-                                    typefaceText = typefaceToLoad
+
                                     typefaceLineNumber = typefaceToLoad
+                                    typefaceText = typefaceToLoad
                                     setEditorLanguage(
                                         if (viewModel.syntaxHighlight && resolvedTargetScope != null) TextMateLanguage.create(
                                             resolvedTargetScope, true
@@ -446,17 +499,26 @@ fun TextEditorScreen(
                     }
                 }
             }
-            SymbolInputBar(
-                editor = editorRef,
-                typeface = typefaceToLoad,
-                modifier = Modifier.windowInsetsPadding(
-                    WindowInsets.navigationBars.exclude(WindowInsets.ime)
-                )
-            )
             AnimatedVisibility(
-                visible = showSearchPanel,
-                enter = slideInVertically { it },
-                exit = slideOutVertically { it },
+                // visible = viewModel.loadState is LoadState.Success && editorRef != null
+                visible = viewModel.symbolBar, enter = expandVertically(
+                    animationSpec = tween(durationMillis = 220), expandFrom = Alignment.Bottom
+                ), exit = shrinkVertically(
+                    animationSpec = tween(durationMillis = 220), shrinkTowards = Alignment.Bottom
+                )
+            ) {
+                SymbolInputBar(
+                    editor = editorRef,
+                    typeface = typefaceToLoad,
+                    applyNavigationBarPadding = !showSearchPanel
+                )
+            }
+            AnimatedVisibility(
+                visible = showSearchPanel, enter = expandVertically(
+                    animationSpec = tween(durationMillis = 220), expandFrom = Alignment.Top
+                ), exit = shrinkVertically(
+                    animationSpec = tween(durationMillis = 220), shrinkTowards = Alignment.Top
+                )
             ) {
                 SearchReplacePanel(editor = editorRef)
             }
@@ -470,12 +532,19 @@ private fun EditorSettingsDialog(
     onThemeSelected: (String) -> Unit,
     forceLanguage: String,
     onLanguageSelected: (String) -> Unit,
+    selectedFont: String,
+    fontOptions: List<FontRegistry.FontOption>,
+    onFontSelected: (String) -> Unit,
+    onFontImported: (FontRegistry.FontOption) -> Unit,
+    onFontDeleted: (FontRegistry.FontOption) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val themes = ThemeManager.availableThemes
+    val themes = me.zhanghai.android.filesfork.viewer.text.ThemeRegistry.availableThemes
     val languages = listOf("auto", "none") + LanguageRegistry.supportedLanguages()
     val showThemePicker = remember { mutableStateOf(false) }
     val showLanguagePicker = remember { mutableStateOf(false) }
+    val showFontPicker = remember { mutableStateOf(false) }
+
     if (showThemePicker.value) {
         SingleChoiceDialog(
             title = "Theme",
@@ -492,6 +561,21 @@ private fun EditorSettingsDialog(
             onSelect = onLanguageSelected,
             onDismiss = { showLanguagePicker.value = false })
     }
+    if (showFontPicker.value) {
+        FontChoiceDialog(
+            fontOptions = fontOptions,
+            selected = selectedFont,
+            onSelect = onFontSelected,
+            onFontImported = onFontImported,
+            onFontDeleted = onFontDeleted,
+            onDismiss = { showFontPicker.value = false })
+    }
+    val selectedFontDisplayName =
+        fontOptions.find { it.id == selectedFont }?.displayName ?: "Fira Code"
+    val context = LocalContext.current
+    val selectedFontFamily = remember(selectedFont) {
+        FontFamily(FontRegistry.loadTypeface(context, selectedFont))
+    }
 
     AlertDialog(onDismissRequest = onDismiss, title = { Text("Editor settings") }, text = {
         Column {
@@ -501,6 +585,11 @@ private fun EditorSettingsDialog(
                 label = "Language",
                 value = forceLanguage,
                 onClick = { showLanguagePicker.value = true })
+            SettingsClickRow(
+                label = "Font",
+                value = selectedFontDisplayName,
+                valueFontFamily = selectedFontFamily,
+                onClick = { showFontPicker.value = true })
         }
     }, confirmButton = {
         TextButton(onClick = onDismiss) { Text("Done") }
@@ -508,7 +597,9 @@ private fun EditorSettingsDialog(
 }
 
 @Composable
-private fun SettingsClickRow(label: String, value: String, onClick: () -> Unit) {
+private fun SettingsClickRow(
+    label: String, value: String, valueFontFamily: FontFamily? = null, onClick: () -> Unit
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -518,7 +609,13 @@ private fun SettingsClickRow(label: String, value: String, onClick: () -> Unit) 
     ) {
         Row(modifier = Modifier.weight(1f)) {
             Text(label, style = MaterialTheme.typography.bodyMedium)
-            Text(" (${value})")
+            Text(
+                text = " (${value})",
+                fontFamily = valueFontFamily,
+                maxLines = 1,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false)
+            )
         }
         Icon(
             Icons.AutoMirrored.Filled.ArrowForward,
@@ -554,13 +651,161 @@ private fun SingleChoiceDialog(
                         onDismiss()
                     })
                     Spacer(Modifier.width(8.dp))
-                    Text(option)
+                    Text(
+                        text = option,
+                        maxLines = 1,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
     }, confirmButton = {
         TextButton(onClick = onDismiss) { Text("Cancel") }
     })
+}
+
+@Suppress("AssignedValueIsNeverRead")
+@Composable
+private fun FontChoiceDialog(
+    fontOptions: List<FontRegistry.FontOption>,
+    selected: String,
+    onSelect: (String) -> Unit,
+    onFontImported: (FontRegistry.FontOption) -> Unit,
+    onFontDeleted: (FontRegistry.FontOption) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+    var query by rememberSaveable { mutableStateOf("") }
+    var importError by remember { mutableStateOf<String?>(null) }
+    var fontPendingDelete by remember { mutableStateOf<FontRegistry.FontOption?>(null) }
+
+    val importLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri: android.net.Uri? ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        val fileName = queryDisplayName(context, uri) ?: uri.lastPathSegment ?: "font"
+        val imported = FontRegistry.importFont(context, uri, fileName)
+        if (imported != null) {
+            importError = null
+            onFontImported(imported)
+        } else {
+            importError = "Couldn't import \"$fileName\", not a valid font file"
+        }
+    }
+
+    val filteredOptions = remember(fontOptions, query) {
+        if (query.isBlank()) fontOptions
+        else fontOptions.filter { it.displayName.contains(query, ignoreCase = true) }
+    }
+
+    fontPendingDelete?.let { font ->
+        AlertDialog(
+            onDismissRequest = { fontPendingDelete = null },
+            title = { Text("Delete font?") },
+            text = { Text("Remove \"${font.displayName}\" from imported fonts?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    onFontDeleted(font)
+                    fontPendingDelete = null
+                }) { Text("Delete") }
+            },
+            dismissButton = {
+                TextButton(onClick = { fontPendingDelete = null }) { Text("Cancel") }
+            })
+    }
+
+    AlertDialog(onDismissRequest = onDismiss, title = { Text("Font") }, text = {
+        Column {
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                placeholder = { Text("Search fonts") },
+                singleLine = true,
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = { query = "" }) {
+                            Icon(Icons.Filled.Close, contentDescription = "Clear")
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 4.dp)
+            )
+            TextButton(
+                onClick = {
+                    importLauncher.launch(
+                        arrayOf("font/ttf", "font/otf", "application/x-font-ttf", "*/*")
+                    )
+                }, modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(Modifier.width(4.dp))
+                Text("Import font")
+            }
+            if (importError != null) {
+                Text(
+                    text = importError!!,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+            }
+            if (filteredOptions.isEmpty()) {
+                Text(
+                    text = if (query.isBlank()) "No fonts available" else "No fonts match \"$query\"",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(vertical = 16.dp)
+                )
+            } else {
+                LazyColumn(modifier = Modifier.heightIn(max = 400.dp)) {
+                    items(filteredOptions, key = { it.id }) { option ->
+                        val typeface = remember(option.id) {
+                            FontRegistry.loadTypeface(context, option.id)
+                        }
+                        val isImported = option.source == FontRegistry.FontSource.IMPORTED
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .combinedClickable(
+                                    onClick = {
+                                        onSelect(option.id)
+                                        onDismiss()
+                                    }, onLongClick = if (isImported) {
+                                        { fontPendingDelete = option }
+                                    } else null)
+                                .padding(vertical = 4.dp)) {
+                            RadioButton(selected = option.id == selected, onClick = {
+                                onSelect(option.id)
+                                onDismiss()
+                            })
+                            Spacer(Modifier.width(8.dp))
+                            Text(
+                                text = option.displayName,
+                                fontFamily = FontFamily(typeface),
+                                maxLines = 1,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }, confirmButton = {
+        TextButton(onClick = onDismiss) { Text("Cancel") }
+    })
+}
+
+private fun queryDisplayName(context: android.content.Context, uri: android.net.Uri): String? {
+    return context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+        val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+        if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
+    }
 }
 
 @Composable
@@ -622,7 +867,10 @@ private fun SearchReplacePanel(editor: CodeEditor?) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.navigationBars.exclude(WindowInsets.ime))
+                .windowInsetsPadding(
+                    WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
+                        .exclude(WindowInsets.ime)
+                )
                 .padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Row(
@@ -654,7 +902,11 @@ private fun SearchReplacePanel(editor: CodeEditor?) {
                             }
                             DropdownMenu(
                                 expanded = showOptionsMenu,
-                                onDismissRequest = { showOptionsMenu = false }) {
+                                onDismissRequest = { showOptionsMenu = false },
+                                properties = PopupProperties(
+                                    focusable = false, dismissOnBackPress = false
+                                )
+                            ) {
                                 DropdownMenuItem(text = {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Checkbox(checked = ignoreCase, onCheckedChange = null)
@@ -675,7 +927,6 @@ private fun SearchReplacePanel(editor: CodeEditor?) {
                                 }, onClick = {
                                     val newValue = !useRegex
                                     useRegex = newValue
-                                    showOptionsMenu = false
                                     performSearch(isUseRegex = newValue)
                                 })
                             }
@@ -746,67 +997,69 @@ private fun SearchReplacePanel(editor: CodeEditor?) {
     }
 }
 
-private val SYMBOLS = listOf(
-    "->" to "\t",
-    "{" to "{}",
-    "}" to "}",
-    "(" to "(",
-    ")" to ")",
-    "," to ",",
-    "." to ".",
-    ";" to ";",
-    "\"" to "\"",
-    "?" to "?",
-    "+" to "+",
-    "-" to "-",
-    "*" to "*",
-    "/" to "/",
-    "<" to "<",
-    ">" to ">",
-    "[" to "[",
-    "]" to "]",
-    ":" to ":"
-)
-
-private fun buildColorScheme(): TextMateColorScheme =
-    TextMateColorScheme.create(ThemeRegistry.getInstance())
-
 @Composable
 private fun SymbolInputBar(
     editor: CodeEditor?,
     typeface: Typeface,
-    modifier: Modifier = Modifier
+    applyNavigationBarPadding: Boolean,
 ) {
     Surface(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         tonalElevation = 2.dp,
         color = MaterialTheme.colorScheme.surfaceContainer
     ) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .windowInsetsPadding(
-                    WindowInsets.navigationBars.exclude(WindowInsets.ime)
-                ),
-            contentPadding = PaddingValues(horizontal = 2.dp, vertical = 2.dp)
+                .then(
+                    if (applyNavigationBarPadding) {
+                        Modifier.windowInsetsPadding(
+                            WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
+                                .exclude(WindowInsets.ime)
+                        )
+                    } else Modifier
+                ), contentPadding = PaddingValues(horizontal = 2.dp, vertical = 2.dp)
         ) {
-            items(SYMBOLS) { (label, insert) ->
+            item {
                 TextButton(
-                    onClick = {
-                        editor?.let {
-                            val cursor = it.cursor
-                            it.text.replace(
-                                cursor.leftLine,
-                                cursor.leftColumn,
-                                cursor.rightLine,
-                                cursor.rightColumn,
-                                insert
-                            )
-                        }
-                    }, modifier = Modifier.height(40.dp)
+                    onClick = { editor?.unindentSelection() },
+                    modifier = Modifier
+                        .height(40.dp)
+                        .widthIn(min = 1.dp),
                 ) {
-                    Text(label, fontFamily = androidx.compose.ui.text.font.FontFamily(typeface))
+                    Text("<-", fontFamily = FontFamily(typeface), fontSize = 14.sp)
                 }
+            }
+            item {
+                TextButton(
+                    modifier = Modifier
+                        .height(40.dp)
+                        .widthIn(min = 1.dp),
+                    onClick = { editor?.indentLines(false) }) {
+                    Text("->", fontFamily = FontFamily(typeface), fontSize = 14.sp)
+                }
+            }
+            items(SYMBOLS) { (label, insert) ->
+                Text(
+                    text = label,
+                    fontFamily = FontFamily(typeface),
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .clickable {
+                            editor?.let {
+                                val cursor = it.cursor
+                                it.text.replace(
+                                    cursor.leftLine,
+                                    cursor.leftColumn,
+                                    cursor.rightLine,
+                                    cursor.rightColumn,
+                                    insert
+                                )
+                            }
+                        }
+                        .padding(horizontal = 10.dp, vertical = 8.dp))
             }
         }
     }

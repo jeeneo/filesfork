@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package me.zhanghai.android.filesfork.viewer.text
 
 import android.app.Application
@@ -14,6 +16,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme
+import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
 import io.github.rosemoe.sora.text.Content
 import io.github.rosemoe.sora.widget.CodeEditor
 import java8.nio.file.Files
@@ -35,14 +39,50 @@ sealed interface AppLoadState {
     data class Error(val message: String) : AppLoadState
 }
 
+data class TopBarAction(
+    val label: String,
+    val icon: androidx.compose.ui.graphics.vector.ImageVector,
+    val checked: Boolean? = null,
+    val enabled: Boolean = true,
+    val onClick: () -> Unit,
+)
+
+fun buildColorScheme(): TextMateColorScheme =
+    TextMateColorScheme.create(ThemeRegistry.getInstance())
+
+val SYMBOLS = listOf(
+    ">>" to "\t",
+    "{" to "{}",
+    "}" to "}",
+    "(" to "(",
+    ")" to ")",
+    "=" to "=",
+    "," to ",",
+    "." to ".",
+    ";" to ";",
+    "\"" to "\"",
+    "?" to "?",
+    "+" to "+",
+    "-" to "-",
+    "*" to "*",
+    "/" to "/",
+    "<" to "<",
+    ">" to ">",
+    "[" to "[",
+    "]" to "]",
+    ":" to ":"
+)
 
 private object PrefKeys {
     val WORD_WRAP = booleanPreferencesKey("word_wrap")
     val SYNTAX_HIGHLIGHT = booleanPreferencesKey("syntax_highlight")
     val MINIMAP_SHOWN = booleanPreferencesKey("minimap_shown")
     val MINIMAP_BLOCKS = booleanPreferencesKey("minimap_blocks")
+    val SYMBOL_BAR = booleanPreferencesKey("symbol_bar")
+    val LINE_NUMBERS = booleanPreferencesKey("line_numbers")
     val SELECTED_THEME = stringPreferencesKey("selected_theme")
     val TEXT_SIZE_PX = floatPreferencesKey("text_size_px")
+    val SELECTED_FONT = stringPreferencesKey("selected_font")
 }
 
 sealed interface LoadState {
@@ -58,7 +98,6 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         private set
     var isModified: Boolean by mutableStateOf(false)
         private set
-
     var syntaxHighlight: Boolean by mutableStateOf(true)
         private set
     var wordWrap: Boolean by mutableStateOf(false)
@@ -67,11 +106,18 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         private set
     var miniMapBlocks: Boolean by mutableStateOf(false)
         private set
+    var symbolBar: Boolean by mutableStateOf(false)
+        private set
+    var lineNumbers: Boolean by mutableStateOf(true)
     var selectedTheme: String by mutableStateOf("darcula")
         private set
     var prefsLoaded: Boolean by mutableStateOf(false)
         private set
     var textSizePx: Float by mutableFloatStateOf(0f)
+        private set
+    var selectedFont: String by mutableStateOf("asset:fira_code")
+        private set
+    var fontOptions: List<FontRegistry.FontOption> by mutableStateOf(emptyList())
         private set
     var content: Content by mutableStateOf(Content())
         private set
@@ -90,6 +136,7 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
             loadPrefs()
             appLoadState = AppLoadState.Ready
             load(path)
+            refreshFontOptions()
             launch {
                 TextEditorInitializer.initGrammars(app)
                 appLoadState = AppLoadState.GrammarReady
@@ -128,18 +175,31 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         textSizePx = prefs[PrefKeys.TEXT_SIZE_PX] ?: 0f
         miniMap = prefs[PrefKeys.MINIMAP_SHOWN] ?: false
         miniMapBlocks = prefs[PrefKeys.MINIMAP_BLOCKS] ?: false
+        symbolBar = prefs[PrefKeys.SYMBOL_BAR] ?: false
+        lineNumbers = prefs[PrefKeys.LINE_NUMBERS] ?: true
+        selectedFont = prefs[PrefKeys.SELECTED_FONT] ?: "asset:fira_code"
         prefsLoaded = true
     }
 
     private fun savePrefs() {
         viewModelScope.launch {
             dataStore.edit { prefs ->
+                prefs[PrefKeys.TEXT_SIZE_PX] = textSizePx
                 prefs[PrefKeys.WORD_WRAP] = wordWrap
                 prefs[PrefKeys.SYNTAX_HIGHLIGHT] = syntaxHighlight
                 prefs[PrefKeys.SELECTED_THEME] = selectedTheme
                 prefs[PrefKeys.MINIMAP_SHOWN] = miniMap
                 prefs[PrefKeys.MINIMAP_BLOCKS] = miniMapBlocks
+                prefs[PrefKeys.SYMBOL_BAR] = symbolBar
+                prefs[PrefKeys.LINE_NUMBERS] = lineNumbers
+                prefs[PrefKeys.SELECTED_FONT] = selectedFont
             }
+        }
+    }
+
+    fun refreshFontOptions() {
+        viewModelScope.launch(Dispatchers.IO) {
+            fontOptions = FontRegistry.availableFonts(getApplication())
         }
     }
 
@@ -160,9 +220,7 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
 
     fun saveTextSize(px: Float) {
         textSizePx = px
-        viewModelScope.launch {
-            dataStore.edit { it[PrefKeys.TEXT_SIZE_PX] = px }
-        }
+        savePrefs()
     }
 
     fun toggleMinimap() {
@@ -173,6 +231,29 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
     fun toggleMinimapBlocks() {
         miniMapBlocks = !miniMapBlocks
         savePrefs()
+    }
+
+    fun toggleSymbolBar() {
+        symbolBar = !symbolBar
+        savePrefs()
+    }
+
+    fun toggleLineNumbers() {
+        lineNumbers = !lineNumbers
+        savePrefs()
+    }
+
+    fun setFont(font: String) {
+        selectedFont = font
+        savePrefs()
+    }
+
+    fun deleteFont(fontId: String) {
+        FontRegistry.deleteImportedFont(fontId)
+        if (selectedFont == fontId) {
+            setFont("asset:fira_code")
+        }
+        refreshFontOptions()
     }
 
     fun load(path: Path) {

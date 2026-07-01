@@ -11,7 +11,7 @@ import io.github.rosemoe.sora.langs.textmate.registry.model.ThemeModel
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme
 import org.eclipse.tm4e.core.registry.IThemeSource
 
-object ThemeManager {
+object ThemeRegistry {
     private const val TAG = "ThemeManager"
     private const val THEMES_DIR = "themes"
     private const val DEFAULT_THEME = "darcula"
