@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package me.zhanghai.android.filesfork.viewer.text
 
 import android.graphics.Typeface
@@ -5,6 +7,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -45,13 +48,16 @@ import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.automirrored.filled.WrapText
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
@@ -86,6 +92,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
@@ -93,6 +100,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -100,6 +108,7 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.rosemoe.sora.event.ContentChangeEvent
+import io.github.rosemoe.sora.event.LayoutStateChangeEvent
 import io.github.rosemoe.sora.event.ScrollEvent
 import io.github.rosemoe.sora.graphics.inlayHint.ColorInlayHintRenderer
 import io.github.rosemoe.sora.graphics.inlayHint.TextInlayHintRenderer
@@ -134,79 +143,74 @@ fun TextEditorScreen(
     val typefaceToLoad = remember(viewModel.selectedFont) {
         FontRegistry.loadTypeface(context, viewModel.selectedFont)
     }
+    var saveButtonState by remember { mutableStateOf(SaveButtonState.IDLE) }
+
+    LaunchedEffect(saveButtonState) {
+        if (saveButtonState == SaveButtonState.SAVED) {
+            kotlinx.coroutines.delay(1500)
+            saveButtonState = SaveButtonState.IDLE
+        } else if (saveButtonState == SaveButtonState.ERROR) {
+            kotlinx.coroutines.delay(2500)
+            saveButtonState = SaveButtonState.IDLE
+        }
+    }
+    LaunchedEffect(viewModel.isModified) {
+        if (viewModel.isModified && saveButtonState != SaveButtonState.IDLE) {
+            saveButtonState = SaveButtonState.IDLE
+        }
+    }
+
     LaunchedEffect(typefaceToLoad) {
         editorRef?.typefaceText = typefaceToLoad
         editorRef?.typefaceLineNumber = typefaceToLoad
         editorRef?.invalidate()
     }
-
     fun refreshUndoRedo() {
         canUndo.value = editorRef?.canUndo() ?: false
         canRedo.value = editorRef?.canRedo() ?: false
     }
 
-    editorRef?.colorScheme?.setColor(
-        EditorColorScheme.SELECTION_HANDLE, "#FF6B35".toColorInt()
-    )
-
+    var layoutReady by remember { mutableStateOf(false) }
     var forceLanguage by rememberSaveable { mutableStateOf("auto") }
-    val resolvedTargetScope = remember(path, forceLanguage, viewModel.appLoadState) {
-        if (viewModel.appLoadState != AppLoadState.GrammarReady) return@remember null
+    val resolvedTargetScope = remember(path, forceLanguage, viewModel.grammarsReady) {
+        if (!viewModel.grammarsReady) return@remember null
         if (forceLanguage == "none") return@remember null
-        if (forceLanguage != "auto") {
-            return@remember LanguageRegistry.scopeForLanguage(forceLanguage)
-        }
+        if (forceLanguage != "auto") return@remember LanguageRegistry.scopeForLanguage(forceLanguage)
         val ext = path.fileName?.toString()?.substringAfterLast('.', "")?.lowercase()
         ext?.let { LanguageRegistry.scopeForExtension(it) }
     }
-    val language = remember(resolvedTargetScope) {
-        resolvedTargetScope?.let {
-            TextMateLanguage.create(it, true)
+    val activeLanguage =
+        remember(resolvedTargetScope, viewModel.syntaxHighlight, viewModel.grammarsReady) {
+            if (viewModel.syntaxHighlight && resolvedTargetScope != null && viewModel.grammarsReady) {
+                TextMateLanguage.create(resolvedTargetScope, true)
+            } else null
+        }
+    LaunchedEffect(editorRef, viewModel.selectedTheme) {
+        editorRef?.let { applyTheme(it, viewModel.selectedTheme) }
+    }
+    LaunchedEffect(editorRef, viewModel.miniMap, viewModel.miniMapBlocks) {
+        editorRef?.let { applyMinimap(it, viewModel.miniMap, viewModel.miniMapBlocks) }
+    }
+    LaunchedEffect(editorRef, viewModel.invisibleChars) {
+        editorRef?.let { applyInvisibleChars(it, viewModel.invisibleChars) }
+    }
+    LaunchedEffect(editorRef, activeLanguage) {
+        editorRef?.setEditorLanguage(activeLanguage)
+    }
+    LaunchedEffect(editorRef, viewModel.wordWrap) {
+        if (editorRef?.isWordwrap != viewModel.wordWrap) {
+            editorRef?.isWordwrap = viewModel.wordWrap
         }
     }
-    LaunchedEffect(viewModel.wordWrap) { editorRef?.isWordwrap = viewModel.wordWrap }
-    LaunchedEffect(viewModel.lineNumbers) { editorRef?.isLineNumberEnabled = viewModel.lineNumbers }
-    LaunchedEffect(viewModel.loadState) {
-        if (viewModel.loadState is LoadState.Success) {
-            editorRef?.setText(viewModel.content)
+    LaunchedEffect(editorRef, viewModel.lineNumbers) {
+        editorRef?.isLineNumberEnabled = viewModel.lineNumbers
+    }
+    LaunchedEffect(editorRef, typefaceToLoad) {
+        editorRef?.let {
+            it.typefaceText = typefaceToLoad
+            it.typefaceLineNumber = typefaceToLoad
+            it.invalidate()
         }
-    }
-    LaunchedEffect(viewModel.miniMap) {
-        editorRef?.props?.showMinimap = viewModel.miniMap
-        editorRef?.invalidate()
-    }
-    LaunchedEffect(viewModel.miniMapBlocks) {
-        editorRef?.props?.minimapConfig =
-            MinimapConfig(minimapDrawTextAsBlocks = viewModel.miniMapBlocks)
-        editorRef?.invalidate()
-    }
-    LaunchedEffect(language, viewModel.syntaxHighlight) {
-        editorRef?.setEditorLanguage(
-            if (viewModel.syntaxHighlight) language else null
-        )
-    }
-    LaunchedEffect(viewModel.selectedTheme) {
-        ThemeRegistry.getInstance().setTheme(viewModel.selectedTheme)
-        val newScheme = buildColorScheme()
-        editorRef?.colorScheme = newScheme
-        editorRef?.let { editor ->
-            val (track, thumb) = deriveScrollbarDrawables(newScheme)
-            editor.renderer.verticalScrollbarTrackDrawable = track
-            editor.renderer.verticalScrollbarThumbDrawable = thumb
-            editor.invalidate()
-        }
-    }
-    LaunchedEffect(resolvedTargetScope, viewModel.syntaxHighlight, viewModel.appLoadState) {
-        if (viewModel.syntaxHighlight && resolvedTargetScope != null && viewModel.appLoadState == AppLoadState.GrammarReady) {
-            editorRef?.setEditorLanguage(TextMateLanguage.create(resolvedTargetScope, true))
-        } else {
-            editorRef?.setEditorLanguage(null)
-        }
-    }
-    LaunchedEffect(viewModel.selectedTheme) {
-        ThemeRegistry.getInstance().setTheme(viewModel.selectedTheme)
-        editorRef?.colorScheme = buildColorScheme()
-        editorRef?.invalidate()
     }
     BackHandler(enabled = showSearchPanel || viewModel.isModified) {
         when {
@@ -303,19 +307,40 @@ fun TextEditorScreen(
                                     path = path,
                                     getText = { editor.text.toString() },
                                     onSuccess = {
-                                        scope.launch {
-                                            snackbarHostState.showSnackbar("Saved")
-                                        }
+                                        saveButtonState = SaveButtonState.SAVED
                                     },
                                     onError = { msg ->
+                                        saveButtonState = SaveButtonState.ERROR
                                         scope.launch {
                                             snackbarHostState.showSnackbar("Error: $msg")
                                         }
                                     })
                             }
-                        }, enabled = viewModel.isModified
+                        }, enabled = viewModel.isModified && saveButtonState == SaveButtonState.IDLE
                     ) {
-                        Icon(Icons.Filled.Save, contentDescription = "Save")
+                        Crossfade(
+                            targetState = saveButtonState,
+                            animationSpec = tween(durationMillis = 300),
+                            label = "saveButtonMorph"
+                        ) { state ->
+                            when (state) {
+                                SaveButtonState.IDLE -> Icon(
+                                    Icons.Filled.Save, contentDescription = "Save"
+                                )
+
+                                SaveButtonState.SAVED -> Icon(
+                                    Icons.Filled.Check,
+                                    contentDescription = "Saved",
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+
+                                SaveButtonState.ERROR -> Icon(
+                                    Icons.Filled.Error,
+                                    contentDescription = "Save error",
+                                    tint = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        }
                     }
                     IconButton(
                         onClick = { editorRef?.undo(); refreshUndoRedo() }, enabled = canUndo.value
@@ -360,6 +385,11 @@ fun TextEditorScreen(
                             Icons.Filled.FormatListNumbered,
                             checked = viewModel.lineNumbers
                         ) { viewModel.toggleLineNumbers(); },
+                        TopBarAction(
+                            "Show invisible chars",
+                            Icons.Filled.RemoveRedEye,
+                            checked = viewModel.invisibleChars
+                        ) { viewModel.toggleInvisibleChars(); },
                         TopBarAction(
                             "Show minimap", Icons.Filled.Map, checked = viewModel.miniMap
                         ) { viewModel.toggleMinimap() },
@@ -445,38 +475,27 @@ fun TextEditorScreen(
                         AndroidView(
                             factory = { ctx ->
                                 CodeEditor(ctx).apply {
-                                    val initialScheme = buildColorScheme()
-                                    colorScheme = initialScheme
-
+                                    applyTheme(this, viewModel.selectedTheme)
                                     isWordwrap = viewModel.wordWrap
                                     isLineNumberEnabled = viewModel.lineNumbers
-
-                                    val (track, thumb) = deriveScrollbarDrawables(initialScheme)
-                                    renderer.verticalScrollbarTrackDrawable = track
-                                    renderer.verticalScrollbarThumbDrawable = thumb
-                                    renderer.horizontalScrollbarTrackDrawable = track
-                                    renderer.horizontalScrollbarThumbDrawable = thumb
-
-                                    typefaceLineNumber = typefaceToLoad
                                     typefaceText = typefaceToLoad
-                                    setEditorLanguage(
-                                        if (viewModel.syntaxHighlight && resolvedTargetScope != null) TextMateLanguage.create(
-                                            resolvedTargetScope, true
-                                        )
-                                        else null
-                                    )
-                                    if (viewModel.textSizePx > 0f) setTextSizePx(viewModel.textSizePx)
+                                    typefaceLineNumber = typefaceToLoad
+                                    setEditorLanguage(activeLanguage)
+                                    applyMinimap(this, viewModel.miniMap, viewModel.miniMapBlocks)
+                                    applyInvisibleChars(this, viewModel.invisibleChars)
+                                    isWordwrap = viewModel.wordWrap
                                     setText(viewModel.content)
+                                    subscribeEvent(LayoutStateChangeEvent::class.java) { event, _ ->
+                                        if (!event.isLayoutBusy) {
+                                            layoutReady = true
+                                        }
+                                    }
+                                    if (viewModel.textSizePx > 0f) setTextSizePx(viewModel.textSizePx)
                                     registerInlayHintRenderers(
                                         TextInlayHintRenderer.DefaultInstance,
                                         ColorInlayHintRenderer.DefaultInstance
                                     )
-                                    props.showMinimap = viewModel.miniMap
-                                    props.minimapConfig =
-                                        MinimapConfig(minimapDrawTextAsBlocks = viewModel.miniMapBlocks)
-
                                     setLineSpacing(2f, 1.1f)
-                                    // nonPrintablePaintingFlags = CodeEditor.FLAG_DRAW_WHITESPACE_LEADING or CodeEditor.FLAG_DRAW_LINE_SEPARATOR or CodeEditor.FLAG_DRAW_WHITESPACE_IN_SELECTION or CodeEditor.FLAG_DRAW_SOFT_WRAP
                                     searcher.replaceOptions = EditorSearcher.ReplaceOptions(true)
                                     EditorSpanInteractionHandler(this)
                                     getComponent<EditorAutoCompletion>().setEnabledAnimation(true)
@@ -490,18 +509,17 @@ fun TextEditorScreen(
                             },
                             modifier = Modifier
                                 .weight(1f)
-                                .fillMaxWidth(),
+                                .fillMaxWidth()
+                                .alpha(if (layoutReady) 1f else 0f),
                             onRelease = { editor ->
                                 viewModel.saveCursorState(editor)
                                 editor.release()
-                            },
-                        )
+                            })
                     }
                 }
             }
             AnimatedVisibility(
-                // visible = viewModel.loadState is LoadState.Success && editorRef != null
-                visible = viewModel.symbolBar, enter = expandVertically(
+                visible = (viewModel.symbolBar && layoutReady), enter = expandVertically(
                     animationSpec = tween(durationMillis = 220), expandFrom = Alignment.Bottom
                 ), exit = shrinkVertically(
                     animationSpec = tween(durationMillis = 220), shrinkTowards = Alignment.Bottom
@@ -514,7 +532,7 @@ fun TextEditorScreen(
                 )
             }
             AnimatedVisibility(
-                visible = showSearchPanel, enter = expandVertically(
+                visible = (showSearchPanel && layoutReady), enter = expandVertically(
                     animationSpec = tween(durationMillis = 220), expandFrom = Alignment.Top
                 ), exit = shrinkVertically(
                     animationSpec = tween(durationMillis = 220), shrinkTowards = Alignment.Top
@@ -596,6 +614,37 @@ private fun EditorSettingsDialog(
     })
 }
 
+private fun applyTheme(editor: CodeEditor, themeName: String) {
+    ThemeRegistry.getInstance().setTheme(themeName)
+    val newScheme = buildColorScheme()
+    editor.colorScheme = newScheme
+    editor.colorScheme.let { scheme ->
+        scheme.setColor(EditorColorScheme.SELECTION_HANDLE, "#e3e3e3".toColorInt())
+        scheme.setColor(EditorColorScheme.MATCHED_TEXT_BACKGROUND, "#33e3e3e3".toColorInt())
+        scheme.setColor(EditorColorScheme.SELECTED_TEXT_BACKGROUND, "#33e3e3e3".toColorInt())
+        scheme.setColor(EditorColorScheme.SELECTION_INSERT, "#33e3e3e3".toColorInt())
+    }
+    val (track, thumb) = deriveScrollbarDrawables()
+    editor.renderer.verticalScrollbarTrackDrawable = track
+    editor.renderer.verticalScrollbarThumbDrawable = thumb
+    editor.renderer.horizontalScrollbarTrackDrawable = track
+    editor.renderer.horizontalScrollbarThumbDrawable = thumb
+}
+
+private fun applyMinimap(editor: CodeEditor, showMinimap: Boolean, blocks: Boolean) {
+    editor.props.showMinimap = showMinimap
+    editor.props.minimapConfig = MinimapConfig(minimapDrawTextAsBlocks = blocks)
+    editor.invalidate()
+}
+
+private fun applyInvisibleChars(editor: CodeEditor, enabled: Boolean) {
+    editor.nonPrintablePaintingFlags = if (enabled) {
+        CodeEditor.FLAG_DRAW_WHITESPACE_LEADING or CodeEditor.FLAG_DRAW_LINE_SEPARATOR or CodeEditor.FLAG_DRAW_WHITESPACE_IN_SELECTION or CodeEditor.FLAG_DRAW_SOFT_WRAP
+    } else {
+        0
+    }
+}
+
 @Composable
 private fun SettingsClickRow(
     label: String, value: String, valueFontFamily: FontFamily? = null, onClick: () -> Unit
@@ -613,7 +662,7 @@ private fun SettingsClickRow(
                 text = " (${value})",
                 fontFamily = valueFontFamily,
                 maxLines = 1,
-                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f, fill = false)
             )
         }
@@ -654,7 +703,7 @@ private fun SingleChoiceDialog(
                     Text(
                         text = option,
                         maxLines = 1,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                        overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -679,12 +728,14 @@ private fun FontChoiceDialog(
     var query by rememberSaveable { mutableStateOf("") }
     var importError by remember { mutableStateOf<String?>(null) }
     var fontPendingDelete by remember { mutableStateOf<FontRegistry.FontOption?>(null) }
-
     val importLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
     ) { uri: android.net.Uri? ->
         if (uri == null) return@rememberLauncherForActivityResult
-        val fileName = queryDisplayName(context, uri) ?: uri.lastPathSegment ?: "font"
+        val fileName = context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+            if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
+        } ?: uri.lastPathSegment ?: "font"
         val imported = FontRegistry.importFont(context, uri, fileName)
         if (imported != null) {
             importError = null
@@ -788,7 +839,7 @@ private fun FontChoiceDialog(
                                 text = option.displayName,
                                 fontFamily = FontFamily(typeface),
                                 maxLines = 1,
-                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                                overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -799,13 +850,6 @@ private fun FontChoiceDialog(
     }, confirmButton = {
         TextButton(onClick = onDismiss) { Text("Cancel") }
     })
-}
-
-private fun queryDisplayName(context: android.content.Context, uri: android.net.Uri): String? {
-    return context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-        val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
-        if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
-    }
 }
 
 @Composable

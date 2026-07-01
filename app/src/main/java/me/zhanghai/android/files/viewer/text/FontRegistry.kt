@@ -4,6 +4,7 @@ package me.zhanghai.android.filesfork.viewer.text
 
 import android.content.Context
 import android.graphics.Typeface
+import android.net.Uri
 
 object FontRegistry {
     enum class FontSource { BUNDLED, SYSTEM, IMPORTED }
@@ -94,9 +95,9 @@ object FontRegistry {
         return typeface
     }
 
-    fun importFont(context: Context, uri: android.net.Uri, originalFileName: String): FontOption? {
+    fun importFont(context: Context, uri: Uri, originalFileName: String): FontOption? {
         val ext = originalFileName.substringAfterLast('.', "").lowercase()
-        if (ext !in setOf("ttf", "otf", "ttc")) return null
+        if (ext !in setOf("ttf")) return null
 
         val safeName = originalFileName
             .substringBeforeLast('.')

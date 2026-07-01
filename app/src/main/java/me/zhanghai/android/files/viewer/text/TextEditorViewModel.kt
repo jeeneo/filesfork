@@ -3,10 +3,12 @@
 package me.zhanghai.android.filesfork.viewer.text
 
 import android.app.Application
+import android.graphics.drawable.ColorDrawable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.graphics.drawable.toDrawable
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -23,6 +25,7 @@ import io.github.rosemoe.sora.widget.CodeEditor
 import java8.nio.file.Files
 import java8.nio.file.Path
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,12 +35,7 @@ private val android.content.Context.editorPrefsDataStore: DataStore<Preferences>
     name = "text_editor_prefs"
 )
 
-sealed interface AppLoadState {
-    data object Idle : AppLoadState
-    data object Ready : AppLoadState
-    data object GrammarReady : AppLoadState
-    data class Error(val message: String) : AppLoadState
-}
+enum class SaveButtonState { IDLE, SAVED, ERROR }
 
 data class TopBarAction(
     val label: String,
@@ -83,6 +81,7 @@ private object PrefKeys {
     val SELECTED_THEME = stringPreferencesKey("selected_theme")
     val TEXT_SIZE_PX = floatPreferencesKey("text_size_px")
     val SELECTED_FONT = stringPreferencesKey("selected_font")
+    val INVISIBLE_CHARS = booleanPreferencesKey("invisible_chars")
 }
 
 sealed interface LoadState {
@@ -92,10 +91,11 @@ sealed interface LoadState {
 }
 
 class TextEditorViewModel(application: Application) : AndroidViewModel(application) {
-    var appLoadState: AppLoadState by mutableStateOf(AppLoadState.Idle)
-        private set
     var loadState: LoadState by mutableStateOf(LoadState.Loading)
         private set
+    var grammarsReady: Boolean by mutableStateOf(false)
+        private set
+    private var grammarLoadJob: Job? = null
     var isModified: Boolean by mutableStateOf(false)
         private set
     var syntaxHighlight: Boolean by mutableStateOf(true)
@@ -119,9 +119,10 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         private set
     var fontOptions: List<FontRegistry.FontOption> by mutableStateOf(emptyList())
         private set
+    var invisibleChars: Boolean by mutableStateOf(false)
+        private set
     var content: Content by mutableStateOf(Content())
         private set
-
     private var originalContent: String = ""
     private val dataStore get() = getApplication<Application>().editorPrefsDataStore
     private var pendingSelectionLeft: Int = -1
@@ -131,15 +132,26 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
 
     fun initialize(path: Path) {
         viewModelScope.launch {
+            if (prefsLoaded) return@launch
             val app = getApplication<Application>()
             TextEditorInitializer.initThemeAndPrefs(app)
             loadPrefs()
-            appLoadState = AppLoadState.Ready
             load(path)
             refreshFontOptions()
-            launch {
+            grammarsLoaded(app)
+        }
+    }
+
+    private fun grammarsLoaded(app: Application) {
+        if (grammarsReady) return
+        if (grammarLoadJob?.isActive == true) return
+
+        grammarLoadJob = viewModelScope.launch {
+            try {
                 TextEditorInitializer.initGrammars(app)
-                appLoadState = AppLoadState.GrammarReady
+                grammarsReady = true
+            } finally {
+                grammarLoadJob = null
             }
         }
     }
@@ -178,6 +190,7 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         symbolBar = prefs[PrefKeys.SYMBOL_BAR] ?: false
         lineNumbers = prefs[PrefKeys.LINE_NUMBERS] ?: true
         selectedFont = prefs[PrefKeys.SELECTED_FONT] ?: "asset:fira_code"
+        invisibleChars = prefs[PrefKeys.INVISIBLE_CHARS] ?: false
         prefsLoaded = true
     }
 
@@ -193,6 +206,7 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
                 prefs[PrefKeys.SYMBOL_BAR] = symbolBar
                 prefs[PrefKeys.LINE_NUMBERS] = lineNumbers
                 prefs[PrefKeys.SELECTED_FONT] = selectedFont
+                prefs[PrefKeys.INVISIBLE_CHARS] = invisibleChars
             }
         }
     }
@@ -211,6 +225,7 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
     fun toggleSyntaxHighlight() {
         syntaxHighlight = !syntaxHighlight
         savePrefs()
+        if (syntaxHighlight) grammarsLoaded(getApplication())
     }
 
     fun setTheme(theme: String) {
@@ -240,6 +255,11 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
 
     fun toggleLineNumbers() {
         lineNumbers = !lineNumbers
+        savePrefs()
+    }
+
+    fun toggleInvisibleChars() {
+        invisibleChars = !invisibleChars
         savePrefs()
     }
 
@@ -305,4 +325,10 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
             }
         }
     }
+}
+
+fun deriveScrollbarDrawables(): Pair<ColorDrawable, ColorDrawable> {
+    val trackDrawable = 0x29FFFFFF.toDrawable()
+    val thumbDrawable = 0x80FFFFFF.toInt().toDrawable()
+    return Pair(trackDrawable, thumbDrawable)
 }
