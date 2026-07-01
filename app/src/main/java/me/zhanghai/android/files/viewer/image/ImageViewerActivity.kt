@@ -11,6 +11,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import java8.nio.file.Path
 import me.zhanghai.android.filesfork.app.AppActivity
+import me.zhanghai.android.filesfork.theme.AppTheme
 import me.zhanghai.android.filesfork.util.extraPathList
 
 class ImageViewerActivity : AppActivity() {
@@ -21,11 +22,13 @@ class ImageViewerActivity : AppActivity() {
         val paths = intent.extraPathList
         val position = intent.getIntExtra(EXTRA_POSITION, 0)
         setContent {
-            ImageViewerScreen(
-                paths = paths,
-                initialPosition = position,
-                onNavigateUp = { finish() }
-            )
+            AppTheme {
+                ImageViewerScreen(
+                    paths = paths,
+                    initialPosition = position,
+                    onNavigateUp = { finish() }
+                )
+            }
         }
     }
 

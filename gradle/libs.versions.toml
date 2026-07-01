@@ -141,7 +141,6 @@ mina-core = { module = "org.apache.mina:mina-core", version.ref = "mina" }
 slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j" }
 libsu-service = { module = "com.github.topjohnwu.libsu:service", version.ref = "libsu" }
 dav4jvm = { module = "com.github.bitfireAT:dav4jvm", version.ref = "dav4jvm" }
-xkoma = { module = "cc.ekblad:4koma", version.ref = "xkoma" }
 zoomable-image-coil = { module = "me.saket.telephoto:zoomable-image-coil", version.ref = "zoomableImageCoil" }
 
 [plugins]

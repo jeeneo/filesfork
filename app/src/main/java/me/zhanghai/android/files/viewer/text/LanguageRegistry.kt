@@ -4,8 +4,6 @@ package me.zhanghai.android.filesfork.viewer.text
 
 import android.content.Context
 import android.util.Log
-import cc.ekblad.toml.decode
-import cc.ekblad.toml.tomlMapper
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -13,9 +11,23 @@ import java.io.BufferedReader
 object LanguageRegistry {
     private const val TAG = "LanguageRegistry"
     private const val LANGUAGES_JSON_PATH = "textmate/languages/languages.json"
-    private const val FILEEXT_TOML_PATH = "textmate/languages/fileext.toml"
-
-    private data class LanguageEntry(val extensions: List<String>)
+    private val FILE_EXTENSIONS_BY_LANGUAGE: Map<String, List<String>> = mapOf(
+        "java" to listOf("java"),
+        "java-properties" to listOf("properties"),
+        "kotlin" to listOf("kt", "kts"),
+        "python" to listOf("py"),
+        "lua" to listOf("lua", "eel"),
+        "shellscript" to listOf("sh"),
+        "xml" to listOf("xml", "xsd", "svg"),
+        "json" to listOf("json", "jsonc"),
+        "jsonl" to listOf("jsonl", "ndjson"),
+        "html" to listOf("html", "htm"),
+        "toml" to listOf("toml"),
+        "javascript" to listOf("js", "jsx", "mjs", "cjs"),
+        "typescript" to listOf("ts", "tsx"),
+        "markdown" to listOf("md", "markdown", "mkdown", "mkd", "mdown"),
+        "log" to listOf("log", "logfile"),
+    )
 
     private var _initialized = false
     private lateinit var _scopeByLanguage: Map<String, String>
@@ -47,10 +59,7 @@ object LanguageRegistry {
             }
             _scopeByLanguage = parseLanguagesJson(languagesJson)
             _languageNames = _scopeByLanguage.keys
-            val fileExtToml = context.assets.open(FILEEXT_TOML_PATH).use { inputStream ->
-                inputStream.bufferedReader().use(BufferedReader::readText)
-            }
-            _scopeByExtension = parseFileExtToml(fileExtToml, _scopeByLanguage)
+            _scopeByExtension = buildExtensionMap(_scopeByLanguage)
             Log.d(
                 TAG,
                 "LanguageRegistry initialized: ${_languageNames.size} languages, ${_scopeByExtension.size} extensions"
@@ -81,16 +90,12 @@ object LanguageRegistry {
         }
     }
 
-    private fun parseFileExtToml(
-        toml: String, scopeByLanguage: Map<String, String>
-    ): Map<String, String> {
-        val mapper = tomlMapper { }
-        val languages = mapper.decode<Map<String, LanguageEntry>>(toml)
+    private fun buildExtensionMap(scopeByLanguage: Map<String, String>): Map<String, String> {
         return buildMap {
-            for ((language, entry) in languages) {
+            for ((language, extensions) in FILE_EXTENSIONS_BY_LANGUAGE) {
                 val scope = scopeByLanguage[language.lowercase()]
                 if (scope != null) {
-                    for (ext in entry.extensions) {
+                    for (ext in extensions) {
                         put(ext.lowercase(), scope)
                     }
                 } else {

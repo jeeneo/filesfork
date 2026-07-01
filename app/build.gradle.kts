@@ -200,6 +200,5 @@ dependencies {
     implementation(libs.slf4j.android)
     implementation(project(":sora-editor:editor"))
     implementation(project(":sora-editor:language-textmate"))
-    implementation(libs.xkoma)
     implementation("androidx.datastore:datastore-preferences:1.2.1")
 }

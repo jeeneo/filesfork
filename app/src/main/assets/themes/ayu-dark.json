@@ -1,5 +1,6 @@
 {
 	"type": "dark",
+	"name": "ayu dark",
 	"colors": {
 		"focusBorder": "#e6b450b3",
 		"foreground": "#565b66",

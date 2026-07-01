@@ -2,7 +2,9 @@
 
 package me.zhanghai.android.filesfork.viewer.text
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
+import android.view.MotionEvent
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -114,6 +116,7 @@ import io.github.rosemoe.sora.graphics.inlayHint.ColorInlayHintRenderer
 import io.github.rosemoe.sora.graphics.inlayHint.TextInlayHintRenderer
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage
 import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
+import io.github.rosemoe.sora.util.IntPair
 import io.github.rosemoe.sora.widget.CodeEditor
 import io.github.rosemoe.sora.widget.EditorSearcher
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion
@@ -123,12 +126,15 @@ import io.github.rosemoe.sora.widget.minimap.MinimapConfig
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme
 import java8.nio.file.Path
 import kotlinx.coroutines.launch
+import me.zhanghai.android.filesfork.viewer.text.ThemeRegistry as EditorThemeRegistry
 
+@SuppressLint("ClickableViewAccessibility")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextEditorScreen(
     path: Path, onNavigateUp: () -> Unit, viewModel: TextEditorViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     var editorRef by remember { mutableStateOf<CodeEditor?>(null) }
@@ -139,7 +145,6 @@ fun TextEditorScreen(
     val canUndo = remember { mutableStateOf(false) }
     val canRedo = remember { mutableStateOf(false) }
     val showSettingsDialog = rememberSaveable { mutableStateOf(false) }
-    val context = LocalContext.current
     val typefaceToLoad = remember(viewModel.selectedFont) {
         FontRegistry.loadTypeface(context, viewModel.selectedFont)
     }
@@ -279,7 +284,12 @@ fun TextEditorScreen(
                 viewModel.setFont(imported.id)
             },
             onFontDeleted = { deleted ->
-                viewModel.deleteFont(deleted.id)
+                val newFontId =
+                    FontRegistry.deleteImportedFont(context, deleted.id, viewModel.selectedFont)
+                if (newFontId != viewModel.selectedFont) {
+                    viewModel.setFont(newFontId)
+                }
+                viewModel.refreshFontOptions()
             },
             onDismiss = { showSettingsDialog.value = false })
     }
@@ -505,6 +515,51 @@ fun TextEditorScreen(
                                         viewModel.onContentChanged(text.toString())
                                     }
                                     viewModel.restoreCursorState(this)
+
+                                    var selectionTap = false
+                                    setOnTouchListener { view, event ->
+                                        when (event.actionMasked) {
+                                            MotionEvent.ACTION_DOWN -> {
+                                                val cur = cursor
+                                                if (cur.isSelected && isScreenPointOnText(
+                                                        event.x, event.y
+                                                    )
+                                                ) {
+                                                    val pos =
+                                                        getPointPositionOnScreen(event.x, event.y)
+                                                    val line = IntPair.getFirst(pos)
+                                                    val column = IntPair.getSecond(pos)
+                                                    val tapIndex = text.getCharIndex(line, column)
+                                                    val withinLines =
+                                                        line in cur.leftLine..cur.rightLine
+                                                    if (withinLines && tapIndex in cur.left..cur.right) {
+                                                        selectionTap = true
+                                                        return@setOnTouchListener true
+                                                    }
+                                                }
+                                                false
+                                            }
+
+                                            MotionEvent.ACTION_UP -> {
+                                                if (selectionTap) {
+                                                    selectionTap = false
+                                                    view.performClick()
+                                                    showSoftInput()
+                                                    true
+                                                } else {
+                                                    false
+                                                }
+                                            }
+
+                                            MotionEvent.ACTION_CANCEL -> {
+                                                selectionTap = false
+                                                false
+                                            }
+
+                                            else -> selectionTap
+                                        }
+                                    }
+
                                 }.also { editorRef = it }
                             },
                             modifier = Modifier
@@ -557,18 +612,18 @@ private fun EditorSettingsDialog(
     onFontDeleted: (FontRegistry.FontOption) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val themes = me.zhanghai.android.filesfork.viewer.text.ThemeRegistry.availableThemes
     val languages = listOf("auto", "none") + LanguageRegistry.supportedLanguages()
     val showThemePicker = remember { mutableStateOf(false) }
     val showLanguagePicker = remember { mutableStateOf(false) }
     val showFontPicker = remember { mutableStateOf(false) }
-
     if (showThemePicker.value) {
         SingleChoiceDialog(
             title = "Theme",
-            options = themes,
-            selected = selectedTheme,
-            onSelect = onThemeSelected,
+            options = EditorThemeRegistry.availableThemes,
+            selected = EditorThemeRegistry.availableThemes.find { it.id == selectedTheme }
+                ?: EditorThemeRegistry.availableThemes.firstOrNull(),
+            label = { it?.displayName ?: "None" },
+            onSelect = { onThemeSelected(it?.id ?: "None") },
             onDismiss = { showThemePicker.value = false })
     }
     if (showLanguagePicker.value) {
@@ -576,6 +631,7 @@ private fun EditorSettingsDialog(
             title = "Language",
             options = languages,
             selected = forceLanguage,
+            label = { it },
             onSelect = onLanguageSelected,
             onDismiss = { showLanguagePicker.value = false })
     }
@@ -588,13 +644,9 @@ private fun EditorSettingsDialog(
             onFontDeleted = onFontDeleted,
             onDismiss = { showFontPicker.value = false })
     }
-    val selectedFontDisplayName =
-        fontOptions.find { it.id == selectedFont }?.displayName ?: "Fira Code"
-    val context = LocalContext.current
-    val selectedFontFamily = remember(selectedFont) {
-        FontFamily(FontRegistry.loadTypeface(context, selectedFont))
-    }
-
+    val selectedThemeDisplayName =
+        EditorThemeRegistry.availableThemes.find { it.id == selectedTheme }?.displayName
+            ?: selectedTheme
     AlertDialog(onDismissRequest = onDismiss, title = { Text("Editor settings") }, text = {
         Column {
             SettingsClickRow(
@@ -604,10 +656,9 @@ private fun EditorSettingsDialog(
                 value = forceLanguage,
                 onClick = { showLanguagePicker.value = true })
             SettingsClickRow(
-                label = "Font",
-                value = selectedFontDisplayName,
-                valueFontFamily = selectedFontFamily,
-                onClick = { showFontPicker.value = true })
+                label = "Theme",
+                value = selectedThemeDisplayName,
+                onClick = { showThemePicker.value = true })
         }
     }, confirmButton = {
         TextButton(onClick = onDismiss) { Text("Done") }
@@ -676,11 +727,12 @@ private fun SettingsClickRow(
 }
 
 @Composable
-private fun SingleChoiceDialog(
+private fun <T> SingleChoiceDialog(
     title: String,
-    options: List<String>,
-    selected: String,
-    onSelect: (String) -> Unit,
+    options: List<T>,
+    selected: T,
+    label: (T) -> String,
+    onSelect: (T) -> Unit,
     onDismiss: () -> Unit
 ) {
     AlertDialog(onDismissRequest = onDismiss, title = { Text(title) }, text = {
@@ -701,7 +753,7 @@ private fun SingleChoiceDialog(
                     })
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        text = option,
+                        text = label(option),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
@@ -817,7 +869,9 @@ private fun FontChoiceDialog(
                         val typeface = remember(option.id) {
                             FontRegistry.loadTypeface(context, option.id)
                         }
-                        val isImported = option.source == FontRegistry.FontSource.IMPORTED
+                        val isImported = remember(option.id) {
+                            FontRegistry.isImported(context, option.id)
+                        }
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier

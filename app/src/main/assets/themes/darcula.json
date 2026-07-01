@@ -1,5 +1,6 @@
 {
-    "name": "darcula",
+    "type": "dark",
+    "name": "Darcula",
     "settings": [{
         "settings": {
             "background": "#242424",

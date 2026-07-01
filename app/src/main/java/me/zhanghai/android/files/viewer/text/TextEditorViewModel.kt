@@ -268,14 +268,6 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         savePrefs()
     }
 
-    fun deleteFont(fontId: String) {
-        FontRegistry.deleteImportedFont(fontId)
-        if (selectedFont == fontId) {
-            setFont("asset:fira_code")
-        }
-        refreshFontOptions()
-    }
-
     fun load(path: Path) {
         loadState = LoadState.Loading
         isModified = false

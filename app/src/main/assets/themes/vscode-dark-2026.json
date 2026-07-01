@@ -1,6 +1,6 @@
 {
 	"$schema": "vscode://schemas/color-theme",
-	"name": "Visual Studio Dark 2026",
+	"name": "VS Code Dark 2026",
 	"type": "dark",
 	"colors": {
 		"foreground": "#bfbfbf",
@@ -277,7 +277,7 @@
 		"inlineChat.border": "#00000000",
 		"minimapSlider.background": "#A8A9AA85",
 		"minimapSlider.hoverBackground": "#A8A9AA90",
-		"minimapSlider.activeBackground": "#A8A9AA9C",
+		"minimapSlider.activeBackground": "#A8A9AA9C"
 	},
 	"tokenColors": [
 		{

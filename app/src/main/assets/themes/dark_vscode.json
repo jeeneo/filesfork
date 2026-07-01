@@ -1,5 +1,6 @@
 {
-	"name": "Dark Visual Studio",
+	"type":"dark",
+	"name": "VS Code Dark",
 	"settings": [
 		{
 			"settings": {
