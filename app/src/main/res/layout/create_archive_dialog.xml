@@ -22,7 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <include layout="@layout/name_dialog_name_include" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -41,6 +40,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/deleteOriginalCheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/file_create_archive_delete_original" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

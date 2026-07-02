@@ -9,20 +9,34 @@ import java.io.File
 
 object FontRegistry {
     data class FontOption(val id: String, val displayName: String)
-    val defaultFont: FontOption get() = bundledFonts.first()
     private const val IMPORTED_FONTS_DIR = "imported_fonts"
+    private const val BUNDLED_FONTS_ASSET_DIR = "fonts"
     private val IMPORTABLE_EXTENSIONS = setOf("ttf", "otf", "ttc")
     private fun importedFontsDir(context: Context): File =
         File(context.filesDir, IMPORTED_FONTS_DIR).apply { mkdirs() }
+    private var cachedBundledFonts: List<FontOption>? = null
+    private fun bundledFonts(context: Context): List<FontOption> {
+        cachedBundledFonts?.let { return it }
+        val names = try {
+            context.assets.list(BUNDLED_FONTS_ASSET_DIR) ?: emptyArray()
+        } catch (_: Exception) {
+            emptyArray()
+        }
+        val result =
+            names.filter { it.substringAfterLast('.', "").lowercase() in IMPORTABLE_EXTENSIONS }
+                .sorted().map { name ->
+                    FontOption(
+                        id = "$BUNDLED_FONTS_ASSET_DIR/$name", displayName = name
+                    )
+                }
+        cachedBundledFonts = result
+        return result
+    }
 
-    private val bundledFonts = listOf(
-        "fonts/FiraCode-Regular.ttf",
-        "fonts/JetBrainsMono-Regular.ttf",
-        "fonts/AtkinsonHyperlegible-Regular.ttf",
-        "fonts/SourceCodePro-Regular.ttf",
-    ).map { path -> FontOption(id = path, displayName = path.substringAfterLast('/')) }
+    private fun bundledFontIds(context: Context): Set<String> =
+        bundledFonts(context).map { it.id }.toSet()
 
-    private val bundledFontIds = bundledFonts.map { it.id }.toSet()
+    fun defaultFont(context: Context): FontOption = bundledFonts(context).first()
 
     private var cachedSystemFonts: List<FontOption>? = null
     private var cachedImportedFonts: List<FontOption>? = null
@@ -53,7 +67,8 @@ object FontRegistry {
     }
 
     fun availableFonts(context: Context): List<FontOption> =
-        bundledFonts + scanImportedFonts(context) + scanSystemFonts()
+        bundledFonts(context) + scanImportedFonts(context) + scanSystemFonts()
+
     fun isImported(context: Context, fontId: String): Boolean =
         File(fontId).parentFile == importedFontsDir(context)
 
@@ -61,10 +76,10 @@ object FontRegistry {
         typefaceCache[fontId]?.let { return it }
 
         val id =
-            if (availableFonts(context).any { it.id == fontId }) fontId else bundledFonts.first().id
+            if (availableFonts(context).any { it.id == fontId }) fontId else defaultFont(context).id
 
         val typeface = try {
-            if (id in bundledFontIds) {
+            if (id in bundledFontIds(context)) {
                 Typeface.createFromAsset(context.assets, id)
             } else {
                 Typeface.createFromFile(id)
@@ -104,6 +119,6 @@ object FontRegistry {
             cachedImportedFonts = null
             typefaceCache.remove(fontId)
         }
-        return if (currentFontId == fontId) defaultFont.id else currentFontId
+        return if (currentFontId == fontId) defaultFont(context).id else currentFontId
     }
 }

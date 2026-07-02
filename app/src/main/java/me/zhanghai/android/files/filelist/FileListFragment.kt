@@ -1116,12 +1116,13 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         filter: Int,
         compressionTarget: CompressionTarget,
         password: String?,
-        compressionLevel: Int?
+        compressionLevel: Int?,
+        deleteOriginal: Boolean
     ) {
         val archiveFile = viewModel.currentPath.resolve(name)
         FileJobService.archive(
             makePathListForJob(files), archiveFile, format, filter, compressionTarget, password,
-            compressionLevel, requireContext()
+            compressionLevel, deleteOriginal, requireContext()
         )
         viewModel.selectFiles(files, false)
     }

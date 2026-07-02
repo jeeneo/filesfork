@@ -121,12 +121,13 @@ class FileJobService : Service() {
             compressionTarget: CompressionTarget,
             password: String?,
             compressionLevel: Int?,
+            deleteSources: Boolean,
             context: Context
         ) {
             startJob(
                 ArchiveFileJob(
                     sources, archiveFile, format, filter, compressionTarget, password,
-                    compressionLevel
+                    compressionLevel, deleteSources
                 ),
                 context
             )

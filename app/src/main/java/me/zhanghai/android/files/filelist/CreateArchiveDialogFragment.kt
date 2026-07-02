@@ -36,6 +36,7 @@ import me.zhanghai.android.filesfork.util.takeIfNotEmpty
 import me.zhanghai.android.filesfork.util.valueCompat
 import me.zhanghai.android.libarchive.Archive
 import kotlin.math.roundToInt
+import com.google.android.material.checkbox.MaterialCheckBox
 
 open class CreateArchiveDialogFragment : FileNameDialogFragment() {
     private val args by args<Args>()
@@ -149,6 +150,7 @@ open class CreateArchiveDialogFragment : FileNameDialogFragment() {
         } else {
             null
         }
+        val deleteOriginal = binding.deleteOriginalCheckBox.isChecked
         listener.archive(
             args.files,
             name,
@@ -156,7 +158,8 @@ open class CreateArchiveDialogFragment : FileNameDialogFragment() {
             type.filter,
             type.compressionTarget,
             password,
-            compressionLevel
+            compressionLevel,
+            deleteOriginal
         )
     }
 
@@ -179,7 +182,8 @@ open class CreateArchiveDialogFragment : FileNameDialogFragment() {
         val compressionLayout: LinearLayout,
         val compressionSlider: Slider,
         val passwordLayout: TextInputLayout,
-        val passwordEdit: TextInputEditText
+        val passwordEdit: TextInputEditText,
+        val deleteOriginalCheckBox: MaterialCheckBox
     ) : NameDialogFragment.Binding(root, nameLayout, nameEdit) {
         companion object {
             fun inflate(inflater: LayoutInflater): Binding {
@@ -194,7 +198,8 @@ open class CreateArchiveDialogFragment : FileNameDialogFragment() {
                     binding.compressionLayout,
                     binding.compressionSlider,
                     binding.passwordLayout,
-                    binding.passwordEdit
+                    binding.passwordEdit,
+                    binding.deleteOriginalCheckBox
                 )
             }
         }
@@ -208,7 +213,8 @@ open class CreateArchiveDialogFragment : FileNameDialogFragment() {
             filter: Int,
             compressionTarget: CompressionTarget,
             password: String?,
-            compressionLevel: Int?
+            compressionLevel: Int?,
+            deleteOriginal: Boolean
         )
     }
 }

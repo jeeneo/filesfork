@@ -15,9 +15,7 @@ An open source Material Design file manager for Android 6.0+ (with QoL improveme
 
 - (everything [upstream](https://github.com/zhanghai/MaterialFiles/tree/fc1250038496ebf4d4c139f62d16f0071f2c995a)), additionally:
 - [Sora Editor](https://github.com/Citrinae-Lime/MaterialFiles.Sora-Editor) (from [Citrinae-Lime](https://github.com/Citrinae-Lime)), with:
-  - Search and replace
-  - More syntaxies
-  - Themes
+  - Search and replace, syntaxes, themes, fonts
 
 Then...
 

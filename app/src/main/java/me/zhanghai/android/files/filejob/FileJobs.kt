@@ -608,7 +608,8 @@ class ArchiveFileJob(
     private val filter: Int,
     private val compressionTarget: CompressionTarget,
     private val password: String?,
-    private val compressionLevel: Int?
+    private val compressionLevel: Int?,
+    private val deleteSources: Boolean
 ) : FileJob() {
     @Throws(IOException::class)
     override fun run() {
@@ -640,6 +641,14 @@ class ArchiveFileJob(
                 } catch (e: UnsupportedOperationException) {
                     e.printStackTrace()
                 }
+            }
+        }
+        if (successful && deleteSources) {
+            val deleteTransferInfo = TransferInfo(scan(sources, R.plurals.file_job_delete_scan_notification_title_format), null)
+            val actionAllInfo = ActionAllInfo()
+            for (source in sources) {
+                deleteRecursively(source, deleteTransferInfo, actionAllInfo)
+                throwIfInterrupted()
             }
         }
     }
