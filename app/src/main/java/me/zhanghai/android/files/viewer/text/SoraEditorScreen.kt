@@ -622,8 +622,8 @@ private fun EditorSettingsDialog(
             options = EditorThemeRegistry.availableThemes,
             selected = EditorThemeRegistry.availableThemes.find { it.id == selectedTheme }
                 ?: EditorThemeRegistry.availableThemes.firstOrNull(),
-            label = { it?.displayName ?: "None" },
-            onSelect = { onThemeSelected(it?.id ?: "None") },
+            label = { it?.displayName ?: "" },
+            onSelect = { onThemeSelected(it?.id ?: "") },
             onDismiss = { showThemePicker.value = false })
     }
     if (showLanguagePicker.value) {
@@ -647,18 +647,27 @@ private fun EditorSettingsDialog(
     val selectedThemeDisplayName =
         EditorThemeRegistry.availableThemes.find { it.id == selectedTheme }?.displayName
             ?: selectedTheme
+    val selectedFontDisplayName =
+        fontOptions.find { it.id == selectedFont }?.displayName ?: ""
+    val context = LocalContext.current
+    val selectedFontFamily = remember(selectedFont) {
+        FontFamily(FontRegistry.loadTypeface(context, selectedFont))
+    }
     AlertDialog(onDismissRequest = onDismiss, title = { Text("Editor settings") }, text = {
         Column {
             SettingsClickRow(
-                label = "Theme", value = selectedTheme, onClick = { showThemePicker.value = true })
+                label = "Theme",
+                value = selectedThemeDisplayName,
+                onClick = { showThemePicker.value = true })
             SettingsClickRow(
                 label = "Language",
                 value = forceLanguage,
                 onClick = { showLanguagePicker.value = true })
             SettingsClickRow(
-                label = "Theme",
-                value = selectedThemeDisplayName,
-                onClick = { showThemePicker.value = true })
+                label = "Font",
+                value = selectedFontDisplayName,
+                valueFontFamily = selectedFontFamily,
+                onClick = { showFontPicker.value = true })
         }
     }, confirmButton = {
         TextButton(onClick = onDismiss) { Text("Done") }
