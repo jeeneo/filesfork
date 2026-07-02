@@ -9,11 +9,13 @@ import java.io.File
 
 object FontRegistry {
     data class FontOption(val id: String, val displayName: String)
+
     private const val IMPORTED_FONTS_DIR = "imported_fonts"
     private const val BUNDLED_FONTS_ASSET_DIR = "fonts"
     private val IMPORTABLE_EXTENSIONS = setOf("ttf", "otf", "ttc")
     private fun importedFontsDir(context: Context): File =
         File(context.filesDir, IMPORTED_FONTS_DIR).apply { mkdirs() }
+
     private var cachedBundledFonts: List<FontOption>? = null
     private fun bundledFonts(context: Context): List<FontOption> {
         cachedBundledFonts?.let { return it }
@@ -79,7 +81,24 @@ object FontRegistry {
             if (availableFonts(context).any { it.id == fontId }) fontId else defaultFont(context).id
 
         val typeface = try {
-            if (id in bundledFontIds(context)) {
+            val isBundled = id in bundledFontIds(context)
+            val weighted =
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                    try {
+                        val builder = if (isBundled) {
+                            Typeface.Builder(context.assets, id)
+                        } else {
+                            Typeface.Builder(id)
+                        }
+                        builder.setFontVariationSettings("'wght' 500").build()
+                    } catch (_: Exception) {
+                        null
+                    }
+                } else {
+                    null
+                }
+
+            weighted ?: if (isBundled) {
                 Typeface.createFromAsset(context.assets, id)
             } else {
                 Typeface.createFromFile(id)

@@ -521,7 +521,17 @@ fun TextEditorScreen(
                                         when (event.actionMasked) {
                                             MotionEvent.ACTION_DOWN -> {
                                                 val cur = cursor
-                                                if (cur.isSelected && isScreenPointOnText(
+
+                                                val onHandle =
+                                                    leftHandleDescriptor.position.contains(
+                                                        event.x, event.y
+                                                    ) || rightHandleDescriptor.position.contains(
+                                                        event.x, event.y
+                                                    ) || insertHandleDescriptor.position.contains(
+                                                        event.x, event.y
+                                                    )
+
+                                                if (!onHandle && cur.isSelected && isScreenPointOnText(
                                                         event.x, event.y
                                                     )
                                                 ) {
@@ -647,8 +657,7 @@ private fun EditorSettingsDialog(
     val selectedThemeDisplayName =
         EditorThemeRegistry.availableThemes.find { it.id == selectedTheme }?.displayName
             ?: selectedTheme
-    val selectedFontDisplayName =
-        fontOptions.find { it.id == selectedFont }?.displayName ?: ""
+    val selectedFontDisplayName = fontOptions.find { it.id == selectedFont }?.displayName ?: ""
     val context = LocalContext.current
     val selectedFontFamily = remember(selectedFont) {
         FontFamily(FontRegistry.loadTypeface(context, selectedFont))
