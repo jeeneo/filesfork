@@ -25,7 +25,7 @@ import net.schmizz.sshj.userauth.UserAuthException
 import java.io.IOException
 import java.security.PublicKey
 import java.util.Collections
-import java.util.WeakHashMapPromiscuousVerifier
+import java.util.WeakHashMap
 import java8.nio.file.Path as Java8Path
 
 object Client {

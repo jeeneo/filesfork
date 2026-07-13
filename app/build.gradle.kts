@@ -42,9 +42,7 @@ android {
                 arguments("-DANDROID_STL=none")
             }
         }
-        ndk {
-            abiFilters += "arm64-v8a"
-        }
+        ndk { abiFilters += listOf("arm64-v8a", "armeabi-v7a") }
     }
     buildFeatures {
         aidl = true
