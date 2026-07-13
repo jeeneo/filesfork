@@ -1,0 +1,38 @@
+package me.zhanghai.android.filesfork.viewer.audio
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import java8.nio.file.Path
+import me.zhanghai.android.filesfork.app.AppActivity
+import me.zhanghai.android.filesfork.theme.AppTheme
+import me.zhanghai.android.filesfork.util.extraPathList
+
+class AudioPlayerActivity : AppActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        val intent = intent
+        val paths = intent.extraPathList
+        val position = intent.getIntExtra(EXTRA_POSITION, 0)
+        setContent {
+            AppTheme {
+                AudioPlayerScreen(
+                    paths = paths,
+                    initialPosition = position,
+                    onNavigateUp = { finish() }
+                )
+            }
+        }
+    }
+
+    companion object {
+        private val EXTRA_POSITION = "${AudioPlayerActivity::class.java.name}.extra.POSITION"
+
+        fun putExtras(intent: Intent, paths: List<Path>, position: Int) {
+            intent.extraPathList = paths
+            intent.putExtra(EXTRA_POSITION, position)
+        }
+    }
+}

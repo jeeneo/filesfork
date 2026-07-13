@@ -133,7 +133,6 @@ import java8.nio.file.Path
 import kotlinx.coroutines.launch
 import me.zhanghai.android.filesfork.viewer.text.ThemeRegistry as EditorThemeRegistry
 
-@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("ClickableViewAccessibility")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -185,6 +185,7 @@ dependencies {
     }
     implementation(platform(libs.coil.bom))
     implementation(libs.coil)
+    implementation(libs.coil.compose)
     implementation(libs.coil.gif)
     implementation(libs.coil.svg)
     implementation(libs.coil.video)
@@ -200,5 +201,8 @@ dependencies {
     implementation(libs.slf4j.android)
     implementation(project(":sora-editor:editor"))
     implementation(project(":sora-editor:language-textmate"))
-    implementation("androidx.datastore:datastore-preferences:1.2.1")
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.session)
 }

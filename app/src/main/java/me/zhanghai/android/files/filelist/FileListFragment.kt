@@ -74,6 +74,7 @@ import me.zhanghai.android.filesfork.file.asMimeTypeOrNull
 import me.zhanghai.android.filesfork.file.extension
 import me.zhanghai.android.filesfork.file.fileProviderUri
 import me.zhanghai.android.filesfork.file.isApk
+import me.zhanghai.android.filesfork.file.isAudio
 import me.zhanghai.android.filesfork.file.isImage
 import me.zhanghai.android.filesfork.filejob.ArchiveOpenCacheRepository
 import me.zhanghai.android.filesfork.filejob.FileJobService
@@ -137,6 +138,7 @@ import me.zhanghai.android.filesfork.util.takeIfNotEmpty
 import me.zhanghai.android.filesfork.util.valueCompat
 import me.zhanghai.android.filesfork.util.viewModels
 import me.zhanghai.android.filesfork.util.withChooser
+import me.zhanghai.android.filesfork.viewer.audio.AudioPlayerActivity
 import me.zhanghai.android.filesfork.viewer.image.ImageViewerActivity
 import kotlin.math.roundToInt
 
@@ -1382,6 +1384,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                 .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION).apply {
                     extraPath = path
                     maybeAddImageViewerActivityExtras(this, path, mimeType)
+                    maybeAddAudioPlayerActivityExtras(this, path, mimeType)
                 }.let {
                     if (withChooser) {
                         it.withChooser(
@@ -1398,6 +1401,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         }
     }
 
+    // these mights also be able to scan inside archives too?
     private fun maybeAddImageViewerActivityExtras(intent: Intent, path: Path, mimeType: MimeType) {
         if (!mimeType.isImage) {
             return
@@ -1424,6 +1428,32 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
             position -= start
         }
         ImageViewerActivity.putExtras(intent, paths, position)
+    }
+
+    private fun maybeAddAudioPlayerActivityExtras(intent: Intent, path: Path, mimeType: MimeType) {
+        if (!mimeType.isAudio) {
+            return
+        }
+        var paths = mutableListOf<Path>()
+        for (index in 0..<adapter.itemCount) {
+            val file = adapter.getItem(index)
+            val filePath = file.path
+            if (file.mimeType.isAudio || filePath == path) {
+                paths.add(filePath)
+            }
+        }
+        var position = paths.indexOf(path)
+        if (position == -1) {
+            return
+        }
+        if (paths.size > IMAGE_VIEWER_ACTIVITY_PATH_LIST_SIZE_MAX) {
+            val start = (position - IMAGE_VIEWER_ACTIVITY_PATH_LIST_SIZE_MAX / 2).coerceIn(
+                0, paths.size - IMAGE_VIEWER_ACTIVITY_PATH_LIST_SIZE_MAX
+            )
+            paths = paths.subList(start, start + IMAGE_VIEWER_ACTIVITY_PATH_LIST_SIZE_MAX)
+            position -= start
+        }
+        AudioPlayerActivity.putExtras(intent, paths, position)
     }
 
     override fun cutFile(file: FileItem) {

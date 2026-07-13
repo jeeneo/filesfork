@@ -817,4 +817,16 @@
     <string name="shortcut_ftp_server_title" translatable="false">@string/ftp_server_title</string>
     <string name="action_share">Share</string>
     <string name="action_delete">Delete</string>
+    
+    <string name="audio_player_title">Audio player</string>
+    <string name="audio_player_subtitle_format">%1$,d/%2$,d</string>
+    <string name="audio_player_play">Play</string>
+    <string name="audio_player_pause">Pause</string>
+    <string name="audio_player_next">Next</string>
+    <string name="audio_player_previous">Previous</string>
+    <string name="audio_player_loading">Loading...</string>
+    <string name="audio_player_queue">Queue</string>
+    <string name="unknown_info">Unknown</string>
+    <string name="audio_player_shuffle">Shuffle</string>
+    <string name="audio_player_repeat">Repeat</string>
 </resources>
