@@ -29,7 +29,7 @@ android {
         //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 40
-        versionName = "1.7.4+2"
+        versionName = "1.7.4+3"
         resValue("string", "app_version", "$versionName (${versionCode})")
         buildConfigField(
             "String", "FILE_PROVIDIER_AUTHORITY", "APPLICATION_ID + \".file_provider\""
