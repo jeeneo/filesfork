@@ -15,7 +15,7 @@ An open source Material Design file manager for Android 6.0+ (with QoL improveme
 
 - (everything [upstream](https://github.com/zhanghai/MaterialFiles/tree/fc1250038496ebf4d4c139f62d16f0071f2c995a)), additionally:
 - [Sora Editor](https://github.com/Citrinae-Lime/MaterialFiles.Sora-Editor) (from [Citrinae-Lime](https://github.com/Citrinae-Lime)), with:
-  - Search and replace, syntaxes, themes, fonts
+  - Search and replace, syntaxes, themes, and fonts
 
 Then...
 
@@ -23,6 +23,7 @@ Then...
 - Folder size calculation
 - Modify archives (rename, delete, paste into, edit, etc)
 - Additional archive formats: zstd, gzip, tar
+- Audio player (ExoPlayer)
 - Compression levels
 - Termux in 'Open in Terminal'¹ (root-only paths supported)
 - Migration from Groovy to Kotlin DSL and some things to Jetpack Compose
