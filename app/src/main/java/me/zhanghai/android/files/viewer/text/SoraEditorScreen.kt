@@ -4,10 +4,13 @@ package me.zhanghai.android.filesfork.viewer.text
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
+import android.os.Build
 import android.view.MotionEvent
+import android.view.ViewConfiguration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
@@ -108,6 +111,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.graphics.toColorInt
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.rosemoe.sora.event.ContentChangeEvent
 import io.github.rosemoe.sora.event.LayoutStateChangeEvent
@@ -128,6 +133,7 @@ import java8.nio.file.Path
 import kotlinx.coroutines.launch
 import me.zhanghai.android.filesfork.viewer.text.ThemeRegistry as EditorThemeRegistry
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("ClickableViewAccessibility")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -515,13 +521,24 @@ fun TextEditorScreen(
                                         viewModel.onContentChanged(text.toString())
                                     }
                                     viewModel.restoreCursorState(this)
+                                    fun isImeVisible(): Boolean {
+                                        val insets =
+                                            ViewCompat.getRootWindowInsets(this) ?: return false
+                                        return insets.isVisible(WindowInsetsCompat.Type.ime())
+                                    }
 
                                     var selectionTap = false
+                                    var forwardingToEditor = false
+                                    var pendingDown: MotionEvent? = null
+                                    var downX = 0f
+                                    var downY = 0f
+                                    val touchSlop = ViewConfiguration.get(ctx).scaledTouchSlop
+
                                     setOnTouchListener { view, event ->
+                                        if (isImeVisible()) return@setOnTouchListener false
                                         when (event.actionMasked) {
                                             MotionEvent.ACTION_DOWN -> {
                                                 val cur = cursor
-
                                                 val onHandle =
                                                     leftHandleDescriptor.position.contains(
                                                         event.x, event.y
@@ -530,7 +547,8 @@ fun TextEditorScreen(
                                                     ) || insertHandleDescriptor.position.contains(
                                                         event.x, event.y
                                                     )
-
+                                                forwardingToEditor = false
+                                                selectionTap = false
                                                 if (!onHandle && cur.isSelected && isScreenPointOnText(
                                                         event.x, event.y
                                                     )
@@ -544,32 +562,71 @@ fun TextEditorScreen(
                                                         line in cur.leftLine..cur.rightLine
                                                     if (withinLines && tapIndex in cur.left..cur.right) {
                                                         selectionTap = true
+                                                        downX = event.x
+                                                        downY = event.y
+                                                        pendingDown = MotionEvent.obtain(event)
                                                         return@setOnTouchListener true
                                                     }
                                                 }
                                                 false
                                             }
 
-                                            MotionEvent.ACTION_UP -> {
-                                                if (selectionTap) {
-                                                    selectionTap = false
-                                                    view.performClick()
-                                                    showSoftInput()
+                                            MotionEvent.ACTION_MOVE -> {
+                                                if (selectionTap && !forwardingToEditor) {
+                                                    val dx = event.x - downX
+                                                    val dy = event.y - downY
+                                                    if (dx * dx + dy * dy > touchSlop * touchSlop) {
+                                                        forwardingToEditor = true
+                                                        selectionTap = false
+                                                        pendingDown?.let { view.onTouchEvent(it) }
+                                                        pendingDown?.recycle()
+                                                        pendingDown = null
+                                                    } else {
+                                                        return@setOnTouchListener true
+                                                    }
+                                                }
+                                                if (forwardingToEditor) {
+                                                    view.onTouchEvent(event)
                                                     true
                                                 } else {
                                                     false
                                                 }
                                             }
 
+                                            MotionEvent.ACTION_UP -> {
+                                                val consumed = when {
+                                                    forwardingToEditor -> {
+                                                        view.onTouchEvent(event)
+                                                        true
+                                                    }
+
+                                                    selectionTap -> {
+                                                        selectionTap = false
+                                                        view.performClick()
+                                                        showSoftInput()
+                                                        true
+                                                    }
+
+                                                    else -> false
+                                                }
+                                                forwardingToEditor = false
+                                                pendingDown?.recycle()
+                                                pendingDown = null
+                                                consumed
+                                            }
+
                                             MotionEvent.ACTION_CANCEL -> {
+                                                if (forwardingToEditor) view.onTouchEvent(event)
                                                 selectionTap = false
+                                                forwardingToEditor = false
+                                                pendingDown?.recycle()
+                                                pendingDown = null
                                                 false
                                             }
 
-                                            else -> selectionTap
+                                            else -> forwardingToEditor
                                         }
                                     }
-
                                 }.also { editorRef = it }
                             },
                             modifier = Modifier
