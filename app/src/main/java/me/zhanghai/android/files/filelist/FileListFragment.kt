@@ -35,6 +35,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
@@ -92,6 +93,7 @@ import me.zhanghai.android.filesfork.provider.archive.isArchivePath
 import me.zhanghai.android.filesfork.provider.linux.isLinuxPath
 import me.zhanghai.android.filesfork.settings.Settings
 import me.zhanghai.android.filesfork.terminal.Terminal
+import me.zhanghai.android.filesfork.theme.AppTheme
 import me.zhanghai.android.filesfork.ui.AppBarLayoutExpandHackListener
 import me.zhanghai.android.filesfork.ui.CoordinatorAppBarLayout
 import me.zhanghai.android.filesfork.ui.DrawerLayoutOnBackPressedCallback
@@ -139,6 +141,7 @@ import me.zhanghai.android.filesfork.util.valueCompat
 import me.zhanghai.android.filesfork.util.viewModels
 import me.zhanghai.android.filesfork.util.withChooser
 import me.zhanghai.android.filesfork.viewer.audio.AudioPlayerActivity
+import me.zhanghai.android.filesfork.viewer.audio.AudioPlayerBar
 import me.zhanghai.android.filesfork.viewer.image.ImageViewerActivity
 import kotlin.math.roundToInt
 
@@ -383,6 +386,15 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
 
         Settings.FILE_LIST_SHOW_HIDDEN_FILES.observe(viewLifecycleOwner) {
             onShowHiddenFilesChanged(it)
+        }
+
+        binding.audioPlayerBarView.setContent {
+            AppTheme {
+                AudioPlayerBar()
+            }
+        }
+        binding.audioPlayerBarView.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
+            binding.speedDialView.animate().translationY(-view.height.toFloat()).start()
         }
     }
 
@@ -1123,8 +1135,15 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     ) {
         val archiveFile = viewModel.currentPath.resolve(name)
         FileJobService.archive(
-            makePathListForJob(files), archiveFile, format, filter, compressionTarget, password,
-            compressionLevel, deleteOriginal, requireContext()
+            makePathListForJob(files),
+            archiveFile,
+            format,
+            filter,
+            compressionTarget,
+            password,
+            compressionLevel,
+            deleteOriginal,
+            requireContext()
         )
         viewModel.selectFiles(files, false)
     }
@@ -1811,7 +1830,8 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         val bottomBarLayout: ViewGroup,
         val bottomToolbar: Toolbar,
         val bottomCreateFileNameEdit: EditText,
-        val speedDialView: SpeedDialView
+        val speedDialView: SpeedDialView,
+        val audioPlayerBarView: ComposeView
     ) {
         companion object {
             fun inflate(
@@ -1842,7 +1862,8 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                     bottomBarBinding.bottomBarLayout,
                     bottomBarBinding.bottomToolbar,
                     bottomBarBinding.bottomCreateFileNameEdit,
-                    speedDialBinding.speedDialView
+                    speedDialBinding.speedDialView,
+                    includeBinding.audioPlayerBarView
                 )
             }
         }

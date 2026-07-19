@@ -36,6 +36,11 @@
 
                 <include layout="@layout/file_list_fragment_content_include" />
             </me.zhanghai.android.filesfork.ui.PersistentDrawerLayout>
+
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/audioPlayerBarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <include layout="@layout/file_list_fragment_bottom_bar_include" />

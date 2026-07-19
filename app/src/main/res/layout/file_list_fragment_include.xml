@@ -33,6 +33,17 @@
 
                     <include layout="@layout/file_list_fragment_content_include" />
 
+                    <!--
+                      android:fitsSystemWindows="true" exempts this view from CoordinatorLayout
+                      so the composable (AudioPlayerBar) can apply it's own padding to look nicer
+                      -->
+                    <androidx.compose.ui.platform.ComposeView
+                        android:id="@+id/audioPlayerBarView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:fitsSystemWindows="true" />
+
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
                 <include layout="@layout/file_list_fragment_bottom_bar_include" />

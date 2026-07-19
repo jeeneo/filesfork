@@ -26,6 +26,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.QueueMusic
 import androidx.compose.material.icons.filled.Album
 import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
@@ -34,6 +35,7 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
@@ -48,6 +50,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -65,6 +68,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -82,15 +86,21 @@ import androidx.media3.session.SessionToken
 import coil.compose.AsyncImage
 import com.google.common.util.concurrent.MoreExecutors
 import java8.nio.file.Path
+import java8.nio.file.Paths
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.zhanghai.android.filesfork.R
 import me.zhanghai.android.filesfork.file.MimeType
 import me.zhanghai.android.filesfork.file.fileProviderUri
+import me.zhanghai.android.filesfork.provider.common.delete
 import me.zhanghai.android.filesfork.util.createSendStreamIntent
 import me.zhanghai.android.filesfork.util.extraPath
 import me.zhanghai.android.filesfork.util.withChooser
+import java.io.IOException
+import java.net.URI
 
 private fun formatDuration(milliseconds: Long): String {
     if (milliseconds <= 0) return "-:--"
@@ -109,45 +119,23 @@ fun AudioPlayerScreen(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val currentPaths = remember { mutableStateListOf<Path>().also { it.addAll(paths) } }
-    if (currentPaths.isEmpty()) {
-        LaunchedEffect(Unit) { onNavigateUp() }
-        return
-    }
-    var currentIndex by rememberSaveable {
-        mutableIntStateOf(initialPosition.coerceIn(0, currentPaths.lastIndex))
-    }
-    var isPlaying by rememberSaveable { mutableStateOf(true) }
+    val currentPaths = remember { mutableStateListOf<Path>() }
+    var currentIndex by rememberSaveable { mutableIntStateOf(initialPosition) }
+    var isPlaying by remember { mutableStateOf(true) }
     var positionMs by remember { mutableLongStateOf(0L) }
     var durationMs by remember { mutableLongStateOf(0L) }
     var isUserSeeking by remember { mutableStateOf(false) }
     var seekPositionMs by remember { mutableFloatStateOf(0f) }
-
-    var isLoadingMetadata by remember { mutableStateOf(true) }
+    var loadingMetadata by remember { mutableStateOf(true) }
     val metadata = remember { mutableStateOf<MediaMetadata?>(null) }
-
-    var isShuffleEnabled by rememberSaveable { mutableStateOf(false) }
-    var isRepeatEnabled by rememberSaveable { mutableStateOf(false) }
-
-    val playOrder = remember { mutableStateListOf<Int>() }
-    LaunchedEffect(isShuffleEnabled, currentPaths.size) {
-        val indices = (0 until currentPaths.size).toMutableList()
-        if (isShuffleEnabled) {
-            indices.shuffle()
-            if (indices.remove(currentIndex)) {
-                indices.add(0, currentIndex)
-            }
-        }
-        playOrder.clear()
-        playOrder.addAll(indices)
-    }
-
-    val fileName = currentPaths[currentIndex].fileName.toString()
-    val displayTitle = metadata.value?.title?.toString() ?: fileName
-
+    var isShuffleEnabled by remember { mutableStateOf(false) }
+    var isRepeatEnabled by remember { mutableStateOf(false) }
+    var queueApplied by rememberSaveable { mutableStateOf(false) }
+    val pathPendingDelete = remember { mutableStateOf<Path?>(null) }
+    val fileName = currentPaths.getOrNull(currentIndex)?.fileName?.toString()
+    val title = metadata.value?.title?.toString() ?: fileName.orEmpty()
     val artist = metadata.value?.artist?.toString()
     val album = metadata.value?.albumTitle?.toString()
-
     var player by remember { mutableStateOf<MediaController?>(null) }
 
     DisposableEffect(Unit) {
@@ -188,13 +176,7 @@ fun AudioPlayerScreen(
             override fun onPlaybackStateChanged(playbackState: Int) {
                 if (playbackState == Player.STATE_READY) {
                     durationMs = connectedPlayer.duration.coerceAtLeast(0)
-                    isLoadingMetadata = false
-                }
-                if (playbackState == Player.STATE_ENDED) {
-                    if (isRepeatEnabled) {
-                        connectedPlayer.seekTo(0)
-                        connectedPlayer.play()
-                    }
+                    loadingMetadata = false
                 }
             }
 
@@ -205,7 +187,7 @@ fun AudioPlayerScreen(
                 }
                 durationMs = 0
                 positionMs = 0
-                isLoadingMetadata = true
+                loadingMetadata = true
                 metadata.value = null
             }
 
@@ -224,32 +206,43 @@ fun AudioPlayerScreen(
             }
         }
         connectedPlayer.addListener(listener)
-        metadata.value = connectedPlayer.mediaMetadata
         onDispose { connectedPlayer.removeListener(listener) }
     }
 
-    LaunchedEffect(currentPaths.toList(), connectedPlayer) {
-        val mediaItems = currentPaths.map { MediaItem.fromUri(it.fileProviderUri) }
-        connectedPlayer.setMediaItems(
-            mediaItems, currentIndex, 0
-        )
-        connectedPlayer.prepare()
-        connectedPlayer.playWhenReady = true
-    }
-
-    LaunchedEffect(currentIndex, connectedPlayer) {
-        if (connectedPlayer.currentMediaItemIndex == currentIndex) return@LaunchedEffect
-        connectedPlayer.seekToDefaultPosition(currentIndex)
-        connectedPlayer.prepare()
-        connectedPlayer.playWhenReady = true
-    }
-
-    LaunchedEffect(isShuffleEnabled, connectedPlayer) {
-        connectedPlayer.shuffleModeEnabled = isShuffleEnabled
-    }
-    LaunchedEffect(isRepeatEnabled, connectedPlayer) {
-        connectedPlayer.repeatMode =
-            if (isRepeatEnabled) Player.REPEAT_MODE_ONE else Player.REPEAT_MODE_OFF
+    LaunchedEffect(connectedPlayer) {
+        val shouldLoadQueue =
+            paths.isNotEmpty() && (!queueApplied || connectedPlayer.mediaItemCount == 0)
+        if (shouldLoadQueue) {
+            currentPaths.clear()
+            currentPaths.addAll(paths)
+            val startIndex = initialPosition.coerceIn(0, paths.lastIndex)
+            currentIndex = startIndex
+            val mediaItems = paths.map {
+                MediaItem.Builder().setUri(it.fileProviderUri).setMediaId(it.toUri().toString())
+                    .build()
+            }
+            connectedPlayer.setMediaItems(mediaItems, startIndex, 0)
+            connectedPlayer.prepare()
+            connectedPlayer.playWhenReady = true
+            queueApplied = true
+        } else if (connectedPlayer.mediaItemCount > 0) {
+            currentPaths.clear()
+            currentPaths.addAll(
+                (0 until connectedPlayer.mediaItemCount).map {
+                    Paths.get(URI.create(connectedPlayer.getMediaItemAt(it).mediaId))
+                })
+            currentIndex = connectedPlayer.currentMediaItemIndex
+            isPlaying = connectedPlayer.isPlaying
+            isShuffleEnabled = connectedPlayer.shuffleModeEnabled
+            isRepeatEnabled = connectedPlayer.repeatMode == Player.REPEAT_MODE_ONE
+            durationMs = connectedPlayer.duration.coerceAtLeast(0)
+            positionMs = connectedPlayer.currentPosition.coerceAtLeast(0)
+            metadata.value = connectedPlayer.mediaMetadata
+            loadingMetadata = connectedPlayer.playbackState != Player.STATE_READY
+            queueApplied = true
+        } else {
+            onNavigateUp()
+        }
     }
 
     LaunchedEffect(connectedPlayer) {
@@ -308,7 +301,8 @@ fun AudioPlayerScreen(
                                     }
                                 )
                                 .clickable {
-                                    currentIndex = index
+                                    connectedPlayer.seekToDefaultPosition(index)
+                                    connectedPlayer.play()
                                     coroutineScope.launch { drawerState.close() }
                                 }
                                 .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -327,14 +321,6 @@ fun AudioPlayerScreen(
                                 overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier.weight(1f),
                             )
-                            Spacer(modifier = Modifier.size(8.dp))
-                            if (selected) {
-                                Text(
-                                    text = formatDuration(durationMs),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                )
-                            }
                         }
                     }
                 }
@@ -347,7 +333,7 @@ fun AudioPlayerScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            text = displayTitle,
+                            text = if (artist.isNullOrBlank()) title else "$artist - $title",
                             style = MaterialTheme.typography.titleLarge,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -373,7 +359,15 @@ fun AudioPlayerScreen(
                             }
                         }
                         IconButton(onClick = {
-                            val path = currentPaths[currentIndex]
+                            pathPendingDelete.value = currentPaths.getOrNull(currentIndex)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.action_delete),
+                            )
+                        }
+                        IconButton(onClick = {
+                            val path = currentPaths.getOrNull(currentIndex) ?: return@IconButton
                             val intent = path.fileProviderUri.createSendStreamIntent(
                                 MimeType.AUDIO_ANY
                             ).apply { extraPath = path }.withChooser()
@@ -393,6 +387,8 @@ fun AudioPlayerScreen(
                     .fillMaxSize()
                     .padding(innerPadding),
             ) {
+                Spacer(modifier = Modifier.weight(1f))
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -414,7 +410,7 @@ fun AudioPlayerScreen(
                     } else {
                         Icon(
                             imageVector = Icons.Default.Audiotrack,
-                            contentDescription = null,
+                            contentDescription = "Album art placeholder",
                             modifier = Modifier.size(96.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
                         )
@@ -432,7 +428,7 @@ fun AudioPlayerScreen(
                         .padding(horizontal = 16.dp, vertical = 16.dp),
                 ) {
                     Text(
-                        text = if (isLoadingMetadata) stringResource(R.string.audio_player_loading) else displayTitle,
+                        text = if (loadingMetadata) stringResource(R.string.audio_player_loading) else title,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
@@ -444,13 +440,13 @@ fun AudioPlayerScreen(
                     InfoRow(
                         icon = Icons.Default.Person,
                         text = artist,
-                        isLoading = isLoadingMetadata,
+                        isLoading = loadingMetadata,
                         placeholder = stringResource(R.string.unknown_info),
                     )
                     InfoRow(
                         icon = Icons.Default.Album,
                         text = album,
-                        isLoading = isLoadingMetadata,
+                        isLoading = loadingMetadata,
                         placeholder = stringResource(R.string.unknown_info),
                     )
 
@@ -501,20 +497,22 @@ fun AudioPlayerScreen(
                     ) {
                         FilledIconToggleButton(
                             checked = isShuffleEnabled,
-                            onCheckedChange = { isShuffleEnabled = it },
+                            onCheckedChange = { connectedPlayer.shuffleModeEnabled = it },
+                            enabled = hasQueue,
                             colors = IconButtonDefaults.filledIconToggleButtonColors(
                                 containerColor = Color.Transparent,
                                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                                 checkedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                                 checkedContentColor = MaterialTheme.colorScheme.primary,
+                                disabledContainerColor = Color.Transparent,
                             ),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Shuffle,
                                 contentDescription = stringResource(R.string.audio_player_shuffle),
+                                modifier = Modifier.alpha(if (hasQueue) 1f else 0.4f),
                             )
                         }
-
 
                         IconButton(
                             onClick = { playPrevious() },
@@ -564,7 +562,10 @@ fun AudioPlayerScreen(
 
                         FilledIconToggleButton(
                             checked = isRepeatEnabled,
-                            onCheckedChange = { isRepeatEnabled = it },
+                            onCheckedChange = {
+                                connectedPlayer.repeatMode =
+                                    if (it) Player.REPEAT_MODE_ONE else Player.REPEAT_MODE_OFF
+                            },
                             colors = IconButtonDefaults.filledIconToggleButtonColors(
                                 containerColor = Color.Transparent,
                                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -581,6 +582,43 @@ fun AudioPlayerScreen(
                 }
             }
         }
+    }
+    pathPendingDelete.value?.let { path ->
+        AlertDialog(
+            onDismissRequest = { pathPendingDelete.value = null },
+            text = {
+                Text(stringResource(R.string.file_delete_message_file_format, path.fileName))
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    pathPendingDelete.value = null
+                    coroutineScope.launch {
+                        try {
+                            withContext(Dispatchers.IO) { path.delete() }
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                            return@launch
+                        }
+                        val index = currentPaths.indexOf(path)
+                        if (index != -1) {
+                            connectedPlayer.removeMediaItem(index)
+                            currentPaths.removeAt(index)
+                            currentIndex = connectedPlayer.currentMediaItemIndex
+                        }
+                        if (currentPaths.isEmpty()) {
+                            onNavigateUp()
+                        }
+                    }
+                }) {
+                    Text(stringResource(android.R.string.ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { pathPendingDelete.value = null }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            },
+        )
     }
 }
 
