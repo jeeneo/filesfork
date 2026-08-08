@@ -15,24 +15,30 @@ An open source Material Design file manager for Android 6.0+ (with QoL improveme
 
 - (everything [upstream](https://github.com/zhanghai/MaterialFiles/tree/fc1250038496ebf4d4c139f62d16f0071f2c995a)), additionally:
 - [Sora Editor](https://github.com/Citrinae-Lime/MaterialFiles.Sora-Editor) (from [Citrinae-Lime](https://github.com/Citrinae-Lime)), with:
-  - Search and replace, syntaxes, themes, and fonts
+  - Search and replace, themes, fonts etc
 
 Then...
 
-- [Telephoto](https://github.com/saket/telephoto) for image viewing instead of PhotoView
+- [Telephoto](https://github.com/saket/telephoto) for images (instead of PhotoView)
 - Folder size calculation
+- Audio player
 - Modify archives (rename, delete, paste into, edit, etc)
 - Additional archive formats: zstd, gzip, tar
-- Audio player (ExoPlayer)
 - Compression levels
 - Termux in 'Open in Terminal'¹ (root-only paths supported)
-- Migration from Groovy to Kotlin DSL and some things to Jetpack Compose
+- Migration from Groovy to Kotlin DSL and Jetpack Compose
 
-Full credits to [Hai Zhang](https://github.com/zhanghai) for the original app and [Citrinae-Lime](https://github.com/Citrinae-Lime) for the Sora Editor modifications
+Credits to [Hai Zhang](https://github.com/zhanghai) for Material Files, [Citrinae-Lime](https://github.com/Citrinae-Lime) for the Sora Editor modifications
 
 ## Additional info
 
-¹ For the "Open in Terminal" function to properly work in Termux, you need to first edit the `~/.termux/termux.properties` file from within termux, and set `allow-external-apps = true` ([info](https://wiki.termux.com/wiki/Terminal_Settings), [more info](https://github.com/termux/termux-app/wiki/RUN_COMMAND-Intent#allow-external-apps-property-mandatory)), then grant the permission from Material Files' "App Info" in settings, usually the flow is `Settings > Apps > Material Files > Permissions > Additonal permissions > Run commands in termux environment` (might be slightly different depending on your device/manufacturer)
+¹ For the "Open in Terminal" function to properly work in Termux, you need to first edit the `~/.termux/termux.properties` file from within termux, and set `allow-external-apps = true` ([info](https://wiki.termux.com/wiki/Terminal_Settings), [more info](https://github.com/termux/termux-app/wiki/RUN_COMMAND-Intent#allow-external-apps-property-mandatory)), then grant the permission from Material Files' "App Info" in settings, usually the flow is `Settings > Apps > Material Files > Permissions > Additonal permissions > Run commands in termux environment` (might be slightly different depending on your device/rom)
+
+## AI policy
+
+PRs or Issues heavily written by LLMs will be ignored and closed without warning. AI-assisted code is acceptible only if:
+- The submitter understands and can fully can explain what the code does without the help of LLMs, this means do not use LLMs to write the the body of your issue/PR
+- Doesn't add unnecessary maintance burdens or is overly complex, including but not limited to thousands of changes at once or feature-heavy additions, this is just for QoL features, not an entire suite. I want to keep the app small and light
 
 ## License
 

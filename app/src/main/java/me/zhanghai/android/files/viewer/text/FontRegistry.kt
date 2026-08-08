@@ -12,6 +12,7 @@ object FontRegistry {
 
     private const val IMPORTED_FONTS_DIR = "imported_fonts"
     private const val BUNDLED_FONTS_ASSET_DIR = "fonts"
+    private const val DEFAULT_FALLBACK_ID = "__default_monospace__"
     private val IMPORTABLE_EXTENSIONS = setOf("ttf", "otf", "ttc")
     private fun importedFontsDir(context: Context): File =
         File(context.filesDir, IMPORTED_FONTS_DIR).apply { mkdirs() }
@@ -38,7 +39,9 @@ object FontRegistry {
     private fun bundledFontIds(context: Context): Set<String> =
         bundledFonts(context).map { it.id }.toSet()
 
-    fun defaultFont(context: Context): FontOption = bundledFonts(context).first()
+    fun defaultFont(context: Context): FontOption =
+        bundledFonts(context).firstOrNull()
+            ?: FontOption(id = DEFAULT_FALLBACK_ID, displayName = "Default")
 
     private var cachedSystemFonts: List<FontOption>? = null
     private var cachedImportedFonts: List<FontOption>? = null
@@ -68,27 +71,37 @@ object FontRegistry {
         return result
     }
 
-    fun availableFonts(context: Context): List<FontOption> =
-        bundledFonts(context) + scanImportedFonts(context) + scanSystemFonts()
+    fun availableFonts(context: Context, includeSystemFonts: Boolean = false): List<FontOption> {
+        val base = bundledFonts(context) + scanImportedFonts(context)
+        return if (includeSystemFonts) base + scanSystemFonts() else base
+    }
 
     fun isImported(context: Context, fontId: String): Boolean =
         File(fontId).parentFile == importedFontsDir(context)
 
     fun loadTypeface(context: Context, fontId: String): Typeface {
         typefaceCache[fontId]?.let { return it }
+        val resolvedId =
+            if (availableFonts(context, includeSystemFonts = true).any { it.id == fontId }) {
+                fontId
+            } else {
+                defaultFont(context).id
+            }
 
-        val id =
-            if (availableFonts(context).any { it.id == fontId }) fontId else defaultFont(context).id
+        if (resolvedId == DEFAULT_FALLBACK_ID) {
+            typefaceCache[resolvedId] = Typeface.MONOSPACE
+            return Typeface.MONOSPACE
+        }
 
         val typeface = try {
-            val isBundled = id in bundledFontIds(context)
+            val isBundled = resolvedId in bundledFontIds(context)
             val weighted =
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
                     try {
                         val builder = if (isBundled) {
-                            Typeface.Builder(context.assets, id)
+                            Typeface.Builder(context.assets, resolvedId)
                         } else {
-                            Typeface.Builder(id)
+                            Typeface.Builder(resolvedId)
                         }
                         builder.setFontVariationSettings("'wght' 500").build()
                     } catch (_: Exception) {
@@ -99,14 +112,14 @@ object FontRegistry {
                 }
 
             weighted ?: if (isBundled) {
-                Typeface.createFromAsset(context.assets, id)
+                Typeface.createFromAsset(context.assets, resolvedId)
             } else {
-                Typeface.createFromFile(id)
+                Typeface.createFromFile(resolvedId)
             }
         } catch (_: Exception) {
             Typeface.MONOSPACE
         }
-        typefaceCache[id] = typeface
+        typefaceCache[resolvedId] = typeface
         return typeface
     }
 

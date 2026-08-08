@@ -393,9 +393,28 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
                 AudioPlayerBar()
             }
         }
-        binding.audioPlayerBarView.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
-            binding.speedDialView.animate().translationY(-view.height.toFloat()).start()
-        }
+        var lastAudioBarHeight = 0
+        binding.audioPlayerBarView.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            override fun onLayoutChange(
+                v: View,
+                left: Int,
+                top: Int,
+                right: Int,
+                bottom: Int,
+                oldLeft: Int,
+                oldTop: Int,
+                oldRight: Int,
+                oldBottom: Int,
+            ) {
+                val h = v.height
+                if (h <= 0) return
+                val maxReasonableHeight = (200 * resources.displayMetrics.density).toInt()
+                if (h > maxReasonableHeight) return
+                if (h == lastAudioBarHeight) return
+                lastAudioBarHeight = h
+                binding.speedDialView.animate().translationY(-h.toFloat()).start()
+            }
+        })
     }
 
     override fun onResume() {

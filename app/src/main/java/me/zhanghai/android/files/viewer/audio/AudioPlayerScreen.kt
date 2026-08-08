@@ -1,8 +1,13 @@
 package me.zhanghai.android.filesfork.viewer.audio
 
 import android.content.ComponentName
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -70,7 +75,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -78,6 +85,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.content.edit
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
@@ -93,6 +101,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.app.defaultSharedPreferences
 import me.zhanghai.android.filesfork.file.MimeType
 import me.zhanghai.android.filesfork.file.fileProviderUri
 import me.zhanghai.android.filesfork.provider.common.delete
@@ -101,6 +110,7 @@ import me.zhanghai.android.filesfork.util.extraPath
 import me.zhanghai.android.filesfork.util.withChooser
 import java.io.IOException
 import java.net.URI
+import kotlin.time.Duration.Companion.milliseconds
 
 private fun formatDuration(milliseconds: Long): String {
     if (milliseconds <= 0) return "-:--"
@@ -132,6 +142,15 @@ fun AudioPlayerScreen(
     var isRepeatEnabled by remember { mutableStateOf(false) }
     var queueApplied by rememberSaveable { mutableStateOf(false) }
     val pathPendingDelete = remember { mutableStateOf<Path?>(null) }
+    var isCircular by remember {
+        mutableStateOf(
+            defaultSharedPreferences.getBoolean(
+                "audio_player_circular_album_art", false
+            )
+        )
+    }
+    var rotation by remember { mutableFloatStateOf(0f) }
+    var pendingSquareMorph by remember { mutableStateOf(false) }
     val fileName = currentPaths.getOrNull(currentIndex)?.fileName?.toString()
     val title = metadata.value?.title?.toString() ?: fileName.orEmpty()
     val artist = metadata.value?.artist?.toString()
@@ -174,10 +193,8 @@ fun AudioPlayerScreen(
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
-                if (playbackState == Player.STATE_READY) {
-                    durationMs = connectedPlayer.duration.coerceAtLeast(0)
-                    loadingMetadata = false
-                }
+                durationMs = connectedPlayer.duration.coerceAtLeast(0)
+                loadingMetadata = playbackState != Player.STATE_READY
             }
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
@@ -185,16 +202,14 @@ fun AudioPlayerScreen(
                 if (newIndex != currentIndex && newIndex in currentPaths.indices) {
                     currentIndex = newIndex
                 }
-                durationMs = 0
-                positionMs = 0
-                loadingMetadata = true
-                metadata.value = null
+                positionMs = connectedPlayer.currentPosition.coerceAtLeast(0)
+                durationMs = connectedPlayer.duration.coerceAtLeast(0)
+                loadingMetadata = connectedPlayer.playbackState != Player.STATE_READY
+                metadata.value = connectedPlayer.mediaMetadata
             }
 
             override fun onMediaMetadataChanged(newMetadata: MediaMetadata) {
-                if (newMetadata.title != null || newMetadata.artist != null || newMetadata.albumTitle != null || newMetadata.artworkData != null || newMetadata.artworkUri != null) {
-                    metadata.value = newMetadata
-                }
+                metadata.value = newMetadata
             }
 
             override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
@@ -206,6 +221,12 @@ fun AudioPlayerScreen(
             }
         }
         connectedPlayer.addListener(listener)
+        isPlaying = connectedPlayer.isPlaying
+        durationMs = connectedPlayer.duration.coerceAtLeast(0)
+        positionMs = connectedPlayer.currentPosition.coerceAtLeast(0)
+        loadingMetadata = connectedPlayer.playbackState != Player.STATE_READY
+        metadata.value = connectedPlayer.mediaMetadata
+        currentIndex = connectedPlayer.currentMediaItemIndex
         onDispose { connectedPlayer.removeListener(listener) }
     }
 
@@ -250,7 +271,7 @@ fun AudioPlayerScreen(
             if (!isUserSeeking) {
                 positionMs = connectedPlayer.currentPosition.coerceAtLeast(0)
             }
-            delay(200)
+            delay(200.milliseconds)
         }
     }
 
@@ -264,6 +285,38 @@ fun AudioPlayerScreen(
         if (connectedPlayer.hasNextMediaItem()) {
             connectedPlayer.seekToNextMediaItem()
         }
+    }
+
+    LaunchedEffect(isCircular, isPlaying) {
+        if (isCircular && isPlaying) {
+            val startTime = System.currentTimeMillis()
+            val startRotation = rotation
+            while (isActive && isCircular && isPlaying) {
+                val elapsed = System.currentTimeMillis() - startTime
+                val progress = (elapsed.toFloat() / 12_000L).coerceIn(0f, 1f)
+                rotation = startRotation + 360f * progress
+                delay(16.milliseconds)
+            }
+        } else if (pendingSquareMorph) {
+            val current = rotation % 360f
+            val target = if (current > 180f) rotation + (360f - current) else rotation - current
+            val duration = 400L
+            val start = rotation
+            val startTime = System.currentTimeMillis()
+            while (isActive) {
+                val elapsed = System.currentTimeMillis() - startTime
+                val progress = (elapsed.toFloat() / duration).coerceIn(0f, 1f)
+                rotation = start + (target - start) * progress
+                if (progress >= 1f) break
+                delay(16.milliseconds)
+            }
+            rotation = 0f
+            pendingSquareMorph = false
+        }
+    }
+
+    LaunchedEffect(isCircular) {
+        defaultSharedPreferences.edit { putBoolean("audio_player_circular_album_art", isCircular) }
     }
 
     val hasQueue = currentPaths.size > 1
@@ -389,13 +442,35 @@ fun AudioPlayerScreen(
             ) {
                 Spacer(modifier = Modifier.weight(1f))
 
+                val cornerRadius by animateDpAsState(
+                    targetValue = if (isCircular || pendingSquareMorph) 1000.dp else 24.dp,
+                    animationSpec = tween(durationMillis = 600),
+                    label = "albumArtCornerRadius",
+                )
+                val animatedRotation by animateFloatAsState(
+                    targetValue = rotation,
+                    animationSpec = tween(durationMillis = 16, easing = LinearEasing),
+                    label = "albumArtRotation",
+                )
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(24.dp)
                         .aspectRatio(1f)
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+                        .clip(RoundedCornerShape(cornerRadius))
+                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onLongPress = {
+                                    if (!isCircular) {
+                                        isCircular = true
+                                    } else {
+                                        pendingSquareMorph = true
+                                        isCircular = false
+                                    }
+                                },
+                            )
+                        },
                     contentAlignment = Alignment.Center,
                 ) {
                     val artworkData = metadata.value?.artworkData
@@ -404,14 +479,18 @@ fun AudioPlayerScreen(
                         AsyncImage(
                             model = artworkData ?: artworkUri,
                             contentDescription = album,
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .rotate(animatedRotation),
                             contentScale = ContentScale.Fit,
                         )
                     } else {
                         Icon(
                             imageVector = Icons.Default.Audiotrack,
                             contentDescription = "Album art placeholder",
-                            modifier = Modifier.size(96.dp),
+                            modifier = Modifier
+                                .size(96.dp)
+                                .rotate(animatedRotation),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
                         )
                     }

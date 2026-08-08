@@ -4,13 +4,11 @@ package me.zhanghai.android.filesfork.viewer.text
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
-import android.os.Build
 import android.view.MotionEvent
 import android.view.ViewConfiguration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
@@ -131,6 +129,7 @@ import io.github.rosemoe.sora.widget.minimap.MinimapConfig
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme
 import java8.nio.file.Path
 import kotlinx.coroutines.launch
+import java.io.File
 import me.zhanghai.android.filesfork.viewer.text.ThemeRegistry as EditorThemeRegistry
 
 @SuppressLint("ClickableViewAccessibility")
@@ -283,6 +282,10 @@ fun TextEditorScreen(
             onLanguageSelected = { forceLanguage = it },
             selectedFont = viewModel.selectedFont,
             fontOptions = viewModel.fontOptions,
+            systemFontOptions = viewModel.systemFontOptions,
+            onShowSystemFonts = {
+                viewModel.loadSystemFonts()
+            },
             onFontSelected = { viewModel.setFont(it) },
             onFontImported = { imported ->
                 viewModel.refreshFontOptions()
@@ -673,6 +676,8 @@ private fun EditorSettingsDialog(
     onLanguageSelected: (String) -> Unit,
     selectedFont: String,
     fontOptions: List<FontRegistry.FontOption>,
+    systemFontOptions: List<FontRegistry.FontOption>,
+    onShowSystemFonts: () -> Unit,
     onFontSelected: (String) -> Unit,
     onFontImported: (FontRegistry.FontOption) -> Unit,
     onFontDeleted: (FontRegistry.FontOption) -> Unit,
@@ -704,6 +709,8 @@ private fun EditorSettingsDialog(
     if (showFontPicker.value) {
         FontChoiceDialog(
             fontOptions = fontOptions,
+            systemFontOptions = systemFontOptions,
+            onShowSystemFonts = onShowSystemFonts,
             selected = selectedFont,
             onSelect = onFontSelected,
             onFontImported = onFontImported,
@@ -713,7 +720,9 @@ private fun EditorSettingsDialog(
     val selectedThemeDisplayName =
         EditorThemeRegistry.availableThemes.find { it.id == selectedTheme }?.displayName
             ?: selectedTheme
-    val selectedFontDisplayName = fontOptions.find { it.id == selectedFont }?.displayName ?: ""
+    val selectedFontDisplayName = fontOptions.find { it.id == selectedFont }?.displayName
+        ?: systemFontOptions.find { it.id == selectedFont }?.displayName
+        ?: File(selectedFont).name
     val context = LocalContext.current
     val selectedFontFamily = remember(selectedFont) {
         FontFamily(FontRegistry.loadTypeface(context, selectedFont))
@@ -844,6 +853,8 @@ private fun <T> SingleChoiceDialog(
 @Composable
 private fun FontChoiceDialog(
     fontOptions: List<FontRegistry.FontOption>,
+    systemFontOptions: List<FontRegistry.FontOption>,
+    onShowSystemFonts: () -> Unit,
     selected: String,
     onSelect: (String) -> Unit,
     onFontImported: (FontRegistry.FontOption) -> Unit,
@@ -854,6 +865,7 @@ private fun FontChoiceDialog(
     var query by rememberSaveable { mutableStateOf("") }
     var importError by remember { mutableStateOf<String?>(null) }
     var fontPendingDelete by remember { mutableStateOf<FontRegistry.FontOption?>(null) }
+    var showSystemFonts by rememberSaveable { mutableStateOf(false) }
     val importLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
     ) { uri: android.net.Uri? ->
@@ -871,9 +883,11 @@ private fun FontChoiceDialog(
         }
     }
 
-    val filteredOptions = remember(fontOptions, query) {
-        if (query.isBlank()) fontOptions
-        else fontOptions.filter { it.displayName.contains(query, ignoreCase = true) }
+    val filteredOptions = remember(fontOptions, systemFontOptions, showSystemFonts, query) {
+        val options = if (showSystemFonts) fontOptions + systemFontOptions else fontOptions
+        if (query.isBlank()) options else options.filter {
+            it.displayName.contains(query, ignoreCase = true)
+        }
     }
 
     fontPendingDelete?.let { font ->
@@ -921,6 +935,22 @@ private fun FontChoiceDialog(
                 Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(4.dp))
                 Text("Import font")
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            ) {
+                Checkbox(
+                    checked = showSystemFonts,
+                    onCheckedChange = {
+                        showSystemFonts = it
+                        if (it) onShowSystemFonts()
+                    }
+                )
+                Spacer(Modifier.width(8.dp))
+                Text("Show system fonts")
             }
             if (importError != null) {
                 Text(

@@ -115,9 +115,13 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         private set
     var textSizePx: Float by mutableFloatStateOf(0f)
         private set
-    var selectedFont: String by mutableStateOf("asset:fira_code")
+    var selectedFont: String by mutableStateOf("")
         private set
     var fontOptions: List<FontRegistry.FontOption> by mutableStateOf(emptyList())
+        private set
+    var systemFontOptions: List<FontRegistry.FontOption> by mutableStateOf(emptyList())
+        private set
+    var systemFontsLoaded: Boolean by mutableStateOf(false)
         private set
     var invisibleChars: Boolean by mutableStateOf(false)
         private set
@@ -189,9 +193,10 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         miniMapBlocks = prefs[PrefKeys.MINIMAP_BLOCKS] ?: false
         symbolBar = prefs[PrefKeys.SYMBOL_BAR] ?: false
         lineNumbers = prefs[PrefKeys.LINE_NUMBERS] ?: true
-        selectedFont = prefs[PrefKeys.SELECTED_FONT] ?: "asset:fira_code"
+        selectedFont = prefs[PrefKeys.SELECTED_FONT] ?: ""
         invisibleChars = prefs[PrefKeys.INVISIBLE_CHARS] ?: false
         prefsLoaded = true
+        isValidFont()
     }
 
     private fun savePrefs() {
@@ -213,7 +218,26 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
 
     fun refreshFontOptions() {
         viewModelScope.launch(Dispatchers.IO) {
-            fontOptions = FontRegistry.availableFonts(getApplication())
+            fontOptions = FontRegistry.availableFonts(getApplication(), includeSystemFonts = false)
+        }
+    }
+
+    fun loadSystemFonts() {
+        if (systemFontsLoaded) return
+        viewModelScope.launch(Dispatchers.IO) {
+            systemFontOptions =
+                FontRegistry.availableFonts(getApplication(), includeSystemFonts = true)
+                    .filter { it !in fontOptions }
+            systemFontsLoaded = true
+        }
+    }
+
+    private fun isValidFont() {
+        val app = getApplication<Application>()
+        val allOptions: List<FontRegistry.FontOption> =
+            FontRegistry.availableFonts(app, includeSystemFonts = true)
+        if (selectedFont.isBlank() || allOptions.none { it.id == selectedFont }) {
+            selectedFont = FontRegistry.defaultFont(app).id
         }
     }
 

@@ -53,6 +53,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
@@ -103,10 +104,12 @@ fun AudioPlayerBar() {
                 isPlaying = playing
             }
 
+            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                metadata = player.mediaMetadata
+            }
+
             override fun onMediaMetadataChanged(newMetadata: MediaMetadata) {
-                if (newMetadata.title != null) {
-                    metadata = newMetadata
-                }
+                metadata = newMetadata
             }
         }
         player.addListener(listener)
@@ -120,15 +123,16 @@ fun AudioPlayerBar() {
 
     val whenDismiss = with(density) { 40.dp.toPx() }
 
-    val title = metadata?.title?.toString() ?: if (player.mediaItemCount > 0) {
-        URI.create(
-            player.getMediaItemAt(player.currentMediaItemIndex).mediaId
-        ).path?.substringAfterLast('/') ?: ""
-    } else {
-        ""
-    }
+    val title =
+        metadata?.title?.toString()?.takeIf { it.isNotBlank() } ?: if (player.mediaItemCount > 0) {
+            URI.create(
+                player.getMediaItemAt(player.currentMediaItemIndex).mediaId
+            ).path?.substringAfterLast('/') ?: ""
+        } else {
+            ""
+        }
 
-    val displayText = remember(metadata, title) {
+    val displayText = remember(metadata, title, player.currentMediaItemIndex) {
         val artist = metadata?.artist?.toString()
         if (!artist.isNullOrBlank()) "$artist - $title" else title
     }
@@ -202,13 +206,17 @@ fun AudioPlayerBar() {
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
                             .weight(1f)
-                            .basicMarquee(),
+                            .basicMarquee(
+                                iterations = Int.MAX_VALUE
+                            ),
                         color = MaterialTheme.colorScheme.onSurface,
                     )
-                    IconButton(onClick = { player.seekBack() }) {
+                    IconButton(onClick = {
+                        if (player.hasPreviousMediaItem()) player.seekToPreviousMediaItem()
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.FastRewind,
-                            contentDescription = "Rewind",
+                            contentDescription = "Previous",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -224,10 +232,12 @@ fun AudioPlayerBar() {
                         )
                     }
 
-                    IconButton(onClick = { player.seekForward() }) {
+                    IconButton(onClick = {
+                        if (player.hasNextMediaItem()) player.seekToNextMediaItem()
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.FastForward,
-                            contentDescription = "Fast forward",
+                            contentDescription = "Next",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -240,9 +250,6 @@ fun AudioPlayerBar() {
                         )
                     }
                 }
-//                Spacer(
-//                    modifier = Modifier.height(82.dp)
-//                )
                 Spacer(
                     modifier = Modifier.height(
                         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()

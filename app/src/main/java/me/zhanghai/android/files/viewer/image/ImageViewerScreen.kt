@@ -269,6 +269,28 @@ private fun ImagePage(
     )
     val imageState = rememberZoomableImageState(zoomableState)
 
+    val isImage by produceState<Boolean>(initialValue = true, path) {
+        val uri = path.fileProviderUri
+        val mimeType = context.contentResolver.getType(uri)
+        value = mimeType?.startsWith("image/") == true
+    }
+
+    if (!isImage) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = stringResource(R.string.image_viewer_not_an_image, path.fileName),
+                color = Color.White,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+        }
+        return
+    }
+
     val request by produceState<ImageRequest?>(initialValue = null, path) {
         value = buildImageRequest(context, path.fileProviderUri)
     }
