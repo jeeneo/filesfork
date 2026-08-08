@@ -268,14 +268,13 @@ private fun ImagePage(
         )
     )
     val imageState = rememberZoomableImageState(zoomableState)
-
-    val isImage by produceState<Boolean>(initialValue = true, path) {
+    val isImage by produceState(initialValue = true, path) {
         val uri = path.fileProviderUri
         val mimeType = context.contentResolver.getType(uri)
         value = mimeType?.startsWith("image/") == true
     }
-
-    if (!isImage) {
+    var decodeFailed by remember(path) { mutableStateOf(false) }
+    if (decodeFailed || !isImage) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -283,19 +282,20 @@ private fun ImagePage(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = stringResource(R.string.image_viewer_not_an_image, path.fileName),
+                text = stringResource(R.string.image_viewer_decode_error, path.fileName),
                 color = Color.White,
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
         return
     }
-
     val request by produceState<ImageRequest?>(initialValue = null, path) {
         value = buildImageRequest(context, path.fileProviderUri)
     }
-    if (request == null) return
-
+    val req = request ?: return
+    val requestWithErrorListener = remember(req) {
+        req.newBuilder().listener(onError = { _, _ -> decodeFailed = true }).build()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -303,14 +303,14 @@ private fun ImagePage(
         contentAlignment = Alignment.Center,
     ) {
         ZoomableAsyncImage(
-            model = request,
+            model = requestWithErrorListener,
             contentDescription = path.fileName.toString(),
             state = imageState,
             modifier = Modifier.fillMaxSize(),
             onClick = { onTap() },
         )
         AnimatedVisibility(
-            visible = !imageState.isImageDisplayed,
+            visible = !imageState.isImageDisplayed && !decodeFailed,
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
