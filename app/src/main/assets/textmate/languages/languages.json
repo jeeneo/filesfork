@@ -87,6 +87,11 @@
       "scopeName": "text.log"
     },
     {
+      "grammar": "textmate/languages/nix/syntaxes/nix.tmLanguage",
+      "name": "nix",
+      "scopeName": "source.nix"
+    },
+    {
       "name": "markdown",
       "scopeName": "text.html.markdown",
       "grammar": "textmate/languages/markdown/syntaxes/markdown.tmLanguage.json",

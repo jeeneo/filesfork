@@ -27,6 +27,7 @@ object LanguageRegistry {
         "typescript" to listOf("ts", "tsx"),
         "markdown" to listOf("md", "markdown", "mkdown", "mkd", "mdown"),
         "log" to listOf("log", "logfile"),
+        "nix" to listOf("nix")
     )
 
     private var _initialized = false

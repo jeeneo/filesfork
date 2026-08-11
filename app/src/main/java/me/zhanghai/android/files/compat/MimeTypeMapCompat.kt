@@ -850,6 +850,7 @@ private val extensionToMimeTypeMap = mapOf(
     "nim" to "video/vnd.nokia.interleaved-multimedia",
     "nimn" to "application/vnd.nimn",
     "nitf" to "application/vnd.nitf",
+    "nix" to "text/nix",
     "nlu" to "application/vnd.neurolanguage.nlu",
     "nml" to "application/vnd.enliven",
     "nnd" to "application/vnd.noblenet-directory",

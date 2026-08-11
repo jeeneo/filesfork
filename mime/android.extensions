@@ -839,6 +839,7 @@ ngdat application/vnd.nokia.n-gage.data
 nim video/vnd.nokia.interleaved-multimedia
 nimn application/vnd.nimn
 nitf application/vnd.nitf
+nix text/nix
 nlu application/vnd.neurolanguage.nlu
 nml application/vnd.enliven
 nnd application/vnd.noblenet-directory
