@@ -77,6 +77,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -136,7 +137,8 @@ fun AudioPlayerScreen(
     var durationMs by remember { mutableLongStateOf(0L) }
     var isUserSeeking by remember { mutableStateOf(false) }
     var seekPositionMs by remember { mutableFloatStateOf(0f) }
-    var loadingMetadata by remember { mutableStateOf(true) }
+    var playbackState by remember { mutableIntStateOf(Player.STATE_IDLE) }
+    val loadingMetadata = playbackState == Player.STATE_BUFFERING
     val metadata = remember { mutableStateOf<MediaMetadata?>(null) }
     var isShuffleEnabled by remember { mutableStateOf(false) }
     var isRepeatEnabled by remember { mutableStateOf(false) }
@@ -149,7 +151,7 @@ fun AudioPlayerScreen(
             )
         )
     }
-    var rotation by remember { mutableFloatStateOf(0f) }
+    var rotation by rememberSaveable { mutableFloatStateOf(0f) }
     var pendingSquareMorph by remember { mutableStateOf(false) }
     val fileName = currentPaths.getOrNull(currentIndex)?.fileName?.toString()
     val title = metadata.value?.title?.toString() ?: fileName.orEmpty()
@@ -186,15 +188,26 @@ fun AudioPlayerScreen(
         return
     }
 
+    fun syncStateFromPlayer() {
+        isPlaying = connectedPlayer.isPlaying
+        playbackState = connectedPlayer.playbackState
+        durationMs = connectedPlayer.duration.coerceAtLeast(0)
+        positionMs = connectedPlayer.currentPosition.coerceAtLeast(0)
+        metadata.value = connectedPlayer.mediaMetadata
+        isShuffleEnabled = connectedPlayer.shuffleModeEnabled
+        isRepeatEnabled = connectedPlayer.repeatMode == Player.REPEAT_MODE_ONE
+        currentIndex = connectedPlayer.currentMediaItemIndex
+    }
+
     DisposableEffect(connectedPlayer) {
         val listener = object : Player.Listener {
             override fun onIsPlayingChanged(playing: Boolean) {
                 isPlaying = playing
             }
 
-            override fun onPlaybackStateChanged(playbackState: Int) {
+            override fun onPlaybackStateChanged(state: Int) {
+                playbackState = state
                 durationMs = connectedPlayer.duration.coerceAtLeast(0)
-                loadingMetadata = playbackState != Player.STATE_READY
             }
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
@@ -204,7 +217,7 @@ fun AudioPlayerScreen(
                 }
                 positionMs = connectedPlayer.currentPosition.coerceAtLeast(0)
                 durationMs = connectedPlayer.duration.coerceAtLeast(0)
-                loadingMetadata = connectedPlayer.playbackState != Player.STATE_READY
+                playbackState = connectedPlayer.playbackState
                 metadata.value = connectedPlayer.mediaMetadata
             }
 
@@ -221,12 +234,7 @@ fun AudioPlayerScreen(
             }
         }
         connectedPlayer.addListener(listener)
-        isPlaying = connectedPlayer.isPlaying
-        durationMs = connectedPlayer.duration.coerceAtLeast(0)
-        positionMs = connectedPlayer.currentPosition.coerceAtLeast(0)
-        loadingMetadata = connectedPlayer.playbackState != Player.STATE_READY
-        metadata.value = connectedPlayer.mediaMetadata
-        currentIndex = connectedPlayer.currentMediaItemIndex
+        syncStateFromPlayer()
         onDispose { connectedPlayer.removeListener(listener) }
     }
 
@@ -252,14 +260,7 @@ fun AudioPlayerScreen(
                 (0 until connectedPlayer.mediaItemCount).map {
                     Paths.get(URI.create(connectedPlayer.getMediaItemAt(it).mediaId))
                 })
-            currentIndex = connectedPlayer.currentMediaItemIndex
-            isPlaying = connectedPlayer.isPlaying
-            isShuffleEnabled = connectedPlayer.shuffleModeEnabled
-            isRepeatEnabled = connectedPlayer.repeatMode == Player.REPEAT_MODE_ONE
-            durationMs = connectedPlayer.duration.coerceAtLeast(0)
-            positionMs = connectedPlayer.currentPosition.coerceAtLeast(0)
-            metadata.value = connectedPlayer.mediaMetadata
-            loadingMetadata = connectedPlayer.playbackState != Player.STATE_READY
+            syncStateFromPlayer()
             queueApplied = true
         } else {
             onNavigateUp()
@@ -291,9 +292,9 @@ fun AudioPlayerScreen(
         if (isCircular && isPlaying) {
             val startTime = System.currentTimeMillis()
             val startRotation = rotation
-            while (isActive && isCircular && isPlaying) {
+            while (isActive && isCircular) {
                 val elapsed = System.currentTimeMillis() - startTime
-                val progress = (elapsed.toFloat() / 12_000L).coerceIn(0f, 1f)
+                val progress = elapsed.toFloat() / 12_000f
                 rotation = startRotation + 360f * progress
                 delay(16.milliseconds)
             }
@@ -703,7 +704,7 @@ fun AudioPlayerScreen(
 
 @Composable
 private fun InfoRow(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     text: String?,
     isLoading: Boolean,
     placeholder: String,
