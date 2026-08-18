@@ -1,25 +1,28 @@
 [versions]
+#noinspection AndroidGradlePluginVersion - sora
 agp = "9.2.1"
 datastorePreferences = "1.2.1"
-kotlin = "2.4.0"
+kotlin = "2.4.10"
 coreLibraryDesugaring = "2.1.5"
 kotlinxCoroutines = "1.11.0"
 activityKtx = "1.13.0"
 activityCompose = "1.13.0"
-appcompat = "1.7.1"
+appcompat = "1.8.0"
 coreKtx = "1.19.0"
 drawerlayout = "1.2.0"
 exifinterface = "1.4.2"
-fragmentKtx = "1.8.9"
+fragmentKtx = "1.9.0"
 lifecycle = "2.11.0"
-media3Session = "1.10.1"
+media3Session = "1.11.0"
 preference = "1.2.1"
 recyclerview = "1.4.0"
 swiperefreshlayout = "1.2.0"
 material = "1.14.0"
-composeBom = "2026.06.00"
+composeBom = "2026.08.00"
 lifecycleViewmodelCompose = "2.11.0"
-bouncyCastle = "1.84"
+bouncyCastle = "1.85"
+bouncyCastleProvider = "1.85.2"
+bouncyCastleUtil = "1.85.1"
 coil = "2.7.0"
 #soraEditor = "0.24.6"
 androidsvg = "1.4"
@@ -36,7 +39,7 @@ smbj = "0.11.5"
 sshj = "0.40.0"
 speedDial = "3.3.0"
 dcerpc = "0.12.13"
-guava = "33.6.0-android"
+guava = "33.7.1-android"
 preferencex = "1.1.0"
 commonsNet = "3.13.0"
 #noinspection NewerVersionAvailable
@@ -64,10 +67,11 @@ slf4j = "1.7.36"
 libsu = "5.2.2"
 #noinspection GradleDependency
 dav4jvm = "02fe1a95e6b86e323bec3784d7d2fe2d4081dde6"
-material3 = "1.5.0-alpha22"
-xkoma = "1.2.0"
+#noinspection GradleDependency
+material3 = "1.5.0-alpha25"
+#xkoma = "1.2.0"
 zoomableImageCoil = "0.19.0"
-media3 = "1.6.1"
+media3 = "1.11.0"
 
 [libraries]
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
@@ -104,8 +108,10 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
-bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk15to18", version.ref = "bouncyCastle" }
+# duplicate class error on 1.85
+bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk15to18", version.ref = "bouncyCastleProvider" }
 bouncycastle-bcpkix = { module = "org.bouncycastle:bcpkix-jdk15to18", version.ref = "bouncyCastle" }
+bouncycastle-bcutil = { module = "org.bouncycastle:bcutil-jdk15to18", version.ref = "bouncyCastleUtil" }
 
 coil-bom = { group = "io.coil-kt", name = "coil-bom", version.ref = "coil" }
 coil = { group = "io.coil-kt", name = "coil" }

@@ -27,6 +27,7 @@ import me.zhanghai.android.filesfork.R
 import me.zhanghai.android.filesfork.databinding.CreateArchiveDialogBinding
 import me.zhanghai.android.filesfork.databinding.NameDialogNameIncludeBinding
 import me.zhanghai.android.filesfork.settings.Settings
+import me.zhanghai.android.filesfork.settings.SettingLiveData
 import me.zhanghai.android.filesfork.util.ParcelableArgs
 import me.zhanghai.android.filesfork.util.args
 import me.zhanghai.android.filesfork.util.putArgs
@@ -68,29 +69,27 @@ open class CreateArchiveDialogFragment : FileNameDialogFragment() {
         )
         if (savedInstanceState == null) {
             binding.typeDropdown.setText(Settings.CREATE_ARCHIVE_TYPE.valueCompat.label, false)
-            binding.compressionSlider.value =
-                Settings.CREATE_ARCHIVE_COMPRESSION_LEVEL.valueCompat.toFloat()
         }
         binding.typeDropdown.doAfterTextChanged {
             Settings.CREATE_ARCHIVE_TYPE.putValue(selectedType)
             updatePasswordLayoutVisibility()
             updateCompressionLayoutVisibility()
-            updateCompressionSliderRange()
+            updateCompressionRangeAndValue()
         }
         binding.compressionSlider.addOnChangeListener { _, value, _ ->
             if (isCompressionSupported) {
-                Settings.CREATE_ARCHIVE_COMPRESSION_LEVEL.putValue(value.roundToInt())
+                compressionLevelLiveData.putValue(value.roundToInt())
             }
         }
         updateArchiveOptionsVisibility()
-        updateCompressionSliderRange()
+        updateCompressionRangeAndValue()
         return dialog
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         updateArchiveOptionsVisibility()
-        updateCompressionSliderRange()
+        updateCompressionRangeAndValue()
     }
 
     @StringRes
@@ -125,17 +124,18 @@ open class CreateArchiveDialogFragment : FileNameDialogFragment() {
         binding.compressionLayout.isGone = !isCompressionSupported
     }
 
-    private fun updateCompressionSliderRange() {
+    private val compressionLevelLiveData: SettingLiveData<Int>
+        get() = Settings.CREATE_ARCHIVE_COMPRESSION_LEVELS_BY_TYPE.getValue(selectedType)
+
+    private fun updateCompressionRangeAndValue() {
         val type = selectedType
         val minCompressionLevel = type.minCompressionLevel.toFloat()
         val maxCompressionLevel = type.maxCompressionLevel.toFloat()
         binding.compressionSlider.valueFrom = minCompressionLevel
         binding.compressionSlider.valueTo = maxCompressionLevel
-        val value =
-            binding.compressionSlider.value.coerceIn(minCompressionLevel, maxCompressionLevel)
-        if (binding.compressionSlider.value != value) {
-            binding.compressionSlider.value = value
-        }
+        val value = compressionLevelLiveData.valueCompat.toFloat()
+            .coerceIn(minCompressionLevel, maxCompressionLevel)
+        binding.compressionSlider.value = value
     }
 
     override fun onOk(name: String) {

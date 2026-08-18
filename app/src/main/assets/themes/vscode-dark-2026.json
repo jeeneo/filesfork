@@ -550,6 +550,7 @@
 				"markup.underline"
 			],
 			"settings": {
+				"foreground": "#48A0C7",
 				"fontStyle": "underline"
 			}
 		},

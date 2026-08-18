@@ -70,11 +70,15 @@ object Settings {
             R.string.pref_key_create_archive_type, R.string.pref_default_value_create_archive_type
         )
 
-    val CREATE_ARCHIVE_COMPRESSION_LEVEL: SettingLiveData<Int> =
-        IntegerSettingLiveData(
-            R.string.pref_key_create_archive_compression_level,
-            R.integer.pref_default_value_create_archive_compression_level
-        )
+    val CREATE_ARCHIVE_COMPRESSION_LEVELS_BY_TYPE: Map<ArchiveType, SettingLiveData<Int>> =
+        ArchiveType.entries.associateWith { type ->
+            IntegerSettingLiveData(
+                null,
+                R.string.pref_key_create_archive_compression_level,
+                type.label,
+                R.integer.pref_default_value_create_archive_compression_level
+            )
+        }
 
     val FTP_SERVER_ANONYMOUS_LOGIN: SettingLiveData<Boolean> =
         BooleanSettingLiveData(

@@ -29,7 +29,7 @@ android {
         //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 40
-        versionName = "1.7.4+5"
+        versionName = "1.7.4+6"
         resValue("string", "app_version", "$versionName (${versionCode})")
         buildConfigField(
             "String", "FILE_PROVIDIER_AUTHORITY", "APPLICATION_ID + \".file_provider\""
@@ -159,6 +159,7 @@ dependencies {
         exclude(group = "org.bouncycastle", module = "bcprov-jdk15on")
     }
     implementation(libs.bouncycastle.bcprov)
+    implementation(libs.bouncycastle.bcutil)
     implementation(libs.sshj) {
         exclude(group = "org.bouncycastle", module = "bcprov-jdk18on")
         exclude(group = "org.bouncycastle", module = "bcpkix-jdk18on")
