@@ -14,13 +14,13 @@
         };
         buildToolsVersion = "36.0.0";
         androidComposition = pkgs.androidenv.composeAndroidPackages {
-          platformToolsVersion = "36.0.1";
-          buildToolsVersions = [ buildToolsVersion "35.0.0" "37.0.0" ];
+          platformToolsVersion = "37.0.1";
+          buildToolsVersions = [ buildToolsVersion "37.0.0" ];
           platformVersions = [ "36" "37" ];
           includeEmulator = false;
           includeSystemImages = false;
           systemImageTypes = [ "default" ];
-          abiVersions = [ "arm64-v8a" ];
+          abiVersions = [ "" ];
           includeNDK = true;
           useGoogleAPIs = false;
           extraLicenses = [
@@ -42,15 +42,6 @@
             ANDROID_SDK_ROOT = "${androidSdk}/libexec/android-sdk";
             ANDROID_NDK_ROOT = "${ANDROID_HOME}/ndk-bundle";
             GRADLE_OPTS = "-Dorg.gradle.project.android.aapt2FromMavenOverride=${ANDROID_HOME}/build-tools/${buildToolsVersion}/aapt2";
-            shellHook = ''
-              CMAKE_DIR=$(dirname $(dirname $(which cmake)))
-              PROPS_FILE="$(git rev-parse --show-toplevel 2>/dev/null || pwd)/local.properties"
-              if grep -q "^cmake\.dir=" "$PROPS_FILE" 2>/dev/null; then
-                sed -i "s|^cmake\.dir=.*|cmake.dir=$CMAKE_DIR|" "$PROPS_FILE"
-              else
-                echo "cmake.dir=$CMAKE_DIR" >> "$PROPS_FILE"
-              fi
-            '';
 
             # shellHook = ''
             #   PROPS_FILE="$(git rev-parse --show-toplevel 2>/dev/null || pwd)/gradle.properties"
@@ -62,14 +53,26 @@
             #     sed -i "s|android.aapt2FromMavenOverride=.*|$AAPT2_LINE|" "$PROPS_FILE"
             #   fi
             # '';
+            
+            shellHook = ''
+              ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+              PROPS_FILE="$ROOT/local.properties"
+              CMAKE_BIN="$(command -v cmake)"
+              CMAKE_HOME="$(dirname "$(dirname "$(readlink -f "$CMAKE_BIN")")")"
 
+              if grep -qF "cmake.dir=" "$PROPS_FILE" 2>/dev/null; then
+                sed -i "s|^cmake.dir=.*|cmake.dir=$CMAKE_HOME|" "$PROPS_FILE"
+              else
+                echo "cmake.dir=$CMAKE_HOME" >> "$PROPS_FILE"
+              fi
+            '';
+  
             buildInputs = [
               (android-studio.withSdk androidSdk)
               androidSdk
               jdk21
               wget
               cmake
-              ispc
               zip
               jq
             ];

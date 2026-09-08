@@ -33,6 +33,7 @@
     <string name="remove">Remove</string>
     <string name="rename">Rename</string>
     <string name="replace">Replace</string>
+    <string name="update">Update</string>
     <string name="reset">Reset</string>
     <string name="retry">Retry</string>
     <string name="save">Save</string>
@@ -73,7 +74,7 @@
     <string name="notification_channel_ftp_server_name">FTP server</string>
     <string name="notification_channel_ftp_server_description">Display and control the FTP server</string>
 
-    <string name="file_action_archive_modified_message">The file has been modified, would you like to replace it inside the archive?</string>
+    <string name="file_action_archive_modified_message">The file has been modified, would you like to update it inside the archive?</string>
     <string name="file_action_archive_password_title">Password required</string>
     <string name="file_action_archive_password_message_format">“%1$s” is password-protected.</string>
     <string name="file_action_archive_password_error_empty">Password cannot be empty</string>

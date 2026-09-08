@@ -274,8 +274,8 @@ enum class ArchiveType(
         supportsPassword = false,
         supportsCompression = true
     ),
-    TAR_ZSTD(
-        "zstd",
+    TAR_ZST(
+        "tar.zst",
         "tar.zst",
         Archive.FORMAT_TAR,
         Archive.FILTER_ZSTD,

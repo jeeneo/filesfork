@@ -674,7 +674,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         val pendingFile = modifiedFiles.firstOrNull() ?: return
         if (!isAdded) return
         MaterialAlertDialogBuilder(requireContext()).setMessage(R.string.file_action_archive_modified_message)
-            .setPositiveButton(R.string.replace) { _, _ ->
+            .setPositiveButton(R.string.update) { _, _ ->
                 FileJobService.replaceArchiveEntry(
                     pendingFile.archiveEntry,
                     pendingFile.cacheFile,
