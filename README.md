@@ -26,7 +26,7 @@ Then...
 - Additional archive formats: zstd, gzip, tar
 - Compression levels
 - Termux in 'Open in Terminal'¹ (root-only paths supported)
-- Migration from Groovy to Kotlin DSL and Jetpack Compose
+- Migration from Groovy to Kotlin DSL
 
 Credits to [Hai Zhang](https://github.com/zhanghai) for Material Files, [Citrinae-Lime](https://github.com/Citrinae-Lime) for the Sora Editor modifications
 
