@@ -13,6 +13,11 @@
         android:title="@string/file_list_action_create_directory" />
 
     <item
+        android:id="@+id/action_create_blank_file"
+        android:icon="@drawable/document_icon_white_24dp"
+        android:title="@string/file_list_action_create_blank_file" />
+
+    <item
         android:id="@+id/action_create_file"
         android:icon="@drawable/file_icon_white_24dp"
         android:title="@string/file_list_action_create_file" />

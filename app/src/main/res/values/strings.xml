@@ -333,6 +333,7 @@
     <string name="file_list_paste_action_extract_here">Extract here</string>
     <string name="file_list_empty">No files</string>
     <string name="file_list_action_create_file">File</string>
+    <string name="file_list_action_create_blank_file">Temp file</string>
     <string name="file_list_action_create_directory">Folder</string>
 
     <string name="file_item_description_separator">\u0020\u0020\u0020\u0020</string>
@@ -719,6 +720,9 @@
     <string name="save_as_error">Error while saving file</string>
     <string name="save_as_success_format">“%1$s” has been saved to “%2$s”</string>
     <string name="text_editor_title">Text editor</string>
+    <string name="text_editor_new_file_title">New file</string>
+    <string name="text_editor_save_file_as">Save file as</string>
+    <string name="text_editor_file_name">Name</string>
     <string name="text_editor_reload_message">Are you sure you want to reload? Unsaved changes to this document will be lost.</string>
     <string name="text_editor_close_message">Are you sure you want to discard unsaved changes to this document?</string>
 

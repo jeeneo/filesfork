@@ -93,6 +93,10 @@ sealed interface LoadState {
 class TextEditorViewModel(application: Application) : AndroidViewModel(application) {
     var loadState: LoadState by mutableStateOf(LoadState.Loading)
         private set
+    var savedPath: Path? by mutableStateOf(null)
+        private set
+    var isNewFile: Boolean by mutableStateOf(false)
+        private set
     var grammarsReady: Boolean by mutableStateOf(false)
         private set
     private var grammarLoadJob: Job? = null
@@ -141,6 +145,24 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
             TextEditorInitializer.initThemeAndPrefs(app)
             loadPrefs()
             load(path)
+            refreshFontOptions()
+            grammarsLoaded(app)
+        }
+    }
+
+    fun initializeNewFile(directory: Path) {
+        viewModelScope.launch {
+            if (prefsLoaded) return@launch
+            val app = getApplication<Application>()
+            TextEditorInitializer.initThemeAndPrefs(app)
+            loadPrefs()
+            originalContent = ""
+            withContext(Dispatchers.Main) {
+                content = Content()
+                savedPath = null
+                isNewFile = true
+                loadState = LoadState.Success
+            }
             refreshFontOptions()
             grammarsLoaded(app)
         }
@@ -332,6 +354,30 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
                 val text = getText()
                 withContext(Dispatchers.IO) {
                     Files.newBufferedWriter(path, Charsets.UTF_8).use { it.write(text) }
+                }
+                originalContent = text
+                isModified = false
+                onSuccess()
+            } catch (e: IOException) {
+                onError(e.localizedMessage ?: "Write error")
+            }
+        }
+    }
+
+    fun saveNewFile(
+        directory: Path, fileName: String, getText: () -> String,
+        onSuccess: () -> Unit, onError: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val text = getText()
+                val path = directory.resolve(fileName)
+                withContext(Dispatchers.IO) {
+                    Files.newBufferedWriter(path, Charsets.UTF_8).use { it.write(text) }
+                }
+                withContext(Dispatchers.Main) {
+                    savedPath = path
+                    isNewFile = false
                 }
                 originalContent = text
                 isModified = false

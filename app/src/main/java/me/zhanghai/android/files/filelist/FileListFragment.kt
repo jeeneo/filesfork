@@ -143,6 +143,7 @@ import me.zhanghai.android.filesfork.util.withChooser
 import me.zhanghai.android.filesfork.viewer.audio.AudioPlayerActivity
 import me.zhanghai.android.filesfork.viewer.audio.AudioPlayerBar
 import me.zhanghai.android.filesfork.viewer.image.ImageViewerActivity
+import me.zhanghai.android.filesfork.viewer.text.TextEditorActivity
 import kotlin.math.roundToInt
 
 class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.Listener,
@@ -263,6 +264,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         binding.speedDialView.setOnActionSelectedListener {
             when (it.id) {
                 R.id.action_create_file -> showCreateFileDialog()
+                R.id.action_create_blank_file -> showCreateBlankFile()
                 R.id.action_create_directory -> showCreateDirectoryDialog()
             }
             // Returning false causes the speed dial to close without animation.
@@ -1605,6 +1607,11 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
 
     private fun showCreateFileDialog() {
         CreateFileDialogFragment.show(this)
+    }
+
+    private fun showCreateBlankFile() {
+        val intent = TextEditorActivity.createBlankFileIntent(viewModel.currentPath)
+        startActivitySafe(intent)
     }
 
     override fun createFile(name: String) {

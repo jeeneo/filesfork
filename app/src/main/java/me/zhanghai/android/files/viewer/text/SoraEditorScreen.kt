@@ -101,6 +101,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
@@ -130,13 +131,16 @@ import io.github.rosemoe.sora.widget.schemes.EditorColorScheme
 import java8.nio.file.Path
 import kotlinx.coroutines.launch
 import java.io.File
+import me.zhanghai.android.filesfork.R
+import me.zhanghai.android.filesfork.util.asFileNameOrNull
 import me.zhanghai.android.filesfork.viewer.text.ThemeRegistry as EditorThemeRegistry
 
 @SuppressLint("ClickableViewAccessibility")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextEditorScreen(
-    path: Path, onNavigateUp: () -> Unit, viewModel: TextEditorViewModel = viewModel()
+    path: Path?, onNavigateUp: () -> Unit, newFileDirectory: Path? = null,
+    viewModel: TextEditorViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -149,6 +153,8 @@ fun TextEditorScreen(
     val canUndo = remember { mutableStateOf(false) }
     val canRedo = remember { mutableStateOf(false) }
     val showSettingsDialog = rememberSaveable { mutableStateOf(false) }
+    val showSaveAsDialog = remember { mutableStateOf(false) }
+    val displayPath = path ?: viewModel.savedPath
     val typefaceToLoad = remember(viewModel.selectedFont) {
         FontRegistry.loadTypeface(context, viewModel.selectedFont)
     }
@@ -181,11 +187,11 @@ fun TextEditorScreen(
 
     var layoutReady by remember { mutableStateOf(false) }
     var forceLanguage by rememberSaveable { mutableStateOf("auto") }
-    val resolvedTargetScope = remember(path, forceLanguage, viewModel.grammarsReady) {
+    val resolvedTargetScope = remember(displayPath, forceLanguage, viewModel.grammarsReady) {
         if (!viewModel.grammarsReady) return@remember null
         if (forceLanguage == "none") return@remember null
         if (forceLanguage != "auto") return@remember LanguageRegistry.scopeForLanguage(forceLanguage)
-        val ext = path.fileName?.toString()?.substringAfterLast('.', "")?.lowercase()
+        val ext = displayPath?.fileName?.toString()?.substringAfterLast('.', "")?.lowercase()
         ext?.let { LanguageRegistry.scopeForExtension(it) }
     }
     val activeLanguage =
@@ -267,11 +273,36 @@ fun TextEditorScreen(
             confirmButton = {
                 TextButton(onClick = {
                     showReloadDialog.value = false
-                    viewModel.load(path)
+                    path?.let { viewModel.load(it) }
                 }) { Text("Reload") }
             },
             dismissButton = {
                 TextButton(onClick = { showReloadDialog.value = false }) { Text("Cancel") }
+            })
+    }
+    if (showSaveAsDialog.value) {
+        SaveFileAsDialog(
+            directory = newFileDirectory,
+            onDismiss = { showSaveAsDialog.value = false },
+            onConfirm = { fileName ->
+                showSaveAsDialog.value = false
+                val directory = newFileDirectory ?: return@SaveFileAsDialog
+                editorRef?.let { editor ->
+                    viewModel.saveNewFile(
+                        directory = directory,
+                        fileName = fileName,
+                        getText = { editor.text.toString() },
+                        onSuccess = {
+                            saveButtonState = SaveButtonState.SAVED
+                        },
+                        onError = { msg ->
+                            saveButtonState = SaveButtonState.ERROR
+                            scope.launch {
+                                snackbarHostState.showSnackbar("Error: $msg")
+                            }
+                        }
+                    )
+                }
             })
     }
     if (showSettingsDialog.value) {
@@ -303,7 +334,11 @@ fun TextEditorScreen(
     }
     val title = buildString {
         if (viewModel.isModified) append("*")
-        append(path.fileName?.toString() ?: "")
+        if (viewModel.isNewFile) {
+            append(context.getString(R.string.text_editor_new_file_title))
+        } else {
+            append(displayPath?.fileName?.toString() ?: "")
+        }
     }
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -312,8 +347,11 @@ fun TextEditorScreen(
             TopAppBar(
                 title = { Text(title, maxLines = 1) }, navigationIcon = {
                     IconButton(onClick = {
-                        if (viewModel.isModified) showReloadDialog.value = true
-                        else onNavigateUp()
+                        if (viewModel.isModified && !viewModel.isNewFile) {
+                            showReloadDialog.value = true
+                        } else {
+                            onNavigateUp()
+                        }
                     }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
@@ -321,20 +359,26 @@ fun TextEditorScreen(
                     IconButton(
                         onClick = {
                             editorRef?.let { editor ->
-                                viewModel.save(
-                                    path = path,
-                                    getText = { editor.text.toString() },
-                                    onSuccess = {
-                                        saveButtonState = SaveButtonState.SAVED
-                                    },
-                                    onError = { msg ->
-                                        saveButtonState = SaveButtonState.ERROR
-                                        scope.launch {
-                                            snackbarHostState.showSnackbar("Error: $msg")
-                                        }
-                                    })
+                                if (viewModel.isNewFile && newFileDirectory != null) {
+                                    showSaveAsDialog.value = true
+                                } else if (path != null) {
+                                    viewModel.save(
+                                        path = path,
+                                        getText = { editor.text.toString() },
+                                        onSuccess = {
+                                            saveButtonState = SaveButtonState.SAVED
+                                        },
+                                        onError = { msg ->
+                                            saveButtonState = SaveButtonState.ERROR
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar("Error: $msg")
+                                            }
+                                        })
+                                }
                             }
-                        }, enabled = viewModel.isModified && saveButtonState == SaveButtonState.IDLE
+                        }, enabled = (
+                            viewModel.isModified || (viewModel.isNewFile && editorRef != null)
+                            ) && saveButtonState == SaveButtonState.IDLE
                     ) {
                         Crossfade(
                             targetState = saveButtonState,
@@ -375,7 +419,7 @@ fun TextEditorScreen(
                             "Reload", Icons.Filled.Refresh
                         ) {
                             if (viewModel.isModified) showReloadDialog.value = true
-                            else viewModel.load(path)
+                            else path?.let { viewModel.load(it) }
                         },
                         TopBarAction(
                             "Settings", Icons.Filled.Settings
@@ -666,6 +710,63 @@ fun TextEditorScreen(
             }
         }
     }
+}
+
+@Composable
+private fun SaveFileAsDialog(
+    directory: Path?,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit
+) {
+    val context = LocalContext.current
+    var fileName by remember { mutableStateOf("") }
+    var wasSubmitted by remember { mutableStateOf(false) }
+    val trimmedName = fileName.trim()
+    val error = when {
+        trimmedName.isEmpty() -> if (wasSubmitted) {
+            context.getString(R.string.file_name_error_empty)
+        } else {
+            null
+        }
+        trimmedName.asFileNameOrNull() == null -> context.getString(
+            R.string.file_name_error_invalid
+        )
+        else -> null
+    }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.text_editor_save_file_as)) },
+        text = {
+            OutlinedTextField(
+                value = fileName,
+                onValueChange = { fileName = it },
+                label = { Text(stringResource(R.string.text_editor_file_name)) },
+                singleLine = true,
+                isError = error != null,
+                supportingText = error?.let { { Text(it) } },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = {
+                    wasSubmitted = true
+                    if (error == null && trimmedName.isNotEmpty()) onConfirm(trimmedName)
+                })
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    wasSubmitted = true
+                    if (error == null && trimmedName.isNotEmpty()) onConfirm(trimmedName)
+                },
+                enabled = trimmedName.isNotEmpty()
+            ) {
+                Text(stringResource(android.R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        })
 }
 
 @Composable
