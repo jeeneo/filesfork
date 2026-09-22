@@ -26,7 +26,7 @@ An open source Material Design file manager for Android 6.0+ (with QoL improveme
 
 Credits to [Hai Zhang](https://github.com/zhanghai) for Material Files, [Citrinae-Lime](https://github.com/Citrinae-Lime) for the Sora Editor modifications
 
-Notice: upstream Material Files, after a hiatus, has started to make a new release again. My changes have been squashed in the [`merges`](https://github.com/jeeneo/filesfork/tree/merges) branch with upstream added on top.
+Notice: upstream Material Files, after a hiatus, has started to make a new release again. My changes have been squashed in the [`merges`](https://github.com/jeeneo/filesfork/tree/merges) branch with upstream added on top. Due to this, the app identifier has been renamed from `me.zhanghai.android.filesfork` back to `me.zhanghai.android.files` to keep merges simpler. In due time, maybe these changes will get merged upstream but can't say for certain.
 
 My releases will be reflected as changes diverge, previously `v1.7.4+6` reflected 6 changes after the upstream version, following versions will apply the same logic, e.g., `v1.7.5+1` means it is the `v1.7.5` upstream release with my changes added. The last digit will reflect my changes (bug fixes, small features, etc) so that the real version does not change and will reset after any upstream version change.
 
