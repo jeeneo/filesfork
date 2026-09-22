@@ -12,6 +12,8 @@ import java8.nio.file.Paths
 import me.zhanghai.android.files.R
 import me.zhanghai.android.files.app.application
 import me.zhanghai.android.files.compat.EnvironmentCompat2
+import me.zhanghai.android.files.filelist.CalcSizesOption
+import me.zhanghai.android.files.filelist.ArchiveType
 import me.zhanghai.android.files.filelist.FileSortOptions
 import me.zhanghai.android.files.filelist.FileViewType
 import me.zhanghai.android.files.filelist.OpenApkDefaultAction
@@ -63,8 +65,20 @@ object Settings {
             FileSortOptions(FileSortOptions.By.NAME, FileSortOptions.Order.ASCENDING, true)
         )
 
-    val CREATE_ARCHIVE_TYPE: SettingLiveData<Int> =
-        ResourceIdSettingLiveData(R.string.pref_key_create_archive_type, R.id.zipRadio)
+    val CREATE_ARCHIVE_TYPE: SettingLiveData<ArchiveType> =
+        ArchiveTypeSettingLiveData(
+            R.string.pref_key_create_archive_type, R.string.pref_default_value_create_archive_type
+        )
+
+    val CREATE_ARCHIVE_COMPRESSION_LEVELS_BY_TYPE: Map<ArchiveType, SettingLiveData<Int>> =
+        ArchiveType.entries.associateWith { type ->
+            IntegerSettingLiveData(
+                null,
+                R.string.pref_key_create_archive_compression_level,
+                type.label,
+                R.integer.pref_default_value_create_archive_compression_level
+            )
+        }
 
     val FTP_SERVER_ANONYMOUS_LOGIN: SettingLiveData<Boolean> =
         BooleanSettingLiveData(
@@ -124,6 +138,18 @@ object Settings {
     val FILE_LIST_ANIMATION: SettingLiveData<Boolean> =
         BooleanSettingLiveData(
             R.string.pref_key_file_list_animation, R.bool.pref_default_value_file_list_animation
+        )
+
+    val FILE_LIST_DENSE_LAYOUT: SettingLiveData<Boolean> =
+        BooleanSettingLiveData(
+            R.string.pref_key_file_list_dense_layout, R.bool.pref_default_value_file_list_dense_layout
+        )
+        
+    val FILE_LIST_CALC_SIZES: SettingLiveData<CalcSizesOption> =
+        EnumSettingLiveData(
+            R.string.pref_key_file_list_calc_sizes,
+            R.string.pref_default_value_file_list_calc_sizes,
+            CalcSizesOption::class.java
         )
 
     val FILE_NAME_ELLIPSIZE: SettingLiveData<TextUtils.TruncateAt> =

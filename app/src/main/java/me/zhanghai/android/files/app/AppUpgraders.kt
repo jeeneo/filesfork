@@ -50,7 +50,6 @@ internal fun upgradeAppTo1_1_0() {
     // Migrate settings.
     migratePathSetting1_1_0(R.string.pref_key_file_list_default_directory)
     migrateFileSortOptionsSetting1_1_0()
-    migrateCreateArchiveTypeSetting1_1_0()
     migrateStandardDirectorySettingsSetting1_1_0()
     migrateBookmarkDirectoriesSetting1_1_0()
     migratePathSetting1_1_0(R.string.pref_key_ftp_server_home_directory)
@@ -109,20 +108,6 @@ private fun migrateFileSortOptionsSetting1_1_0(sharedPreferences: SharedPreferen
         null
     }
     sharedPreferences.edit { putString(key, newBytes?.toBase64()?.value) }
-}
-
-fun migrateCreateArchiveTypeSetting1_1_0() {
-    val key = application.getString(R.string.pref_key_create_archive_type)
-    val oldValue = defaultSharedPreferences.getString(key, null) ?: return
-    val newValue = oldValue.replace(Regex("type_.+$")) {
-        when (it.value) {
-            "type_zip" -> "zipRadio"
-            "type_tar_xz" -> "tarXzRadio"
-            "type_seven_z" -> "sevenZRadio"
-            else -> "zipRadio"
-        }
-    }
-    defaultSharedPreferences.edit { putString(key, newValue) }
 }
 
 private fun migrateStandardDirectorySettingsSetting1_1_0() {

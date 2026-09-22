@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -31,6 +32,7 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.termux.permission.RUN_COMMAND" />
 
     <!-- Crashlytics and Shizuku requires API 23. -->
     <uses-sdk tools:overrideLibrary="com.google.firebase,com.google.firebase.components,com.google.firebase.crashlytics,com.google.firebase.crashlytics.ndk,com.google.firebase.installations,com.google.firebase.sessions,rikka.shizuku.aidl,rikka.shizuku.api,rikka.shizuku.shared" />
@@ -296,6 +298,11 @@
             android:theme="@style/Theme.MaterialFiles.Translucent" />
 
         <activity
+            android:name="me.zhanghai.android.files.storage.SftpHostKeyChangedDialogActivity"
+            android:autoRemoveFromRecents="true"
+            android:theme="@style/Theme.MaterialFiles.Translucent" />
+
+        <activity
             android:name="me.zhanghai.android.files.viewer.saveas.SaveAsActivity"
             android:autoRemoveFromRecents="true"
             android:exported="true"
@@ -317,6 +324,8 @@
 
         <activity
             android:name="me.zhanghai.android.files.viewer.text.TextEditorActivity"
+            android:configChanges="uiMode|orientation|screenSize|screenLayout|keyboardHidden"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"
             android:label="@string/text_editor_title"
             android:theme="@style/Theme.MaterialFiles">
@@ -346,7 +355,17 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="me.zhanghai.android.files.viewer.audio.AudioPlayerActivity"
+            android:exported="true"
+            android:label="@string/audio_player_title"
+            android:theme="@style/Theme.MaterialFiles">
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+        </activity>
         <service
             android:name="me.zhanghai.android.files.filejob.FileJobService"
             android:foregroundServiceType="dataSync" />
@@ -378,6 +397,14 @@
                 android:value="true" />
         </service>
 
+        <service
+            android:name=".viewer.audio.PlaybackService"
+            android:foregroundServiceType="mediaPlayback"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService" />
+            </intent-filter>
+        </service>
         <provider
             android:name="me.zhanghai.android.files.app.AppProvider"
             android:authorities="@string/app_provider_authority"

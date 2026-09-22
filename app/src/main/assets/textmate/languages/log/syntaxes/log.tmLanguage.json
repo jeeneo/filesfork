@@ -1,0 +1,174 @@
+{
+  "scopeName": "text.log",
+  "fileTypes": ["log"],
+  "name": "Log file",
+  "uuid": "E81BB6AB-CAC7-4C27-9A79-4137A4693EBD",
+  "patterns": [
+    {
+      "comment": "Trace/Verbose",
+      "match": "\\b([Tt]race|TRACE)\\b:?",
+      "name": "comment log.verbose"
+    },
+    {
+      "comment": "Serilog VERBOSE",
+      "match": "(?i)\\[(verbose|verb|vrb|vb|v)\\]",
+      "name": "comment log.verbose"
+    },
+    {
+      "comment": "Android logcat Verbose",
+      "match": "(?<=^[\\s\\d\\p]*)\\bV\\b",
+      "name": "comment log.verbose"
+    },
+    {
+      "comment": "DEBUG",
+      "match": "\\b(DEBUG|Debug)\\b|(?i)\\b(debug)\\:",
+      "name": "markup.changed log.debug"
+    },
+    {
+      "comment": "Serilog DEBUG",
+      "match": "(?i)\\[(debug|dbug|dbg|de|d)\\]",
+      "name": "markup.changed log.debug"
+    },
+    {
+      "comment": "Android logcat Debug",
+      "match": "(?<=^[\\s\\d\\p]*)\\bD\\b",
+      "name": "markup.changed log.debug"
+    },
+    {
+      "comment": "INFO",
+      "match": "\\b(HINT|INFO|INFORMATION|Info|NOTICE|II)\\b|(?i)\\b(info|information)\\:",
+      "name": "markup.inserted log.info"
+    },
+    {
+      "comment": "Serilog INFO",
+      "match": "(?i)\\[(information|info|inf|in|i)\\]",
+      "name": "markup.inserted log.info"
+    },
+    {
+      "comment": "Android logcat Info",
+      "match": "(?<=^[\\s\\d\\p]*)\\bI\\b",
+      "name": "markup.inserted log.info"
+    },
+    {
+      "comment": "WARN",
+      "match": "\\b(WARNING|WARN|Warn|WW)\\b|(?i)\\b(warning)\\:",
+      "name": "markup.deleted log.warning"
+    },
+    {
+      "comment": "Serilog WARN",
+      "match": "(?i)\\[(warning|warn|wrn|wn|w)\\]",
+      "name": "markup.deleted log.warning"
+    },
+    {
+      "comment": "Android logcat Warning",
+      "match": "(?<=^[\\s\\d\\p]*)\\bW\\b",
+      "name": "markup.deleted log.warning"
+    },
+    {
+      "comment": "ERROR",
+      "match": "\\b(ALERT|CRITICAL|EMERGENCY|ERROR|FAILURE|FAIL|Fatal|FATAL|Error|EE)\\b|(?i)\\b(error)\\:",
+      "name": "string.regexp, strong log.error"
+    },
+    {
+      "comment": "Serilog ERROR",
+      "match": "(?i)\\[(error|eror|err|er|e|fatal|fatl|ftl|fa|f)\\]",
+      "name": "string.regexp, strong log.error"
+    },
+    {
+      "comment": "Android logcat Error",
+      "match": "(?<=^[\\s\\d\\p]*)\\bE\\b",
+      "name": "string.regexp, strong log.error"
+    },
+    {
+      "comment": "ISO dates (\"2016-08-23\")",
+      "match": "\\b\\d{4}-\\d{2}-\\d{2}(?=T|\\b)",
+      "name": "comment log.date"
+    },
+    {
+      "comment": "Culture specific dates (\"23/08/2016\", \"23.08.2016\")",
+      "match": "(?<=(^|\\s))\\d{2}[^\\w\\s]\\d{2}[^\\w\\s]\\d{4}\\b",
+      "name": "comment log.date"
+    },
+    {
+      "comment": "Clock times with optional timezone and optional T prefix",
+      "match": "T?\\d{1,2}:\\d{2}(:\\d{2}([.,]\\d{1,})?)?(Z| ?[+-]\\d{1,2}:\\d{2})?\\b",
+      "name": "comment log.date"
+    },
+    {
+      "comment": "Clock times without separator and with optional timezone",
+      "match": "T\\d{2}\\d{2}(\\d{2}([.,]\\d{1,})?)?(Z| ?[+-]\\d{1,2}\\d{2})?\\b",
+      "name": "comment log.date"
+    },
+    {
+      "comment": "Git commit hashes of length 40, 10 or 7",
+      "match": "\\b([0-9a-fA-F]{40}|[0-9a-fA-F]{10}|[0-9a-fA-F]{7})\\b",
+      "name": "constant.language"
+    },
+    {
+      "comment": "Guids",
+      "match": "\\b[0-9a-fA-F]{8}[-]?([0-9a-fA-F]{4}[-]?){3}[0-9a-fA-F]{12}\\b",
+      "name": "constant.language log.constant"
+    },
+    {
+      "comment": "MAC addresses",
+      "match": "\\b([0-9a-fA-F]{2,}[:-])+[0-9a-fA-F]{2,}+\\b",
+      "name": "constant.language log.constant"
+    },
+    {
+      "comment": "Constants",
+      "match": "\\b([0-9]+|true|false|null)\\b",
+      "name": "constant.language log.constant"
+    },
+    {
+      "comment": "Hex Constants",
+      "match": "\\b(0x[a-fA-F0-9]+)\\b",
+      "name": "constant.language log.constant"
+    },
+    {
+      "comment": "String constants, double quoted",
+      "match": "\"[^\"]*\"",
+      "name": "string log.string"
+    },
+    {
+      "comment": "String constants, single quoted",
+      "match": "(?<![\\w])'[^']*'",
+      "name": "string log.string"
+    },
+    {
+    "comment": "Exception header, type and message",
+    "match": "^(\\s*(Caused by:|Suppressed:)\\s*)?[a-zA-Z][\\w.]*Exception[:\\w\\s]*",
+    "name": "string.regexp, strong log.error"
+    },
+    {
+    "comment": "Exception header, general throwable/error types",
+    "match": "^(\\s*(Caused by:|Suppressed:)\\s*)[\\w.]+",
+    "name": "string.regexp, strong log.error"
+    },
+    {
+    "comment": "Truncated stack frames",
+    "match": "^\\s+\\.{3}\\s+\\d+\\s+more\\s*$",
+    "name": "string.key, emphasis log.exception"
+    },
+    {
+      "comment": "Exception type names",
+      "match": "\\b([a-zA-Z.]*Exception)\\b",
+      "name": "string.regexp, emphasis log.exceptiontype"
+    },
+    {
+      "comment": "Colorize rows of exception call stacks",
+      "begin": "^[\\t ]*at[\\t ]",
+      "end": "$",
+      "name": "string.key, emphasis log.exception"
+    },
+    {
+      "comment": "Match Urls",
+      "match": "\\b[a-z]+://\\S+\\b/?",
+      "name": "constant.language log.constant"
+    },
+    {
+      "comment": "Match character and . sequences (namespaces, file names)",
+      "match": "(?<![\\w/\\\\])([\\w-]+\\.)+([\\w-])+(?![\\w/\\\\])",
+      "name": "constant.language log.constant"
+    }
+  ]
+}

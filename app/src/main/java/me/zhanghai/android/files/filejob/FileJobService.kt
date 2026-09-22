@@ -12,6 +12,7 @@ import android.os.IBinder
 import androidx.annotation.MainThread
 import java8.nio.file.Path
 import me.zhanghai.android.files.file.MimeType
+import me.zhanghai.android.files.filelist.CompressionTarget
 import me.zhanghai.android.files.provider.common.PosixFileModeBit
 import me.zhanghai.android.files.provider.common.PosixGroup
 import me.zhanghai.android.files.provider.common.PosixUser
@@ -117,10 +118,19 @@ class FileJobService : Service() {
             archiveFile: Path,
             format: Int,
             filter: Int,
+            compressionTarget: CompressionTarget,
             password: String?,
+            compressionLevel: Int?,
+            deleteSources: Boolean,
             context: Context
         ) {
-            startJob(ArchiveFileJob(sources, archiveFile, format, filter, password), context)
+            startJob(
+                ArchiveFileJob(
+                    sources, archiveFile, format, filter, compressionTarget, password,
+                    compressionLevel, deleteSources
+                ),
+                context
+            )
         }
 
         fun copy(sources: List<Path>, targetDirectory: Path, context: Context) {
@@ -145,6 +155,15 @@ class FileJobService : Service() {
 
         fun open(file: Path, mimeType: MimeType, withChooser: Boolean, context: Context) {
             startJob(OpenFileJob(file, mimeType, withChooser), context)
+        }
+        
+        fun replaceArchiveEntry(
+            archiveEntry: Path,
+            cacheFile: Path,
+            passwords: List<String>,
+            context: Context
+        ) {
+            startJob(ReplaceArchiveEntryFileJob(archiveEntry, cacheFile, passwords), context)
         }
 
         fun rename(path: Path, newName: String, context: Context) {

@@ -33,12 +33,14 @@
     <string name="remove">Remove</string>
     <string name="rename">Rename</string>
     <string name="replace">Replace</string>
+    <string name="update">Update</string>
     <string name="reset">Reset</string>
     <string name="retry">Retry</string>
     <string name="save">Save</string>
     <string name="search">Search</string>
     <string name="select">Select</string>
     <string name="select_all">Select all</string>
+    <string name="select_range">Select range</string>
     <string name="share">Share</string>
     <string name="show">Show</string>
     <string name="skip">Skip</string>
@@ -73,6 +75,7 @@
     <string name="notification_channel_ftp_server_name">FTP server</string>
     <string name="notification_channel_ftp_server_description">Display and control the FTP server</string>
 
+    <string name="file_action_archive_modified_message">The file has been modified, would you like to update it inside the archive?</string>
     <string name="file_action_archive_password_title">Password required</string>
     <string name="file_action_archive_password_message_format">“%1$s” is password-protected.</string>
     <string name="file_action_archive_password_error_empty">Password cannot be empty</string>
@@ -116,12 +119,22 @@
     <string name="file_job_transfer_size_notification_text_one_format">%1$s / %2$s</string>
     <string name="file_job_transfer_size_notification_text_multiple_format">%1$,d / %2$,d</string>
     <plurals name="file_job_delete_scan_notification_title_format">
-        <item quantity="one">Preparing to delete %1$,d file</item>
-        <item quantity="other">Preparing to delete %1$,d files</item>
+        <item quantity="one">Preparing to delete %1$,d file (%2$s)</item>
+        <item quantity="other">Preparing to delete %1$,d files (%2$s)</item>
+    </plurals>
+    <string name="file_job_delete_archive_notification_title_one_format">Deleting “%1$s” in “%2$s”</string>
+    <plurals name="file_job_delete_archive_notification_title_multiple_format">
+        <item quantity="one">Deleting %1$,d file in “%2$s”</item>
+        <item quantity="other">Deleting %1$,d files in “%2$s”</item>
     </plurals>
     <string name="file_job_delete_notification_title_one_format">Deleting “%1$s”</string>
+
+    <string name="file_job_rewrite_archive_notification_title_one_format">Updating "%2$s"</string>
+    <plurals name="file_job_rewrite_archive_notification_title_multiple_format">
+        <item quantity="other">Updating %1$,d files in "%2$s"</item>
+    </plurals>
+
     <plurals name="file_job_delete_notification_title_multiple_format">
-        <item quantity="one">Deleting %1$,d file</item>
         <item quantity="other">Deleting %1$,d files</item>
     </plurals>
     <plurals name="file_job_set_owner_scan_notification_title_format">
@@ -256,10 +269,13 @@
         <item quantity="other">Delete %1$,d items?</item>
     </plurals>
     <string name="file_create_archive_title">Create archive</string>
+    <string name="file_create_archive_type">Archive type</string>
+    <string name="file_create_archive_compression_level">Compression level</string>
     <string name="file_create_archive_type_zip">.zip</string>
     <string name="file_create_archive_type_tar_xz">.tar.xz</string>
     <string name="file_create_archive_type_7z">.7z</string>
     <string name="file_create_archive_password">Password (optional)</string>
+    <string name="file_create_archive_delete_original">Delete original</string>
     <string name="file_add_bookmark_success">Bookmark added</string>
     <string name="file_create_file_title">New file</string>
     <string name="file_create_directory_title">New folder</string>
@@ -319,6 +335,7 @@
     <string name="file_list_paste_action_extract_here">Extract here</string>
     <string name="file_list_empty">No files</string>
     <string name="file_list_action_create_file">File</string>
+    <string name="file_list_action_create_blank_file">Temp file</string>
     <string name="file_list_action_create_directory">Folder</string>
 
     <string name="file_item_description_separator">\u0020\u0020\u0020\u0020</string>
@@ -613,6 +630,10 @@
     <string name="storage_edit_sftp_server_private_key_password_error_invalid">Invalid private key password</string>
     <string name="storage_edit_sftp_server_connect_and_add">Connect and add</string>
     <string name="storage_edit_sftp_server_add">Add</string>
+    <string name="storage_sftp_host_key_changed_title">SFTP host key changed</string>
+    <string name="storage_sftp_host_key_changed_message_format">The host key for %1$s has changed. This may indicate a man-in-the-middle attack. Only trust the new key if you expected this change.</string>
+    <string name="storage_sftp_host_key_changed_message_with_keys_format">The host key for %1$s has changed. This may indicate a man-in-the-middle attack. Only trust the new key if you expected this change.\n\nOld key:\n%2$s\n\nNew key:\n%3$s</string>
+    <string name="storage_sftp_host_key_changed_trust">Trust</string>
     <string name="storage_add_lan_smb_server_title" translatable="false">@string/storage_edit_smb_server_title_add</string>
     <string name="storage_add_lan_smb_server_loading">Searching for SMB servers…</string>
     <string name="storage_add_lan_smb_server_add">Add manually</string>
@@ -697,12 +718,14 @@
     <string name="image_viewer_title">Image viewer</string>
     <string name="image_viewer_subtitle_format">%1$,d/%2$,d</string>
     <string name="image_viewer_delete_message_format" translatable="false">@string/file_delete_message_file_format</string>
+    <string name="image_viewer_decode_error">"%1$s" could not be loaded</string>
     <string name="save_as_title">Save as</string>
     <string name="save_as_error">Error while saving file</string>
     <string name="save_as_success_format">“%1$s” has been saved to “%2$s”</string>
     <string name="text_editor_title">Text editor</string>
-    <string name="text_editor_title_format">%1$s</string>
-    <string name="text_editor_title_changed_format">*%1$s</string>
+    <string name="text_editor_new_file_title">New file</string>
+    <string name="text_editor_save_file_as">Save file as</string>
+    <string name="text_editor_file_name">Name</string>
     <string name="text_editor_save_success">Saved</string>
     <string name="text_editor_reload_message">Are you sure you want to reload? Unsaved changes to this document will be lost.</string>
     <string name="text_editor_encoding">Encoding</string>
@@ -748,6 +771,15 @@
     </string-array>
     <string name="settings_black_night_mode">Black night mode</string>
     <string name="settings_file_list_animation_title">File list animation</string>
+    <string name="settings_file_list_dense_layout_title">File list dense layout</string>
+
+    <string name="settings_file_list_calc_sizes_title">Calculate folder sizes</string>
+    <string-array name="settings_file_list_calc_sizes_entries">
+        <item>Never</item>
+        <item>Local only</item>
+        <item>Always</item>
+    </string-array>
+
     <string name="settings_file_name_ellipsize_title">Display long file name</string>
     <string-array name="settings_file_name_ellipsize_entries">
         <item>Ellipsize the beginning</item>
@@ -787,17 +819,29 @@
     <string name="settings_show_pdf_thumbnail_pre_28_title">Show thumbnail for PDF documents</string>
     <string name="settings_show_pdf_thumbnail_pre_28_summary">Might make the app unstable on older versions of Android</string>
     <string name="settings_read_remote_files_for_thumbnail_title">Read remote files for thumbnail</string>
-
     <string name="about_title">About</string>
     <string name="about_version_title">Version</string>
-    <string name="about_github_title">View on GitHub</string>
+    <string name="about_github_title">View fork source</string>
     <string name="about_licenses_title">Licenses</string>
     <string name="about_privacy_policy_title">Privacy policy</string>
-    <string name="about_author_title">Author</string>
+    <string name="about_author_title">Original author</string>
     <string name="about_author_name_title">Hai Zhang</string>
     <string name="about_author_github_title">Follow on GitHub</string>
     <string name="about_author_twitter_title">Follow on Twitter</string>
-
     <string name="shortcut_downloads_title" translatable="false">@string/navigation_standard_directory_downloads</string>
     <string name="shortcut_ftp_server_title" translatable="false">@string/ftp_server_title</string>
+    <string name="action_share">Share</string>
+    <string name="action_delete">Delete</string>
+    
+    <string name="audio_player_title">Audio player</string>
+    <string name="audio_player_subtitle_format">%1$,d/%2$,d</string>
+    <string name="audio_player_play">Play</string>
+    <string name="audio_player_pause">Pause</string>
+    <string name="audio_player_next">Next</string>
+    <string name="audio_player_previous">Previous</string>
+    <string name="audio_player_loading">Loading...</string>
+    <string name="audio_player_queue">Queue</string>
+    <string name="unknown_info">Unknown</string>
+    <string name="audio_player_shuffle">Shuffle</string>
+    <string name="audio_player_repeat">Repeat</string>
 </resources>

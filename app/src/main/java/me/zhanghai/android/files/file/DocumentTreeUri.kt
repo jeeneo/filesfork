@@ -65,16 +65,21 @@ fun DocumentTreeUri.releasePersistablePermission(): Boolean =
         Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
     )
 
-val StorageVolume.documentTreeUri: DocumentTreeUri
+val StorageVolume.documentTreeUri: DocumentTreeUri?
     get() {
         val intent = createOpenDocumentTreeIntentCompat()
         val rootUri = intent.getParcelableExtraSafe<Uri>(
             DocumentsContractCompat.EXTRA_INITIAL_URI
-        )!!
+        ) ?: return null
+        val rootId = try {
+            DocumentsContract.getRootId(rootUri)
+        } catch (e: IllegalArgumentException) {
+            return null
+        }
         // @see com.android.externalstorage.ExternalStorageProvider#getDocIdForFile(File)
         // @see com.android.documentsui.picker.ConfirmFragment#onCreateDialog(Bundle)
         return DocumentsContract.buildTreeDocumentUri(
-            rootUri.authority, "${DocumentsContract.getRootId(rootUri)}:"
+            rootUri.authority, "$rootId:"
         ).asDocumentTreeUri()
     }
 

@@ -66,7 +66,7 @@ class FileByteChannel(
         } catch (e: SMBRuntimeException) {
             throw e.toIOException()
         }
-        source.position(sourcePosition + bytesWritten)
+        source.position(sourcePosition + bytesWritten.toInt())
     }
 
     @Throws(IOException::class)

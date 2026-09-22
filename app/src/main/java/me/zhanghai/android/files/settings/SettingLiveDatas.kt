@@ -17,6 +17,7 @@ import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import me.zhanghai.android.files.app.appClassLoader
 import me.zhanghai.android.files.app.application
+import me.zhanghai.android.files.filelist.ArchiveType
 import me.zhanghai.android.files.util.Base64
 import me.zhanghai.android.files.util.asBase64
 import me.zhanghai.android.files.util.getBoolean
@@ -270,6 +271,41 @@ class ResourceIdSettingLiveData(
 
     override fun putValue(sharedPreferences: SharedPreferences, key: String, @AnyRes value: Int) {
         sharedPreferences.edit { putString(key, application.resources.getResourceName(value)) }
+    }
+}
+
+class ArchiveTypeSettingLiveData(
+    nameSuffix: String?,
+    @StringRes keyRes: Int,
+    keySuffix: String?,
+    @StringRes defaultValueRes: Int
+) : SettingLiveData<ArchiveType>(nameSuffix, keyRes, keySuffix, defaultValueRes) {
+    constructor(@StringRes keyRes: Int, @StringRes defaultValueRes: Int) : this(
+        null, keyRes, null, defaultValueRes
+    )
+
+    init {
+        init()
+    }
+
+    override fun getDefaultValue(@StringRes defaultValueRes: Int): ArchiveType =
+        ArchiveType.fromStoredValue(application.getString(defaultValueRes)) ?: ArchiveType.DEFAULT
+
+    override fun getValue(
+        sharedPreferences: SharedPreferences,
+        key: String,
+        defaultValue: ArchiveType
+    ): ArchiveType {
+        val storedValue = sharedPreferences.getString(key, null)
+        val value = ArchiveType.fromStoredValue(storedValue) ?: defaultValue
+        if (storedValue != value.label) {
+            sharedPreferences.edit { putString(key, value.label) }
+        }
+        return value
+    }
+
+    override fun putValue(sharedPreferences: SharedPreferences, key: String, value: ArchiveType) {
+        sharedPreferences.edit { putString(key, value.label) }
     }
 }
 

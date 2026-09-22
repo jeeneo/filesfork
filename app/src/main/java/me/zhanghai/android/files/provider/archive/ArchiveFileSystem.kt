@@ -119,6 +119,14 @@ internal class ArchiveFileSystem(
         }
     }
 
+    fun getPasswords(): List<String> =
+        synchronized(lock) {
+            if (!isOpen) {
+                throw ClosedFileSystemException()
+            }
+            passwords
+        }
+
     fun refresh() {
         synchronized(lock) {
             if (!isOpen) {

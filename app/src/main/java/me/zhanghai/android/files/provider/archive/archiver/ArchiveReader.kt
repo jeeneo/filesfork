@@ -37,24 +37,7 @@ object ArchiveReader {
         val entries = mutableMapOf<Path, ReadArchive.Entry>()
         val rawEntries = readEntries(file, passwords)
         for (entry in rawEntries) {
-            var path = rootPath.resolve(entry.name)
-            // Normalize an absolute path to prevent path traversal attack.
-            if (!path.isAbsolute) {
-                // TODO: Will this actually happen?
-                throw AssertionError("Path must be absolute: $path")
-            }
-            if (path.nameCount > 0) {
-                path = path.normalize()
-                if (path.nameCount == 0) {
-                    // Don't allow a path to become the root path only after normalization.
-                    continue
-                }
-            } else {
-                if (!entry.isDirectory) {
-                    // Ignore a root path that's not a directory
-                    continue
-                }
-            }
+            val path = getPathForEntry(rootPath, entry) ?: continue
             entries.getOrPut(path) { entry }
         }
         entries.getOrPut(rootPath) { createDirectoryEntry("") }
@@ -125,6 +108,54 @@ object ArchiveReader {
                 closeable.close()
             }
         }
+    }
+
+    @Throws(IOException::class)
+    fun copyEntries(
+        file: Path,
+        passwords: List<String>,
+        rootPath: Path,
+        shouldCopy: (Path) -> Boolean,
+        writer: ArchiveWriter,
+        listener: ((Long) -> Unit)?
+    ) {
+        val charset = archiveFileNameCharset
+        val (archive, closeable) = openArchive(file, passwords)
+        closeable.use {
+            while (true) {
+                val entry = archive.readEntry(charset) ?: break
+                val path = getPathForEntry(rootPath, entry) ?: continue
+                if (!shouldCopy(path)) {
+                    continue
+                }
+                val inputStream = if (entry.type == PosixFileType.REGULAR_FILE) {
+                    archive.newDataInputStream()
+                } else {
+                    null
+                }
+                writer.write(entry, inputStream, listener)
+            }
+        }
+    }
+
+    private fun getPathForEntry(rootPath: Path, entry: ReadArchive.Entry): Path? {
+        var path = rootPath.resolve(entry.name)
+        // Normalize an absolute path to prevent path traversal attack.
+        if (!path.isAbsolute) {
+            // TODO: Will this actually happen?
+            throw AssertionError("Path must be absolute: $path")
+        }
+        if (path.nameCount > 0) {
+            path = path.normalize()
+            if (path.nameCount == 0) {
+                // Don't allow a path to become the root path only after normalization.
+                return null
+            }
+        } else if (!entry.isDirectory) {
+            // Ignore a root path that's not a directory
+            return null
+        }
+        return path
     }
 
     @Throws(IOException::class)

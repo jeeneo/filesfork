@@ -1,0 +1,4 @@
+[submodule "sora-editor"]
+	path = sora-editor
+	url = https://github.com/jeeneo/sora-editor.git
+	branch = mfiles-fork-edits

@@ -1,179 +1,396 @@
-/*
- * Copyright (c) 2019 Hai Zhang <dreaming.in.code.zh@gmail.com>
- * All Rights Reserved.
- */
+@file:Suppress("SpellCheckingInspection")
 
 package me.zhanghai.android.files.viewer.text
 
-import android.content.Context
-import android.os.Parcelable
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.graphics.drawable.ColorDrawable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.core.graphics.drawable.toDrawable
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme
+import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
+import io.github.rosemoe.sora.text.Content
+import io.github.rosemoe.sora.widget.CodeEditor
+import java8.nio.file.Files
 import java8.nio.file.Path
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
-import me.zhanghai.android.files.filejob.FileJobService
-import me.zhanghai.android.files.provider.common.readAllBytes
-import me.zhanghai.android.files.provider.common.size
-import me.zhanghai.android.files.util.ActionState
-import me.zhanghai.android.files.util.DataState
-import me.zhanghai.android.files.util.isFinished
-import me.zhanghai.android.files.util.isReady
-import me.zhanghai.android.files.util.toError
-import me.zhanghai.android.files.util.toLoading
 import java.io.IOException
-import java.nio.charset.StandardCharsets
 
-class TextEditorViewModel(file: Path) : ViewModel() {
-    private val _file = MutableStateFlow(file)
-    val file = _file.asStateFlow()
+private val android.content.Context.editorPrefsDataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "text_editor_prefs"
+)
 
-    private val _bytesState = MutableStateFlow<DataState<ByteArray>>(DataState.Loading())
+enum class SaveButtonState { IDLE, SAVED, ERROR }
 
-    private var loadJob: Job? = null
-    private var reloadJob: Job? = null
+data class TopBarAction(
+    val label: String,
+    val icon: androidx.compose.ui.graphics.vector.ImageVector,
+    val checked: Boolean? = null,
+    val enabled: Boolean = true,
+    val onClick: () -> Unit,
+)
 
-    init {
+fun buildColorScheme(): TextMateColorScheme =
+    TextMateColorScheme.create(ThemeRegistry.getInstance())
+
+val SYMBOLS = listOf(
+    ">>" to "\t",
+    "{" to "{}",
+    "}" to "}",
+    "(" to "(",
+    ")" to ")",
+    "=" to "=",
+    "," to ",",
+    "." to ".",
+    ";" to ";",
+    "\"" to "\"",
+    "?" to "?",
+    "+" to "+",
+    "-" to "-",
+    "*" to "*",
+    "/" to "/",
+    "<" to "<",
+    ">" to ">",
+    "[" to "[",
+    "]" to "]",
+    ":" to ":"
+)
+
+private object PrefKeys {
+    val WORD_WRAP = booleanPreferencesKey("word_wrap")
+    val SYNTAX_HIGHLIGHT = booleanPreferencesKey("syntax_highlight")
+    val MINIMAP_SHOWN = booleanPreferencesKey("minimap_shown")
+    val MINIMAP_BLOCKS = booleanPreferencesKey("minimap_blocks")
+    val SYMBOL_BAR = booleanPreferencesKey("symbol_bar")
+    val LINE_NUMBERS = booleanPreferencesKey("line_numbers")
+    val SELECTED_THEME = stringPreferencesKey("selected_theme")
+    val TEXT_SIZE_PX = floatPreferencesKey("text_size_px")
+    val SELECTED_FONT = stringPreferencesKey("selected_font")
+    val INVISIBLE_CHARS = booleanPreferencesKey("invisible_chars")
+}
+
+sealed interface LoadState {
+    data object Loading : LoadState
+    data object Success : LoadState
+    data class Error(val message: String) : LoadState
+}
+
+class TextEditorViewModel(application: Application) : AndroidViewModel(application) {
+    var loadState: LoadState by mutableStateOf(LoadState.Loading)
+        private set
+    var savedPath: Path? by mutableStateOf(null)
+        private set
+    var isNewFile: Boolean by mutableStateOf(false)
+        private set
+    var grammarsReady: Boolean by mutableStateOf(false)
+        private set
+    private var grammarLoadJob: Job? = null
+    var isModified: Boolean by mutableStateOf(false)
+        private set
+    var syntaxHighlight: Boolean by mutableStateOf(true)
+        private set
+    var wordWrap: Boolean by mutableStateOf(false)
+        private set
+    var miniMap: Boolean by mutableStateOf(false)
+        private set
+    var miniMapBlocks: Boolean by mutableStateOf(false)
+        private set
+    var symbolBar: Boolean by mutableStateOf(false)
+        private set
+    var lineNumbers: Boolean by mutableStateOf(true)
+    var selectedTheme: String by mutableStateOf("darcula")
+        private set
+    var prefsLoaded: Boolean by mutableStateOf(false)
+        private set
+    var textSizePx: Float by mutableFloatStateOf(0f)
+        private set
+    var selectedFont: String by mutableStateOf("")
+        private set
+    var fontOptions: List<FontRegistry.FontOption> by mutableStateOf(emptyList())
+        private set
+    var systemFontOptions: List<FontRegistry.FontOption> by mutableStateOf(emptyList())
+        private set
+    var systemFontsLoaded: Boolean by mutableStateOf(false)
+        private set
+    var invisibleChars: Boolean by mutableStateOf(false)
+        private set
+    var content: Content by mutableStateOf(Content())
+        private set
+    private var originalContent: String = ""
+    private val dataStore get() = getApplication<Application>().editorPrefsDataStore
+    private var pendingSelectionLeft: Int = -1
+    private var pendingSelectionRight: Int = -1
+    private var pendingScrollX: Int = 0
+    private var pendingScrollY: Int = 0
+
+    fun initialize(path: Path) {
         viewModelScope.launch {
-            _file.collectLatest {
-                loadJob?.cancel()?.also { loadJob = null }
-                reloadJob?.cancel()?.also { reloadJob = null }
-                loadJob = launch {
-                    mapFileToBytesState(it)
-                    if (isActive) {
-                        loadJob = null
-                    }
+            if (prefsLoaded) return@launch
+            val app = getApplication<Application>()
+            TextEditorInitializer.initThemeAndPrefs(app)
+            loadPrefs()
+            load(path)
+            refreshFontOptions()
+            grammarsLoaded(app)
+        }
+    }
+
+    fun initializeNewFile(directory: Path) {
+        viewModelScope.launch {
+            if (prefsLoaded) return@launch
+            val app = getApplication<Application>()
+            TextEditorInitializer.initThemeAndPrefs(app)
+            loadPrefs()
+            originalContent = ""
+            withContext(Dispatchers.Main) {
+                content = Content()
+                savedPath = null
+                isNewFile = true
+                loadState = LoadState.Success
+            }
+            refreshFontOptions()
+            grammarsLoaded(app)
+        }
+    }
+
+    private fun grammarsLoaded(app: Application) {
+        if (grammarsReady) return
+        if (grammarLoadJob?.isActive == true) return
+
+        grammarLoadJob = viewModelScope.launch {
+            try {
+                TextEditorInitializer.initGrammars(app)
+                grammarsReady = true
+            } finally {
+                grammarLoadJob = null
+            }
+        }
+    }
+
+    fun saveCursorState(editor: CodeEditor) {
+        val cursor = editor.cursor
+        pendingSelectionLeft = cursor.left
+        pendingSelectionRight = cursor.right
+        pendingScrollX = editor.scroller.currX
+        pendingScrollY = editor.scroller.currY
+    }
+
+    fun restoreCursorState(editor: CodeEditor) {
+        if (pendingSelectionLeft < 0) return
+        val len = editor.text.length
+        val left = pendingSelectionLeft.coerceIn(0, len)
+        val right = pendingSelectionRight.coerceIn(0, len)
+        val leftPos = editor.text.indexer.getCharPosition(minOf(left, right))
+        val rightPos = editor.text.indexer.getCharPosition(maxOf(left, right))
+        editor.setSelectionRegion(
+            leftPos.line, leftPos.column, rightPos.line, rightPos.column, false
+        )
+        editor.scroller.startScroll(pendingScrollX, pendingScrollY, 0, 0, 0)
+        editor.scroller.abortAnimation()
+        editor.postInvalidate()
+    }
+
+    private suspend fun loadPrefs() {
+        val prefs = dataStore.data.first()
+        wordWrap = prefs[PrefKeys.WORD_WRAP] ?: false
+        syntaxHighlight = prefs[PrefKeys.SYNTAX_HIGHLIGHT] ?: true
+        selectedTheme = prefs[PrefKeys.SELECTED_THEME] ?: "darcula"
+        textSizePx = prefs[PrefKeys.TEXT_SIZE_PX] ?: 0f
+        miniMap = prefs[PrefKeys.MINIMAP_SHOWN] ?: false
+        miniMapBlocks = prefs[PrefKeys.MINIMAP_BLOCKS] ?: false
+        symbolBar = prefs[PrefKeys.SYMBOL_BAR] ?: false
+        lineNumbers = prefs[PrefKeys.LINE_NUMBERS] ?: true
+        selectedFont = prefs[PrefKeys.SELECTED_FONT] ?: ""
+        invisibleChars = prefs[PrefKeys.INVISIBLE_CHARS] ?: false
+        prefsLoaded = true
+        isValidFont()
+    }
+
+    private fun savePrefs() {
+        viewModelScope.launch {
+            dataStore.edit { prefs ->
+                prefs[PrefKeys.TEXT_SIZE_PX] = textSizePx
+                prefs[PrefKeys.WORD_WRAP] = wordWrap
+                prefs[PrefKeys.SYNTAX_HIGHLIGHT] = syntaxHighlight
+                prefs[PrefKeys.SELECTED_THEME] = selectedTheme
+                prefs[PrefKeys.MINIMAP_SHOWN] = miniMap
+                prefs[PrefKeys.MINIMAP_BLOCKS] = miniMapBlocks
+                prefs[PrefKeys.SYMBOL_BAR] = symbolBar
+                prefs[PrefKeys.LINE_NUMBERS] = lineNumbers
+                prefs[PrefKeys.SELECTED_FONT] = selectedFont
+                prefs[PrefKeys.INVISIBLE_CHARS] = invisibleChars
+            }
+        }
+    }
+
+    fun refreshFontOptions() {
+        viewModelScope.launch(Dispatchers.IO) {
+            fontOptions = FontRegistry.availableFonts(getApplication(), includeSystemFonts = false)
+        }
+    }
+
+    fun loadSystemFonts() {
+        if (systemFontsLoaded) return
+        viewModelScope.launch(Dispatchers.IO) {
+            systemFontOptions =
+                FontRegistry.availableFonts(getApplication(), includeSystemFonts = true)
+                    .filter { it !in fontOptions }
+            systemFontsLoaded = true
+        }
+    }
+
+    private fun isValidFont() {
+        val app = getApplication<Application>()
+        val allOptions: List<FontRegistry.FontOption> =
+            FontRegistry.availableFonts(app, includeSystemFonts = true)
+        if (selectedFont.isBlank() || allOptions.none { it.id == selectedFont }) {
+            selectedFont = FontRegistry.defaultFont(app).id
+        }
+    }
+
+    fun toggleWordWrap() {
+        wordWrap = !wordWrap
+        savePrefs()
+    }
+
+    fun toggleSyntaxHighlight() {
+        syntaxHighlight = !syntaxHighlight
+        savePrefs()
+        if (syntaxHighlight) grammarsLoaded(getApplication())
+    }
+
+    fun setTheme(theme: String) {
+        selectedTheme = theme
+        savePrefs()
+    }
+
+    fun saveTextSize(px: Float) {
+        textSizePx = px
+        savePrefs()
+    }
+
+    fun toggleMinimap() {
+        miniMap = !miniMap
+        savePrefs()
+    }
+
+    fun toggleMinimapBlocks() {
+        miniMapBlocks = !miniMapBlocks
+        savePrefs()
+    }
+
+    fun toggleSymbolBar() {
+        symbolBar = !symbolBar
+        savePrefs()
+    }
+
+    fun toggleLineNumbers() {
+        lineNumbers = !lineNumbers
+        savePrefs()
+    }
+
+    fun toggleInvisibleChars() {
+        invisibleChars = !invisibleChars
+        savePrefs()
+    }
+
+    fun setFont(font: String) {
+        selectedFont = font
+        savePrefs()
+    }
+
+    fun load(path: Path) {
+        loadState = LoadState.Loading
+        isModified = false
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val decoder = Charsets.UTF_8.newDecoder()
+                    .onMalformedInput(java.nio.charset.CodingErrorAction.REPLACE)
+                    .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPLACE)
+                val text = Files.newInputStream(path).use { stream ->
+                    java.io.InputStreamReader(stream, decoder).readText()
+                }
+                originalContent = text
+                withContext(Dispatchers.Main) {
+                    content = Content(text)
+                    loadState = LoadState.Success
+                }
+            } catch (e: OutOfMemoryError) {
+                withContext(Dispatchers.Main) {
+                    loadState = LoadState.Error(e.localizedMessage ?: "Out of memory")
+                }
+            } catch (e: IOException) {
+                withContext(Dispatchers.Main) {
+                    loadState = LoadState.Error(e.localizedMessage ?: "Read error")
                 }
             }
         }
     }
 
-    fun reload() {
+    fun onContentChanged(text: String) {
+        isModified = text != originalContent
+    }
+
+    fun save(
+        path: Path, getText: () -> String, onSuccess: () -> Unit, onError: (String) -> Unit
+    ) {
         viewModelScope.launch {
-            loadJob?.cancel()?.also { loadJob = null }
-            reloadJob?.cancel()?.also { reloadJob = null }
-            reloadJob = launch {
-                mapFileToBytesState(_file.value)
-                if (isActive) {
-                    reloadJob = null
+            try {
+                val text = getText()
+                withContext(Dispatchers.IO) {
+                    Files.newBufferedWriter(path, Charsets.UTF_8).use { it.write(text) }
                 }
+                originalContent = text
+                isModified = false
+                onSuccess()
+            } catch (e: IOException) {
+                onError(e.localizedMessage ?: "Write error")
             }
         }
     }
 
-    private suspend fun mapFileToBytesState(file: Path) {
-        _bytesState.value = _bytesState.value.toLoading()
-        try {
-            val bytes = runInterruptible(Dispatchers.IO) {
-                val size = file.size()
-                if (size > MAX_FILE_SIZE) {
-                    throw IOException("File size $size is too large")
-                }
-                file.readAllBytes()
-            }
-            currentCoroutineContext().ensureActive()
-            _bytesState.value = DataState.Success(bytes)
-        } catch (e: CancellationException) {
-            e.printStackTrace()
-        } catch (e: Exception) {
-            _bytesState.value = _bytesState.value.toError(e)
-        }
-    }
-
-    val encoding = MutableStateFlow(StandardCharsets.UTF_8)
-
-    private val _textState = MutableStateFlow<DataState<String>>(DataState.Loading())
-    val textState = _textState.asStateFlow()
-
-    init {
+    fun saveNewFile(
+        directory: Path, fileName: String, getText: () -> String,
+        onSuccess: () -> Unit, onError: (String) -> Unit
+    ) {
         viewModelScope.launch {
-            _bytesState.combine(encoding) { bytesState, encoding -> bytesState to encoding }
-                .collectLatest { (bytesState, encoding) ->
-                    when (bytesState) {
-                        is DataState.Loading -> _textState.value = _textState.value.toLoading()
-                        is DataState.Success -> {
-                            _textState.value = _textState.value.toLoading()
-                            try {
-                                val text = withContext(Dispatchers.Default) {
-                                    String(bytesState.data, encoding)
-                                }
-                                currentCoroutineContext().ensureActive()
-                                _textState.value = DataState.Success(text)
-                            } catch (e: CancellationException) {
-                                e.printStackTrace()
-                            } catch (e: Exception) {
-                                _textState.value = _textState.value.toError(e)
-                            }
-                        }
-                        is DataState.Error ->
-                            _textState.value = _textState.value.toError(bytesState.throwable)
-                    }
+            try {
+                val text = getText()
+                val path = directory.resolve(fileName)
+                withContext(Dispatchers.IO) {
+                    Files.newBufferedWriter(path, Charsets.UTF_8).use { it.write(text) }
                 }
-        }
-    }
-
-    val isTextChanged = MutableStateFlow(false)
-
-    private val _writeFileState =
-        MutableStateFlow<ActionState<Pair<Path, String>, Unit>>(ActionState.Ready())
-    val writeFileState = _writeFileState.asStateFlow()
-
-    fun writeFile(path: Path, text: String, context: Context) {
-        viewModelScope.launch {
-            check(_writeFileState.value.isReady)
-            val argument = path to text
-            _writeFileState.value = ActionState.Running(argument)
-            val bytes = withContext(Dispatchers.Default) {
-                text.toByteArray(encoding.value)
-            }
-            FileJobService.write(path, bytes, context) { successful ->
-                if (successful) {
-                    loadJob?.cancel()?.also { loadJob = null }
-                    reloadJob?.cancel()?.also { reloadJob = null }
-                    _bytesState.value = DataState.Success(bytes)
+                withContext(Dispatchers.Main) {
+                    savedPath = path
+                    isNewFile = false
                 }
-                _writeFileState.value = if (successful) {
-                    ActionState.Success(argument, Unit)
-                } else {
-                    // The error will be toasted by service so we should never show it in UI, but we
-                    // need a non-null value here.
-                    ActionState.Error(argument, Throwable())
-                }
+                originalContent = text
+                isModified = false
+                onSuccess()
+            } catch (e: IOException) {
+                onError(e.localizedMessage ?: "Write error")
             }
         }
     }
+}
 
-    fun finishWritingFile() {
-        viewModelScope.launch {
-            check(_writeFileState.value.isFinished)
-            _writeFileState.value = ActionState.Ready()
-        }
-    }
-
-    private var editTextSavedState: Parcelable? = null
-
-    fun setEditTextSavedState(editTextSavedState: Parcelable?) {
-        this.editTextSavedState = editTextSavedState
-    }
-
-    fun removeEditTextSavedState(): Parcelable? {
-        val savedState = editTextSavedState
-        editTextSavedState = null
-        return savedState
-    }
-
-    companion object {
-        private const val MAX_FILE_SIZE = 1024 * 1024.toLong()
-    }
+fun deriveScrollbarDrawables(): Pair<ColorDrawable, ColorDrawable> {
+    val trackDrawable = 0x29FFFFFF.toDrawable()
+    val thumbDrawable = 0x80FFFFFF.toInt().toDrawable()
+    return Pair(trackDrawable, thumbDrawable)
 }
