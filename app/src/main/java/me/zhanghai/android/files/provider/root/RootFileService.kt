@@ -13,6 +13,7 @@ import me.zhanghai.android.files.BuildConfig
 import me.zhanghai.android.files.compat.UserHandleCompat
 import me.zhanghai.android.files.provider.FileSystemProviders
 import me.zhanghai.android.files.provider.remote.RemoteFileService
+import me.zhanghai.android.files.provider.remote.RemoteFileSystemException
 import me.zhanghai.android.files.provider.remote.RemoteInterface
 import me.zhanghai.android.files.util.lazyReflectedMethod
 
@@ -29,10 +30,10 @@ lateinit var rootContext: Context private set
 
 object RootFileService : RemoteFileService(
     RemoteInterface {
-        if (ShizukuFileServiceLauncher.isAvailable()) {
-            ShizukuFileServiceLauncher.launchService()
-        } else {
+        try {
             LibSuFileServiceLauncher.launchService()
+        } catch (e: RemoteFileSystemException) {
+            ShizukuFileServiceLauncher.launchService()
         }
     }
 ) {

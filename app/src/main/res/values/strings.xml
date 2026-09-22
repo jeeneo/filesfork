@@ -135,6 +135,7 @@
     </plurals>
 
     <plurals name="file_job_delete_notification_title_multiple_format">
+        <item quantity="one">Deleting %1$,d file</item>
         <item quantity="other">Deleting %1$,d files</item>
     </plurals>
     <plurals name="file_job_set_owner_scan_notification_title_format">
@@ -725,6 +726,8 @@
     <string name="image_viewer_subtitle_format">%1$,d/%2$,d</string>
     <string name="image_viewer_delete_message_format" translatable="false">@string/file_delete_message_file_format</string>
     <string name="image_viewer_decode_error">"%1$s" could not be loaded</string>
+    <string name="text_editor_title_format">%1$s</string>
+    <string name="text_editor_title_changed_format">*%1$s</string>
     <string name="save_as_title">Save as</string>
     <string name="save_as_error">Error while saving file</string>
     <string name="save_as_success_format">“%1$s” has been saved to “%2$s”</string>
@@ -827,10 +830,10 @@
     <string name="settings_read_remote_files_for_thumbnail_title">Read remote files for thumbnail</string>
     <string name="about_title">About</string>
     <string name="about_version_title">Version</string>
-    <string name="about_github_title">View fork source</string>
+    <string name="about_github_title">View on GitHub</string>
     <string name="about_licenses_title">Licenses</string>
     <string name="about_privacy_policy_title">Privacy policy</string>
-    <string name="about_author_title">Original author</string>
+    <string name="about_author_title">Author</string>
     <string name="about_author_name_title">Hai Zhang</string>
     <string name="about_author_github_title">Follow on GitHub</string>
     <string name="about_author_twitter_title">Follow on Twitter</string>

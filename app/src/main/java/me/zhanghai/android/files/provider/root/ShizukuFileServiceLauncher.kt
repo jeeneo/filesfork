@@ -30,6 +30,9 @@ import rikka.shizuku.ShizukuApiConstants
 object ShizukuFileServiceLauncher {
     private val lock = Any()
 
+    @Volatile
+    private var permissionDenied = false
+
     fun isAvailable(): Boolean = Shizuku.pingBinder()
 
     @Throws(RemoteFileSystemException::class)
@@ -37,6 +40,9 @@ object ShizukuFileServiceLauncher {
         synchronized(lock) {
             if (!isAvailable()) {
                 throw RemoteFileSystemException("Shizuku isn't available")
+            }
+            if (permissionDenied) {
+                throw RemoteFileSystemException("Shizuku permission isn't granted")
             }
             if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
                 val granted = try {
@@ -63,6 +69,7 @@ object ShizukuFileServiceLauncher {
                     throw RemoteFileSystemException(e)
                 }
                 if (!granted) {
+                    permissionDenied = true
                     throw RemoteFileSystemException("Shizuku permission isn't granted")
                 }
             }
