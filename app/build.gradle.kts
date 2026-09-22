@@ -179,6 +179,7 @@ dependencies {
     implementation(libs.insetter.ktx)
     implementation(libs.simple.menu.preference)
     implementation(libs.shizuku.api)
+    implementation(libs.shizuku.provider)
     implementation(libs.jcifs.ng) {
         exclude(group = "org.bouncycastle", module = "bcprov-jdk18on")
     }

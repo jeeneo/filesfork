@@ -140,6 +140,7 @@ licenses-dialog = { module = "de.psdev.licensesdialog:licensesdialog", version.r
 insetter-ktx = { module = "dev.chrisbanes:insetter-ktx", version.ref = "insetter" }
 simple-menu-preference = { module = "dev.rikka.rikkax.preference:simplemenu-preference", version.ref = "simpleMenuPreference" }
 shizuku-api = { module = "dev.rikka.shizuku:api", version.ref = "shizuku" }
+shizuku-provider = { module = "dev.rikka.shizuku:provider", version.ref = "shizuku" }
 jcifs-ng = { module = "eu.agno3.jcifs:jcifs-ng", version.ref = "jcifsNg" }
 appiconloader = { module = "me.zhanghai.android.appiconloader:appiconloader", version.ref = "appIconLoader" }
 fastscroll = { module = "me.zhanghai.android.fastscroll:library", version.ref = "fastScroll" }
