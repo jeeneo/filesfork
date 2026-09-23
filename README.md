@@ -13,7 +13,7 @@ An open source Material Design file manager for Android 6.0+ (with QoL improveme
 
 ## Changes
 
-- [Sora Editor](https://github.com/Rosemoe/sora-editor) (from [Citrinae-Lime](https://github.com/Citrinae-Lime)), with:
+- [Sora Editor](https://github.com/Rosemoe/sora-editor) (from [Citrinae-Lime](https://github.com/Citrinae-Lime/MaterialFiles.Sora-Editor)), with:
   - Search and replace, themes, fonts etc
 - [Telephoto](https://github.com/saket/telephoto) for images (instead of PhotoView)
 - Folder size calculation
