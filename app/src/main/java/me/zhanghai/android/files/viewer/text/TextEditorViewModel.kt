@@ -1,39 +1,36 @@
-@file:Suppress("SpellCheckingInspection")
-
 package me.zhanghai.android.files.viewer.text
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.drawable.ColorDrawable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.floatPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import io.github.rosemoe.sora.event.ContentChangeEvent
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme
-import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
 import io.github.rosemoe.sora.text.Content
+import io.github.rosemoe.sora.text.ContentIO
 import io.github.rosemoe.sora.widget.CodeEditor
 import java8.nio.file.Files
 import java8.nio.file.Path
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
+import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry as EditorThemeRegistry
 
-private val android.content.Context.editorPrefsDataStore: DataStore<Preferences> by preferencesDataStore(
-    name = "text_editor_prefs"
-)
+private val Context.editorPrefs: SharedPreferences
+    get() = getSharedPreferences("text_editor_prefs", Context.MODE_PRIVATE)
 
 enum class SaveButtonState { IDLE, SAVED, ERROR }
 
@@ -45,8 +42,10 @@ data class TopBarAction(
     val onClick: () -> Unit,
 )
 
+const val LARGE_FILE_WARNING_BYTES = 10L * 1024 * 1024
+
 fun buildColorScheme(): TextMateColorScheme =
-    TextMateColorScheme.create(ThemeRegistry.getInstance())
+    TextMateColorScheme.create(EditorThemeRegistry.getInstance())
 
 val SYMBOLS = listOf(
     ">>" to "\t",
@@ -68,58 +67,87 @@ val SYMBOLS = listOf(
     ">" to ">",
     "[" to "[",
     "]" to "]",
-    ":" to ":"
+    ":" to ":",
 )
 
 private object PrefKeys {
-    val WORD_WRAP = booleanPreferencesKey("word_wrap")
-    val SYNTAX_HIGHLIGHT = booleanPreferencesKey("syntax_highlight")
-    val MINIMAP_SHOWN = booleanPreferencesKey("minimap_shown")
-    val MINIMAP_BLOCKS = booleanPreferencesKey("minimap_blocks")
-    val SYMBOL_BAR = booleanPreferencesKey("symbol_bar")
-    val LINE_NUMBERS = booleanPreferencesKey("line_numbers")
-    val SELECTED_THEME = stringPreferencesKey("selected_theme")
-    val TEXT_SIZE_PX = floatPreferencesKey("text_size_px")
-    val SELECTED_FONT = stringPreferencesKey("selected_font")
-    val INVISIBLE_CHARS = booleanPreferencesKey("invisible_chars")
+    const val WORD_WRAP = "word_wrap"
+    const val SYNTAX_HIGHLIGHT = "syntax_highlight"
+    const val MINIMAP_SHOWN = "minimap_shown"
+    const val MINIMAP_BLOCKS = "minimap_blocks"
+    const val SYMBOL_BAR = "symbol_bar"
+    const val LINE_NUMBERS = "line_numbers"
+    const val SELECTED_THEME = "selected_theme"
+    const val TEXT_SIZE_PX = "text_size_px"
+    const val SELECTED_FONT = "selected_font"
+    const val INVISIBLE_CHARS = "invisible_chars"
+}
+
+private object EditorDefaults {
+    const val WORD_WRAP = false
+    const val SYNTAX_HIGHLIGHT = true
+    const val TEXT_SIZE_PX = 0f
+    const val MINIMAP_SHOWN = false
+    const val MINIMAP_BLOCKS = false
+    const val SYMBOL_BAR = false
+    const val LINE_NUMBERS = true
+    const val INVISIBLE_CHARS = false
+    const val SELECTED_THEME = "vscode-dark-2026"
+    const val SELECTED_FONT = "fonts/JetBrainsMono-variable.ttf"
 }
 
 sealed interface LoadState {
     data object Loading : LoadState
     data object Success : LoadState
-    data class Error(val message: String) : LoadState
+    data class Error(
+        val message: String,
+    ) : LoadState
 }
 
-class TextEditorViewModel(application: Application) : AndroidViewModel(application) {
+class SoraEditorViewModel(
+    application: Application,
+) : AndroidViewModel(application) {
+    private var pendingLargeFile: Path? = null
+    private val confirmedLargeFiles = mutableSetOf<Path>()
+    private var grammarLoadJob: Job? = null
+    private val prefs get() = getApplication<Application>().editorPrefs
+    private var pendingSelectionLeft: Int = -1
+    private var pendingSelectionRight: Int = -1
+    private var pendingScrollX: Int = 0
+    private var pendingScrollY: Int = 0
+    var largeFilePending: Boolean by mutableStateOf(false)
+
     var loadState: LoadState by mutableStateOf(LoadState.Loading)
         private set
     var savedPath: Path? by mutableStateOf(null)
+        private set
+    var openedName: String? by mutableStateOf(null)
         private set
     var isNewFile: Boolean by mutableStateOf(false)
         private set
     var grammarsReady: Boolean by mutableStateOf(false)
         private set
-    private var grammarLoadJob: Job? = null
     var isModified: Boolean by mutableStateOf(false)
         private set
-    var syntaxHighlight: Boolean by mutableStateOf(true)
+    var syntaxHighlight: Boolean by mutableStateOf(EditorDefaults.SYNTAX_HIGHLIGHT)
         private set
-    var wordWrap: Boolean by mutableStateOf(false)
+    var wordWrap: Boolean by mutableStateOf(EditorDefaults.WORD_WRAP)
         private set
-    var miniMap: Boolean by mutableStateOf(false)
+    var miniMap: Boolean by mutableStateOf(EditorDefaults.MINIMAP_SHOWN)
         private set
-    var miniMapBlocks: Boolean by mutableStateOf(false)
+    var miniMapBlocks: Boolean by mutableStateOf(EditorDefaults.MINIMAP_BLOCKS)
         private set
-    var symbolBar: Boolean by mutableStateOf(false)
+    var symbolBar: Boolean by mutableStateOf(EditorDefaults.SYMBOL_BAR)
         private set
-    var lineNumbers: Boolean by mutableStateOf(true)
-    var selectedTheme: String by mutableStateOf("darcula")
+    var lineNumbers: Boolean by mutableStateOf(EditorDefaults.LINE_NUMBERS)
+        private set
+    var selectedTheme: String by mutableStateOf(EditorDefaults.SELECTED_THEME)
+        private set
+    var selectedFont: String by mutableStateOf(EditorDefaults.SELECTED_FONT)
         private set
     var prefsLoaded: Boolean by mutableStateOf(false)
         private set
-    var textSizePx: Float by mutableFloatStateOf(0f)
-        private set
-    var selectedFont: String by mutableStateOf("")
+    var textSizePx: Float by mutableFloatStateOf(EditorDefaults.TEXT_SIZE_PX)
         private set
     var fontOptions: List<FontRegistry.FontOption> by mutableStateOf(emptyList())
         private set
@@ -127,54 +155,39 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         private set
     var systemFontsLoaded: Boolean by mutableStateOf(false)
         private set
-    var invisibleChars: Boolean by mutableStateOf(false)
+    var invisibleChars: Boolean by mutableStateOf(EditorDefaults.INVISIBLE_CHARS)
         private set
     var content: Content by mutableStateOf(Content())
         private set
-    private var originalContent: String = ""
-    private val dataStore get() = getApplication<Application>().editorPrefsDataStore
-    private var pendingSelectionLeft: Int = -1
-    private var pendingSelectionRight: Int = -1
-    private var pendingScrollX: Int = 0
-    private var pendingScrollY: Int = 0
+    var newFileDir: Path? by mutableStateOf(null)
+        private set
 
-    fun initialize(path: Path) {
+    fun initializeNewFile(directory: Path? = null) {
         viewModelScope.launch {
             if (prefsLoaded) return@launch
             val app = getApplication<Application>()
             TextEditorInitializer.initThemeAndPrefs(app)
             loadPrefs()
-            load(path)
-            refreshFontOptions()
-            grammarsLoaded(app)
-        }
-    }
-
-    fun initializeNewFile(directory: Path) {
-        viewModelScope.launch {
-            if (prefsLoaded) return@launch
-            val app = getApplication<Application>()
-            TextEditorInitializer.initThemeAndPrefs(app)
-            loadPrefs()
-            originalContent = ""
+            newFileDir = directory
             withContext(Dispatchers.Main) {
                 content = Content()
                 savedPath = null
+                openedName = null
                 isNewFile = true
                 loadState = LoadState.Success
             }
             refreshFontOptions()
-            grammarsLoaded(app)
+            grammarsLoaded()
         }
     }
 
-    private fun grammarsLoaded(app: Application) {
+    private fun grammarsLoaded() {
         if (grammarsReady) return
         if (grammarLoadJob?.isActive == true) return
 
         grammarLoadJob = viewModelScope.launch {
             try {
-                TextEditorInitializer.initGrammars(app)
+                TextEditorInitializer.initGrammars(getApplication())
                 grammarsReady = true
             } finally {
                 grammarLoadJob = null
@@ -198,43 +211,60 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         val leftPos = editor.text.indexer.getCharPosition(minOf(left, right))
         val rightPos = editor.text.indexer.getCharPosition(maxOf(left, right))
         editor.setSelectionRegion(
-            leftPos.line, leftPos.column, rightPos.line, rightPos.column, false
+            leftPos.line,
+            leftPos.column,
+            rightPos.line,
+            rightPos.column,
+            false,
         )
         editor.scroller.startScroll(pendingScrollX, pendingScrollY, 0, 0, 0)
         editor.scroller.abortAnimation()
         editor.postInvalidate()
     }
 
-    private suspend fun loadPrefs() {
-        val prefs = dataStore.data.first()
-        wordWrap = prefs[PrefKeys.WORD_WRAP] ?: false
-        syntaxHighlight = prefs[PrefKeys.SYNTAX_HIGHLIGHT] ?: true
-        selectedTheme = prefs[PrefKeys.SELECTED_THEME] ?: "darcula"
-        textSizePx = prefs[PrefKeys.TEXT_SIZE_PX] ?: 0f
-        miniMap = prefs[PrefKeys.MINIMAP_SHOWN] ?: false
-        miniMapBlocks = prefs[PrefKeys.MINIMAP_BLOCKS] ?: false
-        symbolBar = prefs[PrefKeys.SYMBOL_BAR] ?: false
-        lineNumbers = prefs[PrefKeys.LINE_NUMBERS] ?: true
-        selectedFont = prefs[PrefKeys.SELECTED_FONT] ?: ""
-        invisibleChars = prefs[PrefKeys.INVISIBLE_CHARS] ?: false
+    private fun loadPrefs() {
+        val prefs = this.prefs
+        wordWrap = prefs.getBoolean(PrefKeys.WORD_WRAP, EditorDefaults.WORD_WRAP)
+        syntaxHighlight =
+            prefs.getBoolean(PrefKeys.SYNTAX_HIGHLIGHT, EditorDefaults.SYNTAX_HIGHLIGHT)
+        textSizePx = prefs.getFloat(PrefKeys.TEXT_SIZE_PX, EditorDefaults.TEXT_SIZE_PX)
+        miniMap = prefs.getBoolean(PrefKeys.MINIMAP_SHOWN, EditorDefaults.MINIMAP_SHOWN)
+        miniMapBlocks = prefs.getBoolean(PrefKeys.MINIMAP_BLOCKS, EditorDefaults.MINIMAP_BLOCKS)
+        symbolBar = prefs.getBoolean(PrefKeys.SYMBOL_BAR, EditorDefaults.SYMBOL_BAR)
+        lineNumbers = prefs.getBoolean(PrefKeys.LINE_NUMBERS, EditorDefaults.LINE_NUMBERS)
+        invisibleChars = prefs.getBoolean(PrefKeys.INVISIBLE_CHARS, EditorDefaults.INVISIBLE_CHARS)
+
+        val app = getApplication<Application>()
+
+        selectedTheme = resolveSelectedId(
+            stored = prefs.getString(PrefKeys.SELECTED_THEME, null) ?: "",
+            availableIds = ThemeRegistry.availableThemes.map { it.id },
+            defaultName = EditorDefaults.SELECTED_THEME,
+        )
+
+        selectedFont = resolveSelectedId(
+            stored = prefs.getString(PrefKeys.SELECTED_FONT, null) ?: "",
+            availableIds = FontRegistry.availableFonts(app, includeSystemFonts = true)
+                .map { it.id },
+            defaultName = EditorDefaults.SELECTED_FONT,
+        )
+
         prefsLoaded = true
-        isValidFont()
+        savePrefs()
     }
 
     private fun savePrefs() {
-        viewModelScope.launch {
-            dataStore.edit { prefs ->
-                prefs[PrefKeys.TEXT_SIZE_PX] = textSizePx
-                prefs[PrefKeys.WORD_WRAP] = wordWrap
-                prefs[PrefKeys.SYNTAX_HIGHLIGHT] = syntaxHighlight
-                prefs[PrefKeys.SELECTED_THEME] = selectedTheme
-                prefs[PrefKeys.MINIMAP_SHOWN] = miniMap
-                prefs[PrefKeys.MINIMAP_BLOCKS] = miniMapBlocks
-                prefs[PrefKeys.SYMBOL_BAR] = symbolBar
-                prefs[PrefKeys.LINE_NUMBERS] = lineNumbers
-                prefs[PrefKeys.SELECTED_FONT] = selectedFont
-                prefs[PrefKeys.INVISIBLE_CHARS] = invisibleChars
-            }
+        prefs.edit {
+            putFloat(PrefKeys.TEXT_SIZE_PX, textSizePx)
+            putBoolean(PrefKeys.WORD_WRAP, wordWrap)
+            putBoolean(PrefKeys.SYNTAX_HIGHLIGHT, syntaxHighlight)
+            putString(PrefKeys.SELECTED_THEME, selectedTheme)
+            putBoolean(PrefKeys.MINIMAP_SHOWN, miniMap)
+            putBoolean(PrefKeys.MINIMAP_BLOCKS, miniMapBlocks)
+            putBoolean(PrefKeys.SYMBOL_BAR, symbolBar)
+            putBoolean(PrefKeys.LINE_NUMBERS, lineNumbers)
+            putString(PrefKeys.SELECTED_FONT, selectedFont)
+            putBoolean(PrefKeys.INVISIBLE_CHARS, invisibleChars)
         }
     }
 
@@ -254,13 +284,14 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    private fun isValidFont() {
-        val app = getApplication<Application>()
-        val allOptions: List<FontRegistry.FontOption> =
-            FontRegistry.availableFonts(app, includeSystemFonts = true)
-        if (selectedFont.isBlank() || allOptions.none { it.id == selectedFont }) {
-            selectedFont = FontRegistry.defaultFont(app).id
-        }
+    private fun resolveSelectedId(
+        stored: String,
+        availableIds: List<String>,
+        defaultName: String = "",
+    ): String = when {
+        stored.isNotBlank() && stored in availableIds -> stored
+        defaultName.isNotBlank() && defaultName in availableIds -> defaultName
+        else -> availableIds.firstOrNull() ?: ""
     }
 
     fun toggleWordWrap() {
@@ -271,7 +302,7 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
     fun toggleSyntaxHighlight() {
         syntaxHighlight = !syntaxHighlight
         savePrefs()
-        if (syntaxHighlight) grammarsLoaded(getApplication())
+        if (syntaxHighlight) grammarsLoaded()
     }
 
     fun setTheme(theme: String) {
@@ -318,16 +349,30 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         loadState = LoadState.Loading
         isModified = false
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val decoder = Charsets.UTF_8.newDecoder()
-                    .onMalformedInput(java.nio.charset.CodingErrorAction.REPLACE)
-                    .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPLACE)
-                val text = Files.newInputStream(path).use { stream ->
-                    java.io.InputStreamReader(stream, decoder).readText()
-                }
-                originalContent = text
+            val size = try {
+                if (Files.isRegularFile(path)) Files.size(path) else -1L
+            } catch (e: IOException) {
+                -1L
+            }
+            if (size > LARGE_FILE_WARNING_BYTES && path !in confirmedLargeFiles) {
+                pendingLargeFile = path
                 withContext(Dispatchers.Main) {
-                    content = Content(text)
+                    largeFilePending = true
+                }
+                return@launch
+            }
+            doLoad(path)
+        }
+    }
+
+    private fun doLoad(path: Path) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val builtContent = Files.newInputStream(path).use { stream ->
+                    ContentIO.createFrom(stream, Charsets.UTF_8)
+                }
+                withContext(Dispatchers.Main) {
+                    content = builtContent
                     loadState = LoadState.Success
                 }
             } catch (e: OutOfMemoryError) {
@@ -342,12 +387,70 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    fun onContentChanged(text: String) {
-        isModified = text != originalContent
+    fun dismissLargeFileWarning() {
+        val path = pendingLargeFile
+        pendingLargeFile = null
+        largeFilePending = false
+        if (path != null) {
+            confirmedLargeFiles.add(path)
+            doLoad(path)
+        }
+    }
+
+    fun onContentChanged(editorAction: Int) {
+        isModified = editorAction != ContentChangeEvent.ACTION_SET_NEW_TEXT
+    }
+
+    fun openDocument(
+        path: Path,
+        name: String,
+    ) {
+        viewModelScope.launch {
+            if (prefsLoaded) return@launch
+            val app = getApplication<Application>()
+            TextEditorInitializer.initThemeAndPrefs(app)
+            loadPrefs()
+            savedPath = path
+            openedName = name
+            isNewFile = false
+            load(path)
+            refreshFontOptions()
+            grammarsLoaded()
+        }
+    }
+
+    fun reloadOpen() {
+        savedPath?.let { load(it) }
+    }
+
+    fun saveExisting(
+        getText: () -> String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
+    ) {
+        val path = savedPath ?: run {
+            onError("No document open")
+            return
+        }
+        viewModelScope.launch {
+            try {
+                val text = getText()
+                withContext(Dispatchers.IO) {
+                    Files.newBufferedWriter(path, Charsets.UTF_8).use { it.write(text) }
+                }
+                isModified = false
+                onSuccess()
+            } catch (e: Exception) {
+                onError(e.localizedMessage ?: "Write error")
+            }
+        }
     }
 
     fun save(
-        path: Path, getText: () -> String, onSuccess: () -> Unit, onError: (String) -> Unit
+        path: Path,
+        getText: () -> String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
     ) {
         viewModelScope.launch {
             try {
@@ -355,7 +458,6 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
                 withContext(Dispatchers.IO) {
                     Files.newBufferedWriter(path, Charsets.UTF_8).use { it.write(text) }
                 }
-                originalContent = text
                 isModified = false
                 onSuccess()
             } catch (e: IOException) {
@@ -365,25 +467,43 @@ class TextEditorViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun saveNewFile(
-        directory: Path, fileName: String, getText: () -> String,
-        onSuccess: () -> Unit, onError: (String) -> Unit
+        fileName: String,
+        getText: () -> String,
+        onSaved: () -> Unit,
+        onError: (String) -> Unit,
     ) {
+        val directory = newFileDir
+        if (directory == null) {
+            onError("No directory to save in")
+            return
+        }
         viewModelScope.launch {
             try {
                 val text = getText()
-                val path = directory.resolve(fileName)
+                val file = directory.resolve(fileName)
                 withContext(Dispatchers.IO) {
-                    Files.newBufferedWriter(path, Charsets.UTF_8).use { it.write(text) }
+                    Files.newBufferedWriter(file, Charsets.UTF_8).use { it.write(text) }
                 }
                 withContext(Dispatchers.Main) {
-                    savedPath = path
+                    savedPath = file
+                    openedName = fileName
                     isNewFile = false
                 }
-                originalContent = text
                 isModified = false
-                onSuccess()
+                onSaved()
             } catch (e: IOException) {
                 onError(e.localizedMessage ?: "Write error")
+            } catch (e: Exception) {
+                onError(e.localizedMessage ?: "Write error")
+            }
+        }
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]!!
+                SoraEditorViewModel(app)
             }
         }
     }

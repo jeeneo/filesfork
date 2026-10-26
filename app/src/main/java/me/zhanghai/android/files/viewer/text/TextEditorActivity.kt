@@ -14,7 +14,6 @@ import java8.nio.file.Path
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.zhanghai.android.files.app.AppActivity
-import me.zhanghai.android.files.app.application
 import me.zhanghai.android.files.theme.AppTheme
 import me.zhanghai.android.files.util.extraPath
 
@@ -22,17 +21,19 @@ object TextEditorInitializer {
     @Volatile
     private var done = false
 
-    suspend fun initThemeAndPrefs(context: Context) = withContext(Dispatchers.IO) {
-        if (done) return@withContext
-        FileProviderRegistry.getInstance().addFileProvider(AssetsFileResolver(context.assets))
-        ThemeRegistry.initialize(context)
-        done = true
-    }
+    suspend fun initThemeAndPrefs(context: Context) =
+        withContext(Dispatchers.IO) {
+            if (done) return@withContext
+            FileProviderRegistry.getInstance().addFileProvider(AssetsFileResolver(context.assets))
+            ThemeRegistry.initialize(context)
+            done = true
+        }
 
-    suspend fun initGrammars(context: Context) = withContext(Dispatchers.IO) {
-        GrammarRegistry.getInstance().loadGrammars("textmate/languages/languages.json")
-        LanguageRegistry.initialize(context)
-    }
+    suspend fun initGrammars(context: Context) =
+        withContext(Dispatchers.IO) {
+            GrammarRegistry.getInstance().loadGrammars("textmate/languages/languages.json")
+            LanguageRegistry.initialize(context)
+        }
 }
 
 class TextEditorActivity : AppActivity() {
@@ -41,33 +42,51 @@ class TextEditorActivity : AppActivity() {
         enableEdgeToEdge()
         val path = intent.extraPath ?: run { finish(); return }
         val isBlankFile = intent.getBooleanExtra(EXTRA_BLANK_FILE, false)
+        val openName = intent.getStringExtra(EXTRA_OPEN_NAME)
+        val initialSearchQuery = intent.getStringExtra(EXTRA_INITIAL_SEARCH_QUERY)
         setContent {
             AppTheme {
-                val viewModel: TextEditorViewModel = viewModel()
+                val viewModel: SoraEditorViewModel =
+                    viewModel(factory = SoraEditorViewModel.Factory)
                 if (isBlankFile) {
                     LaunchedEffect(path) { viewModel.initializeNewFile(path) }
-                    TextEditorScreen(
-                        path = null,
-                        newFileDirectory = path,
-                        onNavigateUp = { finish() }
-                    )
                 } else {
-                    LaunchedEffect(path) { viewModel.initialize(path) }
-                    TextEditorScreen(path = path, onNavigateUp = { finish() })
+                    LaunchedEffect(path) {
+                        viewModel.openDocument(path, openName ?: path.fileName.toString())
+                    }
                 }
+                TextEditorScreen(
+                    path = if (isBlankFile) null else path,
+                    onNavigateUp = { finish() },
+                    viewModel = viewModel,
+                    initialSearchQuery = initialSearchQuery,
+                )
             }
         }
     }
 
     companion object {
-        private const val EXTRA_BLANK_FILE =
-            "me.zhanghai.android.files.extra.BLANK_FILE"
+        private const val EXTRA_BLANK_FILE = "me.zhanghai.android.files.extra.BLANK_FILE"
+        private const val EXTRA_OPEN_NAME = "me.zhanghai.android.files.extra.OPEN_NAME"
+        private const val EXTRA_INITIAL_SEARCH_QUERY =
+            "me.zhanghai.android.files.extra.INITIAL_SEARCH_QUERY"
 
-        fun createBlankFileIntent(directory: Path): Intent =
-            Intent(application, TextEditorActivity::class.java)
-                .apply {
+        fun createIntent(
+            context: Context,
+            directory: Path? = null,
+            openPath: Path? = null,
+            openName: String? = null,
+            initialSearchQuery: String? = null,
+        ): Intent =
+            Intent(context, TextEditorActivity::class.java).apply {
+                if (openPath != null) {
+                    extraPath = openPath
+                    openName?.let { putExtra(EXTRA_OPEN_NAME, it) }
+                    initialSearchQuery?.let { putExtra(EXTRA_INITIAL_SEARCH_QUERY, it) }
+                } else if (directory != null) {
                     extraPath = directory
                     putExtra(EXTRA_BLANK_FILE, true)
                 }
+            }
     }
 }

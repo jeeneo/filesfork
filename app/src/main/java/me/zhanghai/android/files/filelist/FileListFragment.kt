@@ -1610,7 +1610,7 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
     }
 
     private fun showCreateBlankFile() {
-        val intent = TextEditorActivity.createBlankFileIntent(viewModel.currentPath)
+        val intent = TextEditorActivity.createIntent(requireContext(), directory = viewModel.currentPath)
         startActivitySafe(intent)
     }
 
