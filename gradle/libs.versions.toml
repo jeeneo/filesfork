@@ -1,6 +1,6 @@
 [versions]
 #noinspection AndroidGradlePluginVersion - sora
-agp = "9.2.1"
+agp = "9.4.1"
 datastorePreferences = "1.2.1"
 kotlin = "2.4.10"
 coreLibraryDesugaring = "2.1.5"
