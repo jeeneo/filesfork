@@ -167,11 +167,13 @@ internal class LinuxPath : ByteStringListPath<LinuxPath>, RootablePath {
             if (wasRequestInstallPackagesAllowed) {
                 return true
             }
+            // The app op can only be looked up by permission since M.
+            val op = AppOpsManagerCompat.OPSTR_REQUEST_INSTALL_PACKAGES ?: return false
             // We'll never have the signature|appop permission itself, so we only need to check the
             // app op against MODE_ALLOWED.
             return (
                 appOpsManager.checkOpRawNoThrowCompat(
-                    AppOpsManagerCompat.OPSTR_REQUEST_INSTALL_PACKAGES,
+                    op,
                     Process.myUid(),
                     application.opPackageNameCompat,
                     null

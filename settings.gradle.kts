@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MaterialFiles"
 include(":app")
+include(":text-editor")

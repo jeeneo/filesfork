@@ -7,56 +7,50 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.github.rosemoe.sora.langs.textmate.registry.FileProviderRegistry
-import io.github.rosemoe.sora.langs.textmate.registry.GrammarRegistry
-import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver
 import java8.nio.file.Path
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import me.zhanghai.android.files.app.AppActivity
+import me.zhanghai.android.files.filelist.FileListActivity
 import me.zhanghai.android.files.theme.AppTheme
 import me.zhanghai.android.files.util.extraPath
-
-object TextEditorInitializer {
-    @Volatile
-    private var done = false
-
-    suspend fun initThemeAndPrefs(context: Context) =
-        withContext(Dispatchers.IO) {
-            if (done) return@withContext
-            FileProviderRegistry.getInstance().addFileProvider(AssetsFileResolver(context.assets))
-            ThemeRegistry.initialize(context)
-            done = true
-        }
-
-    suspend fun initGrammars(context: Context) =
-        withContext(Dispatchers.IO) {
-            GrammarRegistry.getInstance().loadGrammars("textmate/languages/languages.json")
-            LanguageRegistry.initialize(context)
-        }
-}
+import me.zhanghai.android.files.viewer.TextEditorHostBridge
+import texteditor.EditorPreloader
+import texteditor.SoraEditorViewModel
+import texteditor.TextEditorScreen
 
 class TextEditorActivity : AppActivity() {
+    private val createFileLauncher =
+        registerForActivityResult(FileListActivity.CreateFileContract()) { path ->
+            TextEditorHostBridge.onCreateFileResult(path)
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        TextEditorHostBridge.setCreateFileLauncher(createFileLauncher)
         enableEdgeToEdge()
-        val path = intent.extraPath ?: run { finish(); return }
+        val path = intent.extraPath ?: run {
+            finish()
+            return
+        }
         val isBlankFile = intent.getBooleanExtra(EXTRA_BLANK_FILE, false)
         val openName = intent.getStringExtra(EXTRA_OPEN_NAME)
         val initialSearchQuery = intent.getStringExtra(EXTRA_INITIAL_SEARCH_QUERY)
+        EditorPreloader.warm(applicationContext)
         setContent {
             AppTheme {
-                val viewModel: SoraEditorViewModel =
-                    viewModel(factory = SoraEditorViewModel.Factory)
-                if (isBlankFile) {
-                    LaunchedEffect(path) { viewModel.initializeNewFile(path) }
-                } else {
-                    LaunchedEffect(path) {
-                        viewModel.openDocument(path, openName ?: path.fileName.toString())
+                val viewModel: SoraEditorViewModel = viewModel(
+                    factory = SoraEditorViewModel.factory(TextEditorHostBridge),
+                )
+                LaunchedEffect(path, isBlankFile) {
+                    if (isBlankFile) {
+                        viewModel.openNew(path)
+                    } else {
+                        viewModel.open(
+                            path,
+                            openName ?: path.fileName?.toString() ?: path.toString(),
+                        )
                     }
                 }
                 TextEditorScreen(
-                    path = if (isBlankFile) null else path,
                     onNavigateUp = { finish() },
                     viewModel = viewModel,
                     initialSearchQuery = initialSearchQuery,

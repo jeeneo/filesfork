@@ -14,6 +14,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RotateDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -82,9 +83,13 @@ class ThemedSpeedDialView : SpeedDialView {
             mainFabOpenedIconColor = mainFabClosedIconColor
         }
         // Always use our own animation to fix the library issue that ripple is rotated as well.
-        val mainFabDrawable = RotateDrawable().apply {
-            drawable = mainFab.drawable
-            toDegrees = mainFabAnimationRotateAngle
+        val mainFabDrawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            RotateDrawable().apply {
+                drawable = mainFab.drawable
+                toDegrees = mainFabAnimationRotateAngle
+            }
+        } else {
+            mainFab.drawable
         }
         mainFabAnimationRotateAngle = 0f
         setMainFabClosedDrawable(mainFabDrawable)

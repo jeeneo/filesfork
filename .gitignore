@@ -8,3 +8,5 @@
 /signing.properties
 .DS_Store
 *.iml
+gradle/gradle-daemon-jvm.properties
+text-editor

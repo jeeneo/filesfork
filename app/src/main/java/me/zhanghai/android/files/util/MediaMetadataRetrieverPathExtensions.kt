@@ -7,6 +7,8 @@ package me.zhanghai.android.files.util
 
 import android.media.MediaDataSource
 import android.media.MediaMetadataRetriever
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.io.IOException
 import java.nio.ByteBuffer
 import java8.nio.channels.SeekableByteChannel
@@ -18,7 +20,9 @@ import me.zhanghai.android.files.provider.ftp.isFtpPath
 import me.zhanghai.android.files.provider.linux.isLinuxPath
 
 val Path.isMediaMetadataRetrieverCompatible: Boolean
-    get() = !isFtpPath
+    get() =
+        !isFtpPath && (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M || isLinuxPath ||
+                isDocumentPath)
 
 fun MediaMetadataRetriever.setDataSource(path: Path) {
     when {
@@ -26,7 +30,9 @@ fun MediaMetadataRetriever.setDataSource(path: Path) {
         path.isDocumentPath ->
             DocumentResolver.openParcelFileDescriptor(path as DocumentResolver.Path, "r")
                 .use { pfd -> setDataSource(pfd.fileDescriptor) }
-        else -> {
+        // MediaDataSource is only available since M, and other providers have no file descriptor
+        // to fall back to.
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
             val channel = try {
                 path.newByteChannel()
             } catch (e: IOException) {
@@ -34,9 +40,11 @@ fun MediaMetadataRetriever.setDataSource(path: Path) {
             }
             setDataSource(PathMediaDataSource(channel))
         }
+        else -> throw IllegalArgumentException("MediaDataSource requires API 23: $path")
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.M)
 private class PathMediaDataSource(private val channel: SeekableByteChannel) : MediaDataSource() {
     @Throws(IOException::class)
     override fun readAt(position: Long, buffer: ByteArray, offset: Int, size: Int): Int {

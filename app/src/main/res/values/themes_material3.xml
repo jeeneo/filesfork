@@ -9,7 +9,6 @@
 
     <style name="Platform.V23.Theme.MaterialFiles.Material3" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
         <item name="colorPrimaryDark">@color/system_window_scrim_material3</item>
-        <item name="android:windowLightStatusBar">?isLightTheme</item>
     </style>
     <style name="Platform.Theme.MaterialFiles.Material3" parent="Platform.V23.Theme.MaterialFiles.Material3" />
     <style name="Base.Theme.MaterialFiles.Material3" parent="Platform.Theme.MaterialFiles.Material3">

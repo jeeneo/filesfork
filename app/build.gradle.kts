@@ -25,11 +25,11 @@ android {
     ndkVersion = "29.0.14206865"
     defaultConfig {
         applicationId = "me.zhanghai.android.files"
-        minSdk = 23
+        minSdk = 21
         //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 40
-        versionName = "1.7.5+1"
+        versionName = "1.7.5+2"
         resValue("string", "app_version", "$versionName (${versionCode})")
         buildConfigField(
             "String", "FILE_PROVIDIER_AUTHORITY", "APPLICATION_ID + \".file_provider\""
@@ -123,6 +123,8 @@ dependencies {
 }
 
 dependencies {
+    implementation(project(":text-editor"))
+
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(libs.kotlin.stdlib.jdk8)
@@ -199,8 +201,6 @@ dependencies {
     implementation(libs.ftpserver.core)
     implementation(libs.mina.core)
     implementation(libs.slf4j.android)
-    implementation(project(":sora-editor:editor"))
-    implementation(project(":sora-editor:language-textmate"))
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)

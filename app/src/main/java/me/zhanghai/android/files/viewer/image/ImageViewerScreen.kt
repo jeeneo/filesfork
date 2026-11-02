@@ -25,7 +25,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CircularWavyProgressIndicator
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -314,7 +314,7 @@ private fun ImagePage(
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
-            CircularWavyProgressIndicator(color = Color.White)
+            CircularProgressIndicator(color = Color.White)
         }
     }
 }

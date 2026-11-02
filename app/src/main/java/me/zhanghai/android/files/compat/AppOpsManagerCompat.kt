@@ -5,12 +5,21 @@
 
 package me.zhanghai.android.files.compat
 
+import android.Manifest
 import android.app.AppOpsManager
 import android.os.Build
 
 object AppOpsManagerCompat {
-    val OPSTR_REQUEST_INSTALL_PACKAGES =
-        AppOpsManager.permissionToOp(android.Manifest.permission.REQUEST_INSTALL_PACKAGES)!!
+    /**
+     * The app op backing [Manifest.permission.REQUEST_INSTALL_PACKAGES], or `null` before M where
+     * [AppOpsManager.permissionToOp] is unavailable. The permission itself only exists since O.
+     */
+    val OPSTR_REQUEST_INSTALL_PACKAGES: String? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            AppOpsManager.permissionToOp(Manifest.permission.REQUEST_INSTALL_PACKAGES)!!
+        } else {
+            null
+        }
 }
 
 fun AppOpsManager.checkOpRawNoThrowCompat(
