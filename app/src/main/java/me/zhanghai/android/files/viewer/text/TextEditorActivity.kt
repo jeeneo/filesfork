@@ -13,7 +13,6 @@ import me.zhanghai.android.files.filelist.FileListActivity
 import me.zhanghai.android.files.theme.AppTheme
 import me.zhanghai.android.files.util.extraPath
 import me.zhanghai.android.files.viewer.TextEditorHostBridge
-import texteditor.EditorPreloader
 import texteditor.SoraEditorViewModel
 import texteditor.TextEditorScreen
 
@@ -34,7 +33,6 @@ class TextEditorActivity : AppActivity() {
         val isBlankFile = intent.getBooleanExtra(EXTRA_BLANK_FILE, false)
         val openName = intent.getStringExtra(EXTRA_OPEN_NAME)
         val initialSearchQuery = intent.getStringExtra(EXTRA_INITIAL_SEARCH_QUERY)
-        EditorPreloader.warm(applicationContext)
         setContent {
             AppTheme {
                 val viewModel: SoraEditorViewModel = viewModel(
