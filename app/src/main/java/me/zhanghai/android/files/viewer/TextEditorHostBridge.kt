@@ -8,42 +8,37 @@ import androidx.activity.result.ActivityResultLauncher
 import java.io.InputStream
 import java8.nio.file.Files
 import java8.nio.file.Path
+import java8.nio.file.Paths
 import kotlin.coroutines.resume
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import me.zhanghai.android.files.file.MimeType
-import me.zhanghai.android.files.filelist.FileListActivity
 import texteditor.TextEditorHost
 
 object TextEditorHostBridge : TextEditorHost {
     private var createFileLauncher:
         ActivityResultLauncher<Triple<MimeType, String?, Path?>>? = null
-    private var pendingSaveAs: CancellableContinuation<Path?>? = null
+    private var pendingSaveAs: CancellableContinuation<String?>? = null
 
-    override fun save(path: Path, text: String) {
-        Files.newBufferedWriter(path, Charsets.UTF_8).use { it.write(text) }
+    override fun save(path: String, text: String) {
+        Files.newBufferedWriter(Paths.get(path), Charsets.UTF_8).use { it.write(text) }
     }
 
-    override fun openRead(path: Path): InputStream = Files.newInputStream(path)
+    override fun openRead(path: String): InputStream = Files.newInputStream(Paths.get(path))
 
-    /**
-     * Called by the text editor activity so that a new document is saved through the app's
-     * built-in "Save as" file picker.
-     */
     fun setCreateFileLauncher(
         launcher: ActivityResultLauncher<Triple<MimeType, String?, Path?>>,
     ) {
         createFileLauncher = launcher
     }
 
-    /** Delivers the picked destination, or `null` when the user cancelled the picker. */
     fun onCreateFileResult(path: Path?) {
         val continuation = pendingSaveAs ?: return
         pendingSaveAs = null
-        if (continuation.isActive) continuation.resume(path)
+        if (continuation.isActive) continuation.resume(path?.toString())
     }
 
-    override suspend fun saveAs(suggestedName: String, initialDirectory: Path?): Path? =
+    override suspend fun saveAs(suggestedName: String, initialDirectory: String?): String? =
         suspendCancellableCoroutine { continuation ->
             val launcher = createFileLauncher
             if (launcher == null) {
@@ -54,6 +49,6 @@ object TextEditorHostBridge : TextEditorHost {
             continuation.invokeOnCancellation {
                 if (pendingSaveAs === continuation) pendingSaveAs = null
             }
-            launcher.launch(Triple(MimeType.ANY, suggestedName, initialDirectory))
+            launcher.launch(Triple(MimeType.ANY, suggestedName, initialDirectory?.let { Paths.get(it) }))
         }
 }

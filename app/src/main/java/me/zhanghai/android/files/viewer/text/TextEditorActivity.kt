@@ -40,10 +40,10 @@ class TextEditorActivity : AppActivity() {
                 )
                 LaunchedEffect(path, isBlankFile) {
                     if (isBlankFile) {
-                        viewModel.openNew(path)
+                        viewModel.openNew(path.toString())
                     } else {
                         viewModel.open(
-                            path,
+                            path.toString(),
                             openName ?: path.fileName?.toString() ?: path.toString(),
                         )
                     }
