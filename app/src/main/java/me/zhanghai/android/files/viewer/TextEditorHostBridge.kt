@@ -22,8 +22,8 @@ object TextEditorHostBridge : TextEditorHost {
         ActivityResultLauncher<Triple<MimeType, String?, Path?>>? = null
     private var pendingSaveAs: CancellableContinuation<String?>? = null
 
-    override fun save(path: String, text: String) {
-        Files.newBufferedWriter(path.toEditorPath(), Charsets.UTF_8).use { it.write(text) }
+    override fun save(path: String, bytes: ByteArray) {
+        Files.newOutputStream(path.toEditorPath()).use { it.write(bytes) }
     }
 
     override fun openRead(path: String): InputStream = Files.newInputStream(path.toEditorPath())
