@@ -4,8 +4,10 @@
 
 package me.zhanghai.android.files.viewer
 
+import android.content.ContentResolver
 import androidx.activity.result.ActivityResultLauncher
 import java.io.InputStream
+import java.net.URI
 import java8.nio.file.Files
 import java8.nio.file.Path
 import java8.nio.file.Paths
@@ -21,10 +23,10 @@ object TextEditorHostBridge : TextEditorHost {
     private var pendingSaveAs: CancellableContinuation<String?>? = null
 
     override fun save(path: String, text: String) {
-        Files.newBufferedWriter(Paths.get(path), Charsets.UTF_8).use { it.write(text) }
+        Files.newBufferedWriter(path.toEditorPath(), Charsets.UTF_8).use { it.write(text) }
     }
 
-    override fun openRead(path: String): InputStream = Files.newInputStream(Paths.get(path))
+    override fun openRead(path: String): InputStream = Files.newInputStream(path.toEditorPath())
 
     fun setCreateFileLauncher(
         launcher: ActivityResultLauncher<Triple<MimeType, String?, Path?>>,
@@ -35,7 +37,7 @@ object TextEditorHostBridge : TextEditorHost {
     fun onCreateFileResult(path: Path?) {
         val continuation = pendingSaveAs ?: return
         pendingSaveAs = null
-        if (continuation.isActive) continuation.resume(path?.toString())
+        if (continuation.isActive) continuation.resume(path?.toEditorPathString())
     }
 
     override suspend fun saveAs(suggestedName: String, initialDirectory: String?): String? =
@@ -49,6 +51,17 @@ object TextEditorHostBridge : TextEditorHost {
             continuation.invokeOnCancellation {
                 if (pendingSaveAs === continuation) pendingSaveAs = null
             }
-            launcher.launch(Triple(MimeType.ANY, suggestedName, initialDirectory?.let { Paths.get(it) }))
+            launcher.launch(Triple(MimeType.ANY, suggestedName, initialDirectory?.toEditorPath()))
         }
 }
+
+internal fun Path.toEditorPathString(): String {
+    val uri = toUri()
+    return if (uri.scheme == ContentResolver.SCHEME_FILE) toString() else uri.toString()
+}
+
+internal fun String.toEditorPath(): Path =
+    runCatching { URI.create(this) }.getOrNull()
+        ?.takeIf { it.scheme != null }
+        ?.let { Paths.get(it) }
+        ?: Paths.get(this)

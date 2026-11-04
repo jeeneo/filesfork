@@ -15,6 +15,7 @@ import me.zhanghai.android.files.filelist.FileListActivity
 import me.zhanghai.android.files.theme.AppTheme
 import me.zhanghai.android.files.util.extraPath
 import me.zhanghai.android.files.viewer.TextEditorHostBridge
+import me.zhanghai.android.files.viewer.toEditorPathString
 import texteditor.SoraEditorViewModel
 import texteditor.TextEditorScreen
 
@@ -61,14 +62,15 @@ class TextEditorActivity : AppActivity() {
 
     private fun handleIntent(intent: Intent): Boolean {
         val path = intent.extraPath ?: return false
+        val editorPath = path.toEditorPathString()
         initialSearchQuery = intent.getStringExtra(EXTRA_INITIAL_SEARCH_QUERY)
         if (intent.getBooleanExtra(EXTRA_BLANK_FILE, false)) {
-            viewModel.openNew(path.toString())
+            viewModel.openNew(editorPath)
         } else {
             viewModel.open(
-                path.toString(),
+                editorPath,
                 intent.getStringExtra(EXTRA_OPEN_NAME) ?: path.fileName?.toString()
-                ?: path.toString(),
+                ?: editorPath,
             )
         }
         return true
