@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import java8.nio.file.Path
 import me.zhanghai.android.files.app.AppActivity
 import me.zhanghai.android.files.filelist.FileListActivity
@@ -17,6 +19,11 @@ import texteditor.SoraEditorViewModel
 import texteditor.TextEditorScreen
 
 class TextEditorActivity : AppActivity() {
+    private val viewModel: SoraEditorViewModel by viewModels {
+        SoraEditorViewModel.factory(TextEditorHostBridge)
+    }
+    private var initialSearchQuery by mutableStateOf<String?>(null)
+
     private val createFileLauncher =
         registerForActivityResult(FileListActivity.CreateFileContract()) { path ->
             TextEditorHostBridge.onCreateFileResult(path)
@@ -26,35 +33,45 @@ class TextEditorActivity : AppActivity() {
         super.onCreate(savedInstanceState)
         TextEditorHostBridge.setCreateFileLauncher(createFileLauncher)
         enableEdgeToEdge()
-        val path = intent.extraPath ?: run {
-            finish()
-            return
+        if (savedInstanceState == null || viewModel.openDocuments.isEmpty()) {
+            if (!handleIntent(intent)) {
+                finish()
+                return
+            }
+        } else {
+            initialSearchQuery = intent.getStringExtra(EXTRA_INITIAL_SEARCH_QUERY)
         }
-        val isBlankFile = intent.getBooleanExtra(EXTRA_BLANK_FILE, false)
-        val openName = intent.getStringExtra(EXTRA_OPEN_NAME)
-        val initialSearchQuery = intent.getStringExtra(EXTRA_INITIAL_SEARCH_QUERY)
         setContent {
             AppTheme {
-                val viewModel: SoraEditorViewModel = viewModel(
-                    factory = SoraEditorViewModel.factory(TextEditorHostBridge),
-                )
-                LaunchedEffect(path, isBlankFile) {
-                    if (isBlankFile) {
-                        viewModel.openNew(path.toString())
-                    } else {
-                        viewModel.open(
-                            path.toString(),
-                            openName ?: path.fileName?.toString() ?: path.toString(),
-                        )
-                    }
-                }
                 TextEditorScreen(
                     onNavigateUp = { finish() },
+                    onMinimize = { finish() },
                     viewModel = viewModel,
                     initialSearchQuery = initialSearchQuery,
                 )
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent): Boolean {
+        val path = intent.extraPath ?: return false
+        initialSearchQuery = intent.getStringExtra(EXTRA_INITIAL_SEARCH_QUERY)
+        if (intent.getBooleanExtra(EXTRA_BLANK_FILE, false)) {
+            viewModel.openNew(path.toString())
+        } else {
+            viewModel.open(
+                path.toString(),
+                intent.getStringExtra(EXTRA_OPEN_NAME) ?: path.fileName?.toString()
+                ?: path.toString(),
+            )
+        }
+        return true
     }
 
     companion object {
