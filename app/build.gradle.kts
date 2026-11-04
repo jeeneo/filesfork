@@ -124,6 +124,7 @@ dependencies {
 
 dependencies {
     implementation(project(":text-editor"))
+    implementation(project(":ui"))
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     coreLibraryDesugaring(libs.desugar.jdk.libs)

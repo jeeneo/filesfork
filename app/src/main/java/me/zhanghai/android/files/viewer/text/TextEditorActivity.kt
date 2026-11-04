@@ -12,12 +12,12 @@ import androidx.compose.runtime.setValue
 import java8.nio.file.Path
 import me.zhanghai.android.files.app.AppActivity
 import me.zhanghai.android.files.filelist.FileListActivity
-import me.zhanghai.android.files.theme.AppTheme
 import me.zhanghai.android.files.util.extraPath
 import me.zhanghai.android.files.viewer.TextEditorHostBridge
 import me.zhanghai.android.files.viewer.toEditorPathString
 import texteditor.SoraEditorViewModel
 import texteditor.TextEditorScreen
+import ui.theme.AppTheme
 
 class TextEditorActivity : AppActivity() {
     private val viewModel: SoraEditorViewModel by viewModels {
