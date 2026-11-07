@@ -1,6 +1,6 @@
 # Material Files (fork)
 
-An open source Material Design file manager for Android 6.0+ (with QoL improvements)
+An open source Material Design file manager fork for Android 5.0+
 
 ## Preview
 
@@ -13,22 +13,21 @@ An open source Material Design file manager for Android 6.0+ (with QoL improveme
 
 ## Changes
 
-- [Sora Editor](https://github.com/Rosemoe/sora-editor) (from [Citrinae-Lime](https://github.com/Citrinae-Lime/MaterialFiles.Sora-Editor)), with:
-  - Search and replace, themes, fonts etc
+<!-- - Support for Android 5+ -->
+- Enhanced [Sora Editor](https://github.com/Rosemoe/sora-editor)
 - [Telephoto](https://github.com/saket/telephoto) for images (instead of PhotoView)
 - Folder size calculation
 - Audio player
 - Modify archives (rename, delete, paste into, edit, etc)
-- Additional archive formats: zstd, gzip, tar
-- Compression levels
-- Termux in 'Open in Terminal'¹ (root-only paths supported)
+- Additional archive formats (zstd, gzip, tar) and compression levels
+- Termux for 'Open in Terminal'¹ (root paths supported)
 - Migration from Groovy to Kotlin DSL
 
-Credits to [Hai Zhang](https://github.com/zhanghai) for Material Files, [Citrinae-Lime](https://github.com/Citrinae-Lime) for the Sora Editor modifications
+For the code, use the [`merges`](https://github.com/jeeneo/filesfork/tree/merges) branch.
 
-Notice: upstream Material Files, after a hiatus, has started to make a new release again. My changes have been squashed in the [`merges`](https://github.com/jeeneo/filesfork/tree/merges) branch with upstream added on top. Due to this, the app identifier has been renamed from `me.zhanghai.android.filesfork` back to `me.zhanghai.android.files` to keep merges simpler. In due time, maybe these changes will get merged upstream but can't say for certain.
+Releases will be reflected as changes diverge, e.g., `v1.7.5+1` means it is the `v1.7.5` upstream release with my changes added. The last digit will reflect my versions (bug fixes, feature changes, etc) so that the real version does not change and will reset after any upstream version change.
 
-My releases will be reflected as changes diverge, previously `v1.7.4+6` reflected 6 changes after the upstream version, following versions will apply the same logic, e.g., `v1.7.5+1` means it is the `v1.7.5` upstream release with my changes added. The last digit will reflect my changes (bug fixes, small features, etc) so that the real version does not change and will reset after any upstream version change.
+Credits to [Hai Zhang](https://github.com/zhanghai) for Material Files, [Rosemoe](https://github.com/Rosemoe/sora-editor) for Sora Editor, and [Citrinae-Lime](https://github.com/Citrinae-Lime) for the base.
 
 ## Additional info
 
@@ -36,8 +35,8 @@ My releases will be reflected as changes diverge, previously `v1.7.4+6` reflecte
 
 ## AI policy
 
-PRs or Issues heavily written by LLMs will be ignored and closed without warning. AI-assisted code is acceptible only if:
-- The submitter understands and can fully can explain what the code does without the help of LLMs, this means do not use LLMs to write the the body of your issue/PR
+PRs or Issues heavily written by LLMs won't be accepted. AI-assisted code is acceptible if:
+- The submitter understands and can fully can explain what the code does without the help of LLMs, don't use LLMs to write the the body of your issue/PR
 - Doesn't add unnecessary maintance burdens or is overly complex, including but not limited to thousands of changes at once or feature-heavy additions, this is just for QoL features, not an entire suite. I want to keep the app small and light
 
 ## License
