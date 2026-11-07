@@ -1,6 +1,6 @@
 # Material Files (fork)
 
-An open source Material Design file manager fork for Android 5.0+
+An open source Material Design file manager fork for Android 5+
 
 ## Preview
 
@@ -13,17 +13,18 @@ An open source Material Design file manager fork for Android 5.0+
 
 ## Changes
 
-<!-- - Support for Android 5+ -->
-- Enhanced [Sora Editor](https://github.com/Rosemoe/sora-editor)
+- [new] Support for Android 5+
+- [new] Enhanced [Sora Editor](https://github.com/Rosemoe/sora-editor)
 - [Telephoto](https://github.com/saket/telephoto) for images (instead of PhotoView)
 - Folder size calculation
+- Dense file layout ([Citrinae-Lime](https://github.com/Citrinae-Lime/MaterialFiles.Sora-Editor))
 - Audio player
 - Modify archives (rename, delete, paste into, edit, etc)
 - Additional archive formats (zstd, gzip, tar) and compression levels
 - Termux for 'Open in Terminal'¹ (root paths supported)
 - Migration from Groovy to Kotlin DSL
 
-For the code, use the [`merges`](https://github.com/jeeneo/filesfork/tree/merges) branch.
+For my code, it's on the [`merges`](https://github.com/jeeneo/filesfork/tree/merges) branch.
 
 Releases will be reflected as changes diverge, e.g., `v1.7.5+1` means it is the `v1.7.5` upstream release with my changes added. The last digit will reflect my versions (bug fixes, feature changes, etc) so that the real version does not change and will reset after any upstream version change.
 
