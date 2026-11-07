@@ -336,7 +336,7 @@
     <string name="file_list_paste_action_extract_here">Extract here</string>
     <string name="file_list_empty">No files</string>
     <string name="file_list_action_create_file">File</string>
-    <string name="file_list_action_create_blank_file">Temp file</string>
+    <string name="file_list_action_create_blank_file">Editor</string>
     <string name="file_list_action_create_directory">Folder</string>
 
     <string name="file_item_description_separator">\u0020\u0020\u0020\u0020</string>
