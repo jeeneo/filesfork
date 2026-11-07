@@ -2,6 +2,7 @@ package me.zhanghai.android.files.viewer.text
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +10,9 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import java8.nio.file.Path
 import me.zhanghai.android.files.app.AppActivity
 import me.zhanghai.android.files.filelist.FileListActivity
@@ -34,6 +38,7 @@ class TextEditorActivity : AppActivity() {
         super.onCreate(savedInstanceState)
         TextEditorHostBridge.setCreateFileLauncher(createFileLauncher)
         enableEdgeToEdge()
+        updateFullscreen(resources.configuration.orientation)
         if (savedInstanceState == null || viewModel.openDocuments.isEmpty()) {
             if (!handleIntent(intent)) {
                 finish()
@@ -58,6 +63,22 @@ class TextEditorActivity : AppActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
         handleIntent(intent)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updateFullscreen(newConfig.orientation)
+    }
+
+    private fun updateFullscreen(orientation: Int) {
+        val controller = WindowCompat.getInsetsController(window, window.decorView)
+        controller.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+        } else {
+            controller.show(WindowInsetsCompat.Type.systemBars())
+        }
     }
 
     private fun handleIntent(intent: Intent): Boolean {
