@@ -1,0 +1,10 @@
+{
+  "displayName": "text.html.php (alias)",
+  "name": "alias-text-html-php",
+  "patterns": [
+    {
+      "include": "source.php"
+    }
+  ],
+  "scopeName": "text.html.php"
+}

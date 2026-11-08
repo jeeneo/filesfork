@@ -1,0 +1,10 @@
+{
+  "displayName": "source.postcss (alias)",
+  "name": "alias-source-postcss",
+  "patterns": [
+    {
+      "include": "source.css.postcss"
+    }
+  ],
+  "scopeName": "source.postcss"
+}

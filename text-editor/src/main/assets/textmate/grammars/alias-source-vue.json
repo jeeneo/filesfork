@@ -1,0 +1,10 @@
+{
+  "displayName": "source.vue (alias)",
+  "name": "alias-source-vue",
+  "patterns": [
+    {
+      "include": "text.html.vue"
+    }
+  ],
+  "scopeName": "source.vue"
+}

@@ -1,0 +1,10 @@
+{
+  "displayName": "source.c++ (alias)",
+  "name": "alias-source-cpp",
+  "patterns": [
+    {
+      "include": "source.cpp"
+    }
+  ],
+  "scopeName": "source.c++"
+}

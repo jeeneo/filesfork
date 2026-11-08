@@ -1,0 +1,10 @@
+{
+  "displayName": "text.html.javadoc (alias)",
+  "name": "alias-text-html-javadoc",
+  "patterns": [
+    {
+      "include": "text.html.basic"
+    }
+  ],
+  "scopeName": "text.html.javadoc"
+}

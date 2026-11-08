@@ -1,0 +1,10 @@
+{
+  "displayName": "source.x86_64 (alias)",
+  "name": "alias-source-x86-64",
+  "patterns": [
+    {
+      "include": "source.asm.x86_64"
+    }
+  ],
+  "scopeName": "source.x86_64"
+}

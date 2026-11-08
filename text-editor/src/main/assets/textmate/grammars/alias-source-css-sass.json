@@ -1,0 +1,10 @@
+{
+  "displayName": "source.css.sass (alias)",
+  "name": "alias-source-css-sass",
+  "patterns": [
+    {
+      "include": "source.sass"
+    }
+  ],
+  "scopeName": "source.css.sass"
+}

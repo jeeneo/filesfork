@@ -1,0 +1,10 @@
+{
+  "displayName": "source.lisp (alias)",
+  "name": "alias-source-lisp",
+  "patterns": [
+    {
+      "include": "source.emacs.lisp"
+    }
+  ],
+  "scopeName": "source.lisp"
+}

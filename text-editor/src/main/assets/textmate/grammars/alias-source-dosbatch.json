@@ -1,0 +1,10 @@
+{
+  "displayName": "source.dosbatch (alias)",
+  "name": "alias-source-dosbatch",
+  "patterns": [
+    {
+      "include": "source.batchfile"
+    }
+  ],
+  "scopeName": "source.dosbatch"
+}

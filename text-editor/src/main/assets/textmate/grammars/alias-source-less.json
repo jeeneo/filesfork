@@ -1,0 +1,10 @@
+{
+  "displayName": "source.less (alias)",
+  "name": "alias-source-less",
+  "patterns": [
+    {
+      "include": "source.css.less"
+    }
+  ],
+  "scopeName": "source.less"
+}

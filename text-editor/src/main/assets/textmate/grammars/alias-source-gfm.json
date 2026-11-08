@@ -1,0 +1,10 @@
+{
+  "displayName": "source.gfm (alias)",
+  "name": "alias-source-gfm",
+  "patterns": [
+    {
+      "include": "text.html.markdown"
+    }
+  ],
+  "scopeName": "source.gfm"
+}

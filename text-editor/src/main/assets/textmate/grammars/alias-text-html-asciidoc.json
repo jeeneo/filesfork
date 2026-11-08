@@ -1,0 +1,10 @@
+{
+  "displayName": "text.html.asciidoc (alias)",
+  "name": "alias-text-html-asciidoc",
+  "patterns": [
+    {
+      "include": "text.asciidoc"
+    }
+  ],
+  "scopeName": "text.html.asciidoc"
+}

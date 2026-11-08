@@ -1,0 +1,10 @@
+{
+  "displayName": "source.twig (alias)",
+  "name": "alias-source-twig",
+  "patterns": [
+    {
+      "include": "text.html.twig"
+    }
+  ],
+  "scopeName": "source.twig"
+}

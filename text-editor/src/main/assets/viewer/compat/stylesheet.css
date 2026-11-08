@@ -1,0 +1,28 @@
+* { box-sizing: border-box; }
+html, body { min-height: 100%; margin: 0; }
+body {
+  background: #1e1e1e; color: #d4d4d4;
+  font: 15px/1.5 "Segoe UI", Tahoma, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+main { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+#preview { padding: 16px 0 64px; }
+#preview > :first-child { margin-top: 0; }
+#preview h1, #preview h2 { border-bottom: 1px solid #333333; padding-bottom: 4px; }
+#preview code { font-family: monospace; font-size: 13px; background: #252526; padding: 1px 4px; }
+#preview pre { background: #252526; border: 1px solid #333333; padding: 8px 10px; overflow-x: auto; }
+#preview pre code { background: none; padding: 0; }
+#preview blockquote { margin: 0; padding-left: 10px; border-left: 3px solid #333333; color: #808080; }
+#preview a { color: #3794ff; }
+#preview img { max-width: 100%; }
+#preview hr { border: none; border-top: 1px solid #333333; }
+#preview table { margin: 0 0 1rem; }
+#preview th, #preview td { border-color: #333333; }
+#preview thead th { background: #252526; }
+#preview details { margin: 0 0 1rem; }
+#preview summary { cursor: pointer; }
+#preview .task-list-item input { vertical-align: middle; }
+#preview .footnotes { border-top: 1px solid #333333; margin-top: 2rem; }
+#preview .footnotes hr { display: none; }

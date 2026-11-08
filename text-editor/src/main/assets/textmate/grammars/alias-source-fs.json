@@ -1,0 +1,10 @@
+{
+  "displayName": "source.fs (alias)",
+  "name": "alias-source-fs",
+  "patterns": [
+    {
+      "include": "source.fsharp"
+    }
+  ],
+  "scopeName": "source.fs"
+}

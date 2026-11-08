@@ -1,0 +1,10 @@
+{
+  "displayName": "source.pug (alias)",
+  "name": "alias-source-pug",
+  "patterns": [
+    {
+      "include": "text.pug"
+    }
+  ],
+  "scopeName": "source.pug"
+}

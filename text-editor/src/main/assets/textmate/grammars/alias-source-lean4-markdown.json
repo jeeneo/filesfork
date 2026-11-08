@@ -1,0 +1,10 @@
+{
+  "displayName": "source.lean4.markdown (alias)",
+  "name": "alias-source-lean4-markdown",
+  "patterns": [
+    {
+      "include": "text.html.markdown"
+    }
+  ],
+  "scopeName": "source.lean4.markdown"
+}

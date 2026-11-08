@@ -1,0 +1,10 @@
+{
+  "displayName": "source.raku (alias)",
+  "name": "alias-source-raku",
+  "patterns": [
+    {
+      "include": "source.perl.6"
+    }
+  ],
+  "scopeName": "source.raku"
+}

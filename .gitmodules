@@ -2,10 +2,3 @@
 	path = sora-editor
 	url = https://github.com/jeeneo/sora-editor.git
 	branch = mfiles-fork-edits
-[submodule "text-editor"]
-	path = text-editor
-	url = https://github.com/jeeneo/text-editor-ui.git
-	branch = master
-[submodule "ui"]
-	path = ui
-	url = https://github.com/jeeneo/base-fileui.git
