@@ -720,6 +720,7 @@
     <string name="navigation_ftp_server" translatable="false">@string/ftp_server_title</string>
     <string name="navigation_settings" translatable="false">@string/settings_title</string>
     <string name="navigation_about" translatable="false">@string/about_title</string>
+    <string name="navigation_sync" translatable="false">@string/sync_title</string>
 
     <string name="archive_viewer_title">Archive viewer</string>
     <string name="image_viewer_title">Image viewer</string>
@@ -739,6 +740,88 @@
     <string name="text_editor_reload_message">Are you sure you want to reload? Unsaved changes to this document will be lost.</string>
     <string name="text_editor_encoding">Encoding</string>
     <string name="text_editor_close_message">Are you sure you want to discard unsaved changes to this document?</string>
+
+    <string name="sync_title">Sync</string>
+    <string name="sync_groups_empty">No sync groups yet. Add a group to pair a source with a target folder.</string>
+    <string name="sync_group_add">Add sync group</string>
+    <string name="sync_group_untitled">New sync group</string>
+    <string name="sync_group_display_name">Group name</string>
+    <string name="sync_group_display_name_hint">Name</string>
+    <string name="sync_group_display_name_description">Leave empty to use the target folder name.</string>
+    <string name="sync_group_no_source">No sources</string>
+    <string name="sync_group_summary">%1$s - %2$s</string>
+    <string name="sync_group_delete">Remove sync group</string>
+    <string name="sync_group_delete_message">Remove this sync group? No data will be changed.</string>
+    <string name="sync_source_title">Source</string>
+    <string name="sync_source_add">Add source</string>
+    <string name="sync_source_add_file">Add file</string>
+    <string name="sync_source_add_folder">Add folder</string>
+    <string name="sync_source_empty">No files or folders added</string>
+    <string name="sync_remove_source">Remove</string>
+    <string name="sync_target_title">Target</string>
+    <string name="sync_target_choose_folder">Choose folder</string>
+    <string name="sync_target_no_folder">No folder selected</string>
+    <string name="sync_direction_title">Direction</string>
+    <string name="sync_direction_push">Push</string>
+    <string name="sync_direction_pull">Pull</string>
+    <string name="sync_direction_push_desc">New and changed items are copied from the source to the target.</string>
+    <string name="sync_direction_pull_desc">New and changed items are copied from the target to the source.</string>
+    <string name="sync_direction_two_way">Two-way</string>
+    <string name="sync_direction_two_way_desc">Both sides are compared with each other with conflicts handled manually.</string>
+    <string name="sync_conflict_title">If a file exists on both sides</string>
+    <string name="sync_conflict_overwrite_target">Overwrite target</string>
+    <string name="sync_conflict_overwrite_target_desc">Source versions replace the ones in the target.</string>
+    <string name="sync_conflict_overwrite_source">Overwrite source</string>
+    <string name="sync_conflict_overwrite_source_desc">Target versions replace the ones in the source.</string>
+    <string name="sync_conflict_keep_newer">Keep newer</string>
+    <string name="sync_conflict_keep_newer_desc">The most recently modified version is kept.</string>
+    <string name="sync_conflict_skip">Skip</string>
+    <string name="sync_conflict_skip_desc">Files that already exist are left untouched.</string>
+    <string name="sync_missing_title">Resolve conflict</string>
+    <string name="sync_missing_message">These entries exist on only one side and nothing says when it was added or deleted</string>
+    <string name="sync_missing_on_target">%1$d missing on target</string>
+    <string name="sync_missing_on_source">%1$d missing on source</string>
+    <string name="sync_missing_copy_to_target">Push to target</string>
+    <string name="sync_missing_copy_to_source">Pull from source</string>
+    <string name="sync_missing_delete_from_source">Delete from source</string>
+    <string name="sync_missing_delete_from_target">Delete from target</string>
+    <string name="sync_missing_skip">Skip</string>
+    <string name="sync_options_title">Options</string>
+    <string name="sync_option_delete">Delete extra files</string>
+    <string name="sync_option_delete_desc">Delete files from the destination that no longer exist at the origin.</string>
+    <string name="sync_option_timestamps">Preserve timestamps</string>
+    <string name="sync_option_timestamps_desc">Keep original modification times on copied files.</string>
+    <string name="sync_action_preview">Preview</string>
+    <string name="sync_action_sync">Sync now</string>
+    <string name="sync_action_cancel">Cancel</string>
+    <string name="sync_action_close">Close</string>
+    <string name="sync_status_needs_resolution">Waiting for conflict resolution</string>
+    <string name="sync_status_preview">Preview: %1$s</string>
+    <string name="sync_status_done">Done: %1$s</string>
+    <string name="sync_summary_empty">Nothing to do</string>
+    <string name="sync_op_push">Push</string>
+    <string name="sync_op_pull">Pull</string>
+    <string name="sync_op_delete_source">Delete from source</string>
+    <string name="sync_op_delete_target">Delete from target</string>
+    <string name="sync_actions_title">Planned operations</string>
+    <string name="sync_actions_more">and %1$d more…</string>
+    <plurals name="sync_summary_push">
+        <item quantity="one">Push %1$d file</item>
+        <item quantity="other">Push %1$d files</item>
+    </plurals>
+    <plurals name="sync_summary_pull">
+        <item quantity="one">Pull %1$d file</item>
+        <item quantity="other">Pull %1$d files</item>
+    </plurals>
+    <plurals name="sync_summary_delete">
+        <item quantity="one">Delete %1$d item</item>
+        <item quantity="other">Delete %1$d items</item>
+    </plurals>
+    <string name="sync_failed_title">Some operations failed</string>
+    <plurals name="sync_failed_message">
+        <item quantity="one">%1$d operation failed and was skipped.</item>
+        <item quantity="other">%1$d operations failed and were skipped.</item>
+    </plurals>
 
     <string name="ftp_server_title">FTP server</string>
     <string name="ftp_server_state_title">Status</string>
