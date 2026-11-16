@@ -10,6 +10,7 @@ import java8.nio.channels.SeekableByteChannel
 import java8.nio.file.AccessMode
 import java8.nio.file.CopyOption
 import java8.nio.file.DirectoryStream
+import java8.nio.file.FileAlreadyExistsException
 import java8.nio.file.FileStore
 import java8.nio.file.FileSystem
 import java8.nio.file.FileSystemAlreadyExistsException
@@ -31,6 +32,7 @@ import me.zhanghai.android.files.provider.common.Searchable
 import me.zhanghai.android.files.provider.common.WalkFileTreeSearchable
 import me.zhanghai.android.files.provider.common.WatchServicePathObservable
 import me.zhanghai.android.files.provider.common.decodedPathByteString
+import me.zhanghai.android.files.provider.common.exists
 import me.zhanghai.android.files.provider.common.toAccessModes
 import me.zhanghai.android.files.provider.common.toByteString
 import me.zhanghai.android.files.provider.common.toCopyOptions
@@ -41,6 +43,7 @@ import me.zhanghai.android.files.provider.sftp.client.Client
 import me.zhanghai.android.files.provider.sftp.client.ClientException
 import me.zhanghai.android.files.provider.sftp.client.SecurityProviderHelper
 import me.zhanghai.android.files.util.enumSetOf
+import net.schmizz.sshj.sftp.FileMode
 import net.schmizz.sshj.sftp.OpenMode
 import java.io.IOException
 import java.net.URI
@@ -163,6 +166,9 @@ object SftpFileSystemProvider : FileSystemProvider(), PathObservableProvider, Se
         try {
             Client.mkdir(directory, sftpAttributes)
         } catch (e: ClientException) {
+            if (directory.exists(LinkOption.NOFOLLOW_LINKS)) {
+                throw FileAlreadyExistsException(directory.toString())
+            }
             throw e.toFileSystemException(directory.toString())
         }
     }
@@ -248,6 +254,16 @@ object SftpFileSystemProvider : FileSystemProvider(), PathObservableProvider, Se
         val accessModes = modes.toAccessModes()
         if (accessModes.execute) {
             throw UnsupportedOperationException(AccessMode.EXECUTE.toString())
+        }
+        val attributes = try {
+            Client.stat(path)
+        } catch (e: ClientException) {
+            throw e.toFileSystemException(path.toString())
+        }
+        if (attributes.type == FileMode.Type.DIRECTORY ||
+            !accessModes.read && !accessModes.write
+        ) {
+            return
         }
         val flags = enumSetOf<OpenMode>().apply {
             if (accessModes.read) {

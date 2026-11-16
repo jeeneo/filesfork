@@ -40,18 +40,36 @@ internal object ForeignCopyMove {
         }
         when {
             sourceAttributes.isRegularFile -> {
-                if (copyOptions.replaceExisting) {
+                // attempt to preserve SAF URIs instead of delete-then-copy
+                val targetAttributes = if (copyOptions.replaceExisting) {
+                    try {
+                        target.readAttributes(
+                            BasicFileAttributes::class.java, LinkOption.NOFOLLOW_LINKS
+                        )
+                    } catch (e: NoSuchFileException) {
+                        null
+                    }
+                } else {
+                    null
+                }
+                val overwriteInPlace = targetAttributes?.isRegularFile == true
+                if (targetAttributes != null && !overwriteInPlace) {
                     target.deleteIfExists()
                 }
-                val openOptions = if (copyOptions.noFollowLinks) {
+                val inputOptions = if (copyOptions.noFollowLinks) {
                     arrayOf(LinkOption.NOFOLLOW_LINKS)
                 } else {
                     emptyArray()
                 }
-                source.newInputStream(*openOptions).use { inputStream ->
-                    val outputStream = target.newOutputStream(
-                        StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE
-                    )
+                source.newInputStream(*inputOptions).use { inputStream ->
+                    val outputOptions = if (overwriteInPlace) {
+                        arrayOf(
+                            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE
+                        )
+                    } else {
+                        arrayOf(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE)
+                    }
+                    val outputStream = target.newOutputStream(*outputOptions)
                     var successful = false
                     try {
                         inputStream.copyTo(
@@ -63,7 +81,7 @@ internal object ForeignCopyMove {
                         try {
                             outputStream.close()
                         } finally {
-                            if (!successful) {
+                            if (!successful && !overwriteInPlace) {
                                 try {
                                     target.deleteIfExists()
                                 } catch (e: IOException) {
