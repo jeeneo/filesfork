@@ -1,10 +1,1 @@
-{
-  "displayName": "source.scss (alias)",
-  "name": "alias-source-scss",
-  "patterns": [
-    {
-      "include": "source.css.scss"
-    }
-  ],
-  "scopeName": "source.scss"
-}
+{"displayName":"source.scss (alias)","name":"alias-source-scss","patterns":[{"include":"source.css.scss"}],"scopeName":"source.scss"}

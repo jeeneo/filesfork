@@ -1,10 +1,1 @@
-{
-  "displayName": "text.xml.svg (alias)",
-  "name": "alias-text-xml-svg",
-  "patterns": [
-    {
-      "include": "text.xml"
-    }
-  ],
-  "scopeName": "text.xml.svg"
-}
+{"displayName":"text.xml.svg (alias)","name":"alias-text-xml-svg","patterns":[{"include":"text.xml"}],"scopeName":"text.xml.svg"}

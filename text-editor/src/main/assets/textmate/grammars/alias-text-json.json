@@ -1,10 +1,1 @@
-{
-  "displayName": "text.json (alias)",
-  "name": "alias-text-json",
-  "patterns": [
-    {
-      "include": "source.json"
-    }
-  ],
-  "scopeName": "text.json"
-}
+{"displayName":"text.json (alias)","name":"alias-text-json","patterns":[{"include":"source.json"}],"scopeName":"text.json"}

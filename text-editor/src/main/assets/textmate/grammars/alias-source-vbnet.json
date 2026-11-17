@@ -1,10 +1,1 @@
-{
-  "displayName": "source.vbnet (alias)",
-  "name": "alias-source-vbnet",
-  "patterns": [
-    {
-      "include": "source.asp.vb.net"
-    }
-  ],
-  "scopeName": "source.vbnet"
-}
+{"displayName":"source.vbnet (alias)","name":"alias-source-vbnet","patterns":[{"include":"source.asp.vb.net"}],"scopeName":"source.vbnet"}

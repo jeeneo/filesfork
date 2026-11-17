@@ -1,10 +1,1 @@
-{
-  "displayName": "source.asm (alias)",
-  "name": "alias-source-asm",
-  "patterns": [
-    {
-      "include": "source.asm.x86_64"
-    }
-  ],
-  "scopeName": "source.asm"
-}
+{"displayName":"source.asm (alias)","name":"alias-source-asm","patterns":[{"include":"source.asm.x86_64"}],"scopeName":"source.asm"}

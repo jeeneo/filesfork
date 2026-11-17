@@ -1,10 +1,1 @@
-{
-  "displayName": "source.js.jquery (alias)",
-  "name": "alias-source-js-jquery",
-  "patterns": [
-    {
-      "include": "source.js"
-    }
-  ],
-  "scopeName": "source.js.jquery"
-}
+{"displayName":"source.js.jquery (alias)","name":"alias-source-js-jquery","patterns":[{"include":"source.js"}],"scopeName":"source.js.jquery"}

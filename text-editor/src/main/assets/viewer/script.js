@@ -1,20 +1,8 @@
-// Read-only Markdown preview for the Android editor's WebView.
-// The host owns the title bar and pushes an in-memory document, so there is no
-// file picker, drop target or status chrome here — only the renderer:
-//   window.previewMarkdown(source, label, baseUrl)
-// Rendering is delegated to markdown.js, the Markdown engine in this folder.
-
-// The engine ships its own stylesheet (alerts, tables, footnotes, task lists, …).
 const engineStyle = document.createElement('style');
 engineStyle.textContent = renderMarkdown.css;
 document.head.appendChild(engineStyle);
-
-// Single newlines in the source render as line breaks, as the preview always did.
-const RENDER_OPTIONS = { breaks: true };
-
+const RENDER_OPTIONS = { breaks: true, highlight: window.markdownHighlight };
 const previewEl = document.getElementById('preview');
-
-// URL that relative images in the current document resolve against.
 let baseUrl = window.location.href;
 
 function showMarkdown(md, label, base) {
@@ -26,7 +14,6 @@ function showMarkdown(md, label, base) {
   window.scrollTo(0, 0);
 }
 
-// Images in a rendered document are relative to the document, not to this page.
 function resolveImageSources() {
   previewEl.querySelectorAll('img[src]').forEach((img) => {
     const src = img.getAttribute('src');

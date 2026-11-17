@@ -1,10 +1,1 @@
-{
-  "displayName": "text.md (alias)",
-  "name": "alias-text-md",
-  "patterns": [
-    {
-      "include": "text.html.markdown"
-    }
-  ],
-  "scopeName": "text.md"
-}
+{"displayName":"text.md (alias)","name":"alias-text-md","patterns":[{"include":"text.html.markdown"}],"scopeName":"text.md"}

@@ -13,6 +13,7 @@
  *   autolink        true    bare http(s)://, www. and e-mail autolinks
  *   highlight       null    (code, lang) => html | null   (plug in highlight.js / Prism / Shiki)
  */
+
 (function (global) {
   'use strict';
 
@@ -335,8 +336,13 @@
     if (lang === 'mermaid') return '<pre class="mermaid">' + esc(code) + '</pre>';
     if (/^(math|latex|tex)$/i.test(lang)) return '<div class="math math-display">\\[' + esc(code) + '\\]</div>';
     let body = env.opts.highlight ? env.opts.highlight(code, lang) : null;
+    const highlighted = body != null;
     if (body == null) body = esc(code);
-    return '<pre><code' + (lang ? ' class="language-' + esc(lang) + '"' : '') + '>' + body + '\n</code></pre>';
+    const codeClass = [
+      lang ? 'language-' + esc(lang) : '',
+      highlighted ? 'hljs' : '',
+    ].filter(Boolean).join(' ');
+    return '<pre><code' + (codeClass ? ' class="' + codeClass + '"' : '') + '>' + body + '\n</code></pre>';
   }
 
   function splitRow(s) {
