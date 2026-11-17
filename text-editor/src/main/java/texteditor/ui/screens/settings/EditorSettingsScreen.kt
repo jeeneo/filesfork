@@ -50,6 +50,7 @@ import java.io.File
 fun EditorSettingsScreen(
     viewModel: SoraEditorViewModel,
     onNavigateUp: () -> Unit,
+    onChooseRootFolder: (String?) -> Unit = {},
 ) {
     BackHandler(onBack = onNavigateUp)
     val context = LocalContext.current
@@ -220,6 +221,8 @@ fun EditorSettingsScreen(
                             )
                         },
                     )
+                    HorizontalDivider(thickness = 0.4.dp, color = DividerDefaults.color.copy(0.8f))
+                    ServerSettingsSection(onChooseRootFolder)
                 }
                 SimpleShadow()
             }
@@ -228,7 +231,7 @@ fun EditorSettingsScreen(
 }
 
 @Composable
-private fun SectionHeader(title: String) {
+internal fun SectionHeader(title: String) {
     Text(
         text = title,
         style = MaterialTheme.typography.labelLarge,
@@ -238,7 +241,7 @@ private fun SectionHeader(title: String) {
 }
 
 @Composable
-private fun SettingsRow(
+internal fun SettingsRow(
     label: String,
     description: String,
     onClick: () -> Unit,
@@ -260,7 +263,7 @@ private fun SettingsRow(
 }
 
 @Composable
-private fun ValueWithChevron(value: String, fontFamily: FontFamily? = null) {
+internal fun ValueWithChevron(value: String, fontFamily: FontFamily? = null) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = value,

@@ -87,6 +87,18 @@ fun DialogHost(
             },
         )
 
+        is DialogRequest.ExternalChange -> ReloadFileDialog(
+            title = "File changed",
+            message =
+                "\"${request.documentName}\" was changed from the editor server. " +
+                    "Reload it? Unsaved changes will be lost.",
+            onReload = {
+                controller.dismissTop()
+                viewModel.reload(request.documentId)
+            },
+            onDismiss = controller::dismissTop,
+        )
+
         is DialogRequest.Reload -> ReloadFileDialog(
             onReload = {
                 controller.dismissTop()

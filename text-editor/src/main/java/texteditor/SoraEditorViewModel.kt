@@ -29,6 +29,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import texteditor.data.AppToasts
@@ -54,6 +55,7 @@ import texteditor.data.encoding.bomLengthIn
 import texteditor.data.encoding.readerFor
 import texteditor.data.registry.FontRegistry
 import texteditor.data.registry.ThemeRegistry
+import texteditor.server.ServerFileSync
 import texteditor.ui.dialogs.data.DialogController
 import texteditor.ui.dialogs.data.DialogRequest
 import texteditor.ui.screens.preview.PreviewDocument
@@ -61,6 +63,7 @@ import texteditor.ui.screens.preview.PreviewKind
 import texteditor.ui.screens.preview.PreviewReaders
 import texteditor.ui.screens.preview.PreviewState
 import java.io.BufferedInputStream
+import java.io.File
 import java.io.IOException
 import kotlin.time.Duration.Companion.milliseconds
 import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry as EditorThemeRegistry
@@ -236,6 +239,11 @@ class SoraEditorViewModel(
                 kept.path?.let { loadInto(kept, it) }
             }
         }
+        viewModelScope.launch {
+            ServerFileSync.externalFileChanges(getApplication()).collect { path ->
+                onExternalFileChanged(path)
+            }
+        }
     }
 
     fun open(path: String, name: String, forcedEncoding: EncodingScheme? = null) {
@@ -356,6 +364,33 @@ class SoraEditorViewModel(
             return
         }
         dialogs.show(DialogRequest.Reload)
+    }
+
+    private fun onExternalFileChanged(path: String) {
+        val document = openDocuments.firstOrNull { samePath(it.path, path) } ?: return
+        if (dialogs.requests.any {
+                it is DialogRequest.ExternalChange && it.documentId == document.id
+            }
+        ) {
+            return
+        }
+        dialogs.show(
+            DialogRequest.ExternalChange(
+                documentId = document.id,
+                documentName = document.name ?: fileNameOf(path),
+            )
+        )
+    }
+
+    private fun samePath(first: String?, second: String): Boolean {
+        if (first == null) return false
+        if (first == second) return true
+        if (first.startsWith("content://") || second.startsWith("content://")) return false
+        return try {
+            File(first).canonicalPath == File(second).canonicalPath
+        } catch (_: Exception) {
+            false
+        }
     }
 
     fun openFileInfo(text: CharSequence) {
@@ -825,6 +860,12 @@ class SoraEditorViewModel(
         loadInto(session, path, isReload = true)
     }
 
+    fun reload(id: Long) {
+        val session = DocumentSessions.get(id) ?: return
+        val path = session.path ?: return
+        loadInto(session, path, isReload = true)
+    }
+
     fun reopenWithEncoding(schemeId: String) {
         val session = activeSession ?: return
         val path = session.path ?: return
@@ -945,6 +986,7 @@ class SoraEditorViewModel(
                     session.path ?: host.saveAs(NEW_FILE_NAME, session.directory) ?: return@launch
                 withContext(Dispatchers.IO) {
                     host.save(target, bytes)
+                    ServerFileSync.notifySaved(getApplication(), target)
                 }
                 if (session.path == null) {
                     session.path = target
@@ -999,6 +1041,7 @@ class SoraEditorViewModel(
                 val target = host.saveAs(suggestedName, initialDirectory) ?: return@launch
                 withContext(Dispatchers.IO) {
                     host.save(target, bytes)
+                    ServerFileSync.notifySaved(getApplication(), target)
                 }
                 openSavedCopy(target, scheme)
                 onSuccess()

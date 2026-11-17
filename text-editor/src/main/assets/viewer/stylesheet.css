@@ -20,9 +20,10 @@ main { max-width: 860px; margin: 0 auto; padding: 0 20px; }
 #preview { padding: 16px 0 64px; }
 #preview > :first-child { margin-top: 0; }
 #preview h1, #preview h2 { border-bottom: 1px solid var(--border); padding-bottom: 4px; }
-#preview code { font-family: var(--mono); font-size: 13px; background: var(--bg-panel); padding: 1px 4px; }
-#preview pre { background: var(--bg-panel); border: 1px solid var(--border); padding: 8px 10px; overflow-x: auto; }
-#preview pre code { background: none; padding: 0; }
+#preview code { font-family: var(--mono); font-size: 13px; }
+#preview :not(pre) > code { background: var(--bg-panel); padding: 1px 4px; }
+#preview pre { background: #202020; border: 1px solid var(--border); padding: 8px 10px; overflow-x: auto; }
+#preview pre code { display: block; padding: 0; }
 #preview blockquote { margin: 0; padding-left: 10px; border-left: 3px solid var(--border); color: var(--muted); }
 #preview a { color: #3794ff; }
 #preview img { max-width: 100%; }

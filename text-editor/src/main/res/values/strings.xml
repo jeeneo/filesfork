@@ -1,2 +1,64 @@
 <resources>
+    <string name="editor_server_starting">Starting…</string>
+    <string name="editor_server_notification_channel_name">Edit server</string>
+    <string name="editor_server_notification_channel_description">Status of the Edit server</string>
+    <string name="editor_server_notification_title">Edit server</string>
+    <string name="editor_server_notification_text">%1$s</string>
+    <string name="editor_server_notification_stop">Stop</string>
+    <string name="editor_server_failed_start">Server failed to start: %1$s</string>
+    <string name="editor_server_title">Edit server</string>
+    <string name="editor_server_status_running_at">Running at %1$s</string>
+    <string name="editor_server_status_running">Running</string>
+    <string name="editor_server_status_starting">Starting…</string>
+    <string name="editor_server_status_stopping">Stopping…</string>
+    <string name="editor_server_status_stopped">Stopped</string>
+    <string name="editor_server_port_title">Port</string>
+    <string name="editor_server_url_override_title">URL override</string>
+    <string name="editor_server_url_override_empty">Automatic</string>
+    <string name="editor_server_root_folder_title">Root folder</string>
+    <string name="editor_server_root_folder_private">App-private storage</string>
+    <string name="editor_server_root_folder_not_local">Choose a folder on device storage</string>
+    <string name="editor_server_warning">Anyone on this network can view and edit files in this folder.</string>
+    <string name="editor_server_requires_android_7">Edit server requires Android 7.0 or newer.</string>
+    <string name="editor_server_notification_permission_denied">Notifications are disabled. Allow them to keep the Edit server running in the background.</string>
+
+    <!-- template.html -->
+    <string name="web_title_page">Edit server</string>
+    <string name="web_label_no_file_open">No file open</string>
+    <string name="web_label_preview_on">Preview: on</string>
+    <string name="web_label_preview_off">Preview: off</string>
+    <string name="web_button_save">Save</string>
+    <string name="web_button_new_file">+ File</string>
+    <string name="web_button_new_folder">+ Folder</string>
+    <string name="web_button_upload">Upload</string>
+    <string name="web_button_rename">Rename</string>
+    <string name="web_button_delete">Delete</string>
+    <string name="web_cancel_text">Cancel</string>
+    <string name="web_placeholder_start_writing"># Start writing...</string>
+    <string name="web_label_empty_state">Select a file on the left, or create a new one.</string>
+    <string name="web_status_not_text_file">Not a text file</string>
+    <string name="web_status_saving">Saving…</string>
+    <string name="web_status_saved">Saved</string>
+    <string name="web_status_save_failed">Save failed</string>
+    <string name="web_prompt_new_file_name">New file name (e.g. notes.md):</string>
+    <string name="web_alert_create_file_failed">Could not create file: </string>
+    <string name="web_prompt_new_folder_name">New folder name:</string>
+    <string name="web_alert_create_folder_failed">Could not create folder: </string>
+    <string name="web_status_uploading">Uploading…</string>
+    <plurals name="web_status_uploaded">
+        <item quantity="one">Uploaded %1$d file</item>
+        <item quantity="other">Uploaded %1$d files</item>
+    </plurals>
+    <string name="web_status_upload_failed">Upload failed</string>
+    <string name="web_alert_upload_failed">Upload failed: </string>
+    <string name="web_prompt_rename">Rename to:</string>
+    <string name="web_alert_rename_failed">Rename failed: </string>
+    <string name="web_confirm_delete">Delete \"%1$s\"? This cannot be undone.</string>
+    <string name="web_alert_delete_failed">Delete failed: </string>
+    <string name="web_sse_file_changed_title">File changed</string>
+    <string name="web_sse_file_changed_body">This file was changed from %1$s. Reload and discard your edits?</string>
+    <string name="web_source_app">the app</string>
+    <string name="web_source_web_ui">another web editor</string>
+    <string name="web_reload_text">Reload</string>
+    <string name="web_keep_editing_text">Keep editing</string>
 </resources>

@@ -14,13 +14,18 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import java8.nio.file.Path
+import java8.nio.file.Paths
 import me.zhanghai.android.files.app.AppActivity
 import me.zhanghai.android.files.filelist.FileListActivity
+import me.zhanghai.android.files.provider.linux.isLinuxPath
 import me.zhanghai.android.files.util.extraPath
+import me.zhanghai.android.files.util.showToast
 import me.zhanghai.android.files.viewer.TextEditorHostBridge
 import me.zhanghai.android.files.viewer.toEditorPathString
+import texteditor.R
 import texteditor.SoraEditorViewModel
 import texteditor.TextEditorScreen
+import texteditor.server.ServerGraphProvider
 import ui.theme.AppTheme
 
 class TextEditorActivity : AppActivity() {
@@ -32,6 +37,16 @@ class TextEditorActivity : AppActivity() {
     private val createFileLauncher =
         registerForActivityResult(FileListActivity.CreateFileContract()) { path ->
             TextEditorHostBridge.onCreateFileResult(path)
+        }
+
+    private val rootPickerLauncher =
+        registerForActivityResult(FileListActivity.OpenDirectoryContract()) { path ->
+            when {
+                path == null -> Unit
+                !path.isLinuxPath -> showToast(R.string.editor_server_root_folder_not_local)
+                else -> ServerGraphProvider.get(this)
+                    .settingsRepository.setRootPath(path.toFile().path)
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +69,9 @@ class TextEditorActivity : AppActivity() {
                     onMinimize = { finish() },
                     viewModel = viewModel,
                     initialSearchQuery = initialSearchQuery,
+                    onChooseRootFolder = { currentPath ->
+                        rootPickerLauncher.launch(currentPath?.let { Paths.get(it) })
+                    },
                 )
             }
         }

@@ -355,25 +355,33 @@ private class BookmarkDirectoryItem(
 }
 
 private val menuItems: List<NavigationItem>
-    @Size(4)
-    get() = listOf(
-        IntentMenuItem(
-            R.drawable.shared_directory_icon_white_24dp, R.string.navigation_ftp_server,
-            FtpServerActivity::class.createIntent()
-        ),
-        IntentMenuItem(
-            R.drawable.sync_icon_white_24dp, R.string.navigation_sync,
-            SyncActivity::class.createIntent()
-        ),
-        IntentMenuItem(
-            R.drawable.settings_icon_white_24dp, R.string.navigation_settings,
-            SettingsActivity::class.createIntent()
-        ),
-        IntentMenuItem(
-            R.drawable.about_icon_white_24dp, R.string.navigation_about,
-            AboutActivity::class.createIntent()
+    @Size(min = 4, max = 5)
+    get() = buildList {
+        add(
+            IntentMenuItem(
+                R.drawable.shared_directory_icon_white_24dp, R.string.navigation_ftp_server,
+                FtpServerActivity::class.createIntent()
+            )
         )
-    )
+        add(
+            IntentMenuItem(
+                R.drawable.sync_icon_white_24dp, R.string.navigation_sync,
+                SyncActivity::class.createIntent()
+            )
+        )
+        add(
+            IntentMenuItem(
+                R.drawable.settings_icon_white_24dp, R.string.navigation_settings,
+                SettingsActivity::class.createIntent()
+            )
+        )
+        add(
+            IntentMenuItem(
+                R.drawable.about_icon_white_24dp, R.string.navigation_about,
+                AboutActivity::class.createIntent()
+            )
+        )
+    }
 
 private abstract class MenuItem(
     @DrawableRes override val iconRes: Int,

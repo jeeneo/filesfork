@@ -9,11 +9,13 @@ import androidx.compose.runtime.Composable
 fun ReloadFileDialog(
     onReload: () -> Unit,
     onDismiss: () -> Unit,
+    title: String = "Reload file?",
+    message: String = "Unsaved changes will be lost.",
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Reload file?") },
-        text = { Text("Unsaved changes will be lost.") },
+        title = { Text(title) },
+        text = { Text(message) },
         confirmButton = {
             TextButton(onClick = onReload) { Text("Reload") }
         },

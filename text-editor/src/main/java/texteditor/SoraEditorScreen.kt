@@ -92,6 +92,7 @@ fun TextEditorScreen(
     onMinimize: () -> Unit = {},
     viewModel: SoraEditorViewModel,
     initialSearchQuery: String? = null,
+    onChooseRootFolder: (String?) -> Unit = {},
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -688,6 +689,7 @@ fun TextEditorScreen(
             EditorSettingsScreen(
                 viewModel = viewModel,
                 onNavigateUp = { showSettings = false },
+                onChooseRootFolder = onChooseRootFolder,
             )
         }
 

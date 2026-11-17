@@ -5,6 +5,8 @@ datastorePreferences = "1.1.7"
 kotlin = "2.4.10"
 coreLibraryDesugaring = "2.1.5"
 kotlinxCoroutines = "1.11.0"
+ktor = "3.5.2"
+junit = "4.13.2"
 activityKtx = "1.11.0"
 activityCompose = "1.11.0"
 appcompat = "1.7.1"
@@ -96,6 +98,7 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preference" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
+junit = { module = "junit:junit", version.ref = "junit" }
 
 material = { module = "com.google.android.material:material", version.ref = "material" }
 
@@ -160,6 +163,9 @@ systemuihelper = { module = "me.zhanghai.android.systemuihelper:library", versio
 ftpserver-core = { module = "org.apache.ftpserver:ftpserver-core", version.ref = "ftpserver" }
 mina-core = { module = "org.apache.mina:mina-core", version.ref = "mina" }
 slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4j" }
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-host-common = { module = "io.ktor:ktor-server-host-common", version.ref = "ktor" }
 libsu-service = { module = "com.github.topjohnwu.libsu:service", version.ref = "libsu" }
 dav4jvm = { module = "com.github.bitfireAT:dav4jvm", version.ref = "dav4jvm" }
 zoomable-image-coil = { module = "me.saket.telephoto:zoomable-image-coil", version.ref = "zoomableImageCoil" }

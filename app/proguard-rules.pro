@@ -56,6 +56,10 @@
 # SMBJ-RPC
 -dontwarn java.rmi.UnmarshalException
 
+# Ktor
+# Used by IntellijIdeaDebugDetector, which is not reachable on Android.
+-dontwarn java.lang.management.**
+
 # TOML decoder
 -keep class me.zhanghai.android.files.viewer.text.LanguageRegistry$LanguageEntry { *; }
 -keepclassmembers class me.zhanghai.android.files.viewer.text.LanguageRegistry$LanguageEntry { *; }

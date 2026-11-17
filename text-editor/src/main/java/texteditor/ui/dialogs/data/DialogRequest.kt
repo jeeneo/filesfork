@@ -17,6 +17,11 @@ sealed interface DialogRequest {
         val documentName: String,
     ) : DialogRequest
 
+    data class ExternalChange(
+        val documentId: Long,
+        val documentName: String,
+    ) : DialogRequest
+
     data object Reload : DialogRequest
 
     data class JumpToLine(

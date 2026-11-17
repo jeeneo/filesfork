@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title_page}}</title>
+    <link rel="stylesheet" href="editor/highlight.css">
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+<header>
+    <span class="title">{{title_page}}</span>
+    <span class="path" id="current-path">{{label_no_file_open}}</span>
+    <span class="status" id="status"></span>
+    <button id="preview-toggle">{{label_preview_on}}</button>
+    <button id="save-btn" class="primary">{{button_save}}</button>
+</header>
+<main>
+    <div id="sidebar">
+        <div class="toolbar">
+            <button id="new-file-btn">{{button_new_file}}</button>
+            <button id="new-folder-btn">{{button_new_folder}}</button>
+            <button id="upload-btn">{{button_upload}}</button>
+            <input type="file" id="upload-input" multiple hidden>
+        </div>
+        <ul class="tree root" id="tree-root"></ul>
+    </div>
+    <div id="editor-area">
+        <div id="editor-tools" style="display:none">
+            <button id="rename-btn">{{button_rename}}</button>
+            <button id="delete-btn" class="danger">{{button_delete}}</button>
+        </div>
+        <div id="panes" style="display:none">
+            <div id="source-wrap">
+                <textarea id="source" spellcheck="false"
+                          placeholder="{{placeholder_start_writing}}"></textarea>
+            </div>
+            <div id="preview"></div>
+        </div>
+        <div id="empty-state">{{label_empty_state}}</div>
+    </div>
+</main>
+<div id="dialog-backdrop" hidden>
+    <div id="dialog" role="dialog" aria-modal="true">
+        <div id="dialog-title"></div>
+        <div id="dialog-message"></div>
+        <input type="text" id="dialog-input" hidden>
+        <div id="dialog-buttons">
+            <button id="dialog-cancel"></button>
+            <button id="dialog-ok" class="primary"></button>
+        </div>
+    </div>
+</div>
+<div id="ctx-menu" hidden>
+    <button id="ctx-rename">{{button_rename}}</button>
+    <button id="ctx-delete" class="danger">{{button_delete}}</button>
+</div>
+<script src="editor/markdown.js"></script>
+<script src="editor/highlight.min.js"></script>
+<script src="editor/highlight-plugin.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
