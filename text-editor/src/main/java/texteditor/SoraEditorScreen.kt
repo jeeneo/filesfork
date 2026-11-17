@@ -75,7 +75,7 @@ import texteditor.ui.bars.bottombar.SymbolInputBar
 import texteditor.ui.bars.topbar.TopBarActions
 import texteditor.ui.dialogs.data.DialogHost
 import texteditor.ui.drawer.EditorDrawerSheet
-import texteditor.ui.screens.preview.MarkdownPreviewScreen
+import texteditor.ui.screens.preview.PreviewScreen
 import texteditor.ui.screens.preview.PreviewState
 import texteditor.ui.screens.settings.EditorSettingsScreen
 import kotlin.time.Duration.Companion.milliseconds
@@ -284,6 +284,7 @@ fun TextEditorScreen(
     EditorEffects(
         viewModel = viewModel,
         editorRef = editorRef,
+        editorDocumentId = editorReadyId,
         settings = settings,
         typeface = typefaceToLoad,
         activeLanguage = activeLanguage,
@@ -493,6 +494,7 @@ fun TextEditorScreen(
                         onPreview = {
                             viewModel.openPreview(currentText())
                         },
+                        previewEnabled = viewModel.previewAvailable,
                         canUndo = canUndo,
                         canRedo = canRedo,
                         refreshUndoRedo = ::refreshUndoRedo,
@@ -691,8 +693,9 @@ fun TextEditorScreen(
 
         SlideInOverlay(visible = viewModel.preview != null) {
             shownPreview?.let { preview ->
-                MarkdownPreviewScreen(
+                PreviewScreen(
                     state = preview,
+                    host = viewModel.host,
                     onNavigateUp = viewModel::closePreview,
                 )
             }

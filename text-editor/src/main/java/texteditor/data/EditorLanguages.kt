@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
 import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry as TextMateThemeRegistry
 
+@Suppress("SpellCheckingInspection")
 object EditorLanguages {
     private const val TAG = "EditorLanguages"
     private const val GRAMMAR_DIR = "textmate/grammars"
@@ -187,12 +188,12 @@ object EditorLanguages {
         val name = path.substringAfterLast('/')
         if (name.isEmpty()) return null
         types[name]?.let { return it }
-        types[name.substringBefore('.')]?.let { return it }
         var dot = name.indexOf('.')
         while (dot in 0 until name.lastIndex) {
             types[name.substring(dot + 1)]?.let { return it }
             dot = name.indexOf('.', dot + 1)
         }
+        types[name.substringBefore('.')]?.let { return it }
         return null
     }
 
@@ -336,6 +337,7 @@ object EditorLanguages {
         "handlebars" to "handlebars", "hbs" to "handlebars", "hh" to "cpp", "hlsl" to "hlsl",
         "hpp" to "cpp", "htm" to "html", "html" to "html", "hxx" to "cpp", "iced" to "coffee",
         "ini" to "ini", "ino" to "cpp", "j2" to "jinja", "jade" to "pug", "java" to "java",
+        "properties" to "java-properties",
         "jinja" to "jinja", "jinja2" to "jinja", "jl" to "julia", "js" to "javascript",
         "json" to "json", "jsonc" to "jsonc", "jsonnet" to "jsonnet", "jsx" to "jsx",
         "justfile" to "just", "ksh" to "shellscript", "less" to "less", "libsonnet" to "jsonnet",

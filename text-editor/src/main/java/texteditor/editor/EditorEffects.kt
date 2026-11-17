@@ -16,6 +16,7 @@ import texteditor.SoraEditorViewModel
 internal fun EditorEffects(
     viewModel: SoraEditorViewModel,
     editorRef: CodeEditor?,
+    editorDocumentId: Long,
     settings: EditorSettings,
     typeface: Typeface,
     activeLanguage: TextMateLanguage?,
@@ -27,8 +28,9 @@ internal fun EditorEffects(
     LaunchedEffect(editorRef, settings, typeface) {
         editorRef?.applySettings(settings, typeface)
     }
-    LaunchedEffect(editorRef, activeLanguage) {
+    LaunchedEffect(editorRef, editorDocumentId, activeLanguage) {
         val editor = editorRef ?: return@LaunchedEffect
+        if (editorDocumentId != viewModel.activeDocumentId) return@LaunchedEffect
         if (editor.editorLanguage !== activeLanguage) {
             editor.setEditorLanguage(activeLanguage)
         }
@@ -38,9 +40,10 @@ internal fun EditorEffects(
         val language = editorRef?.editorLanguage as? TextMateLanguage ?: return@LaunchedEffect
         withContext(Dispatchers.IO) { language.reloadGrammar() }
     }
-    LaunchedEffect(viewModel.reloadEpoch) {
+    LaunchedEffect(editorRef, editorDocumentId, viewModel.reloadEpoch) {
         if (viewModel.reloadEpoch == 0) return@LaunchedEffect
         val editor = editorRef ?: return@LaunchedEffect
+        if (editorDocumentId != viewModel.activeDocumentId) return@LaunchedEffect
         if (viewModel.loadState !is LoadState.Success) return@LaunchedEffect
         editor.setText(viewModel.content)
         onReloaded()

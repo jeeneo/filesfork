@@ -56,6 +56,9 @@ import texteditor.data.registry.FontRegistry
 import texteditor.data.registry.ThemeRegistry
 import texteditor.ui.dialogs.data.DialogController
 import texteditor.ui.dialogs.data.DialogRequest
+import texteditor.ui.screens.preview.PreviewDocument
+import texteditor.ui.screens.preview.PreviewKind
+import texteditor.ui.screens.preview.PreviewReaders
 import texteditor.ui.screens.preview.PreviewState
 import java.io.BufferedInputStream
 import java.io.IOException
@@ -121,7 +124,7 @@ data class OpenDocument(
 
 class SoraEditorViewModel(
     application: Application,
-    private val host: TextEditorHost,
+    val host: TextEditorHost,
 ) : AndroidViewModel(application) {
     private var grammarLoadJob: Job? = null
     private var editGrammarJob: Job? = null
@@ -212,6 +215,10 @@ class SoraEditorViewModel(
         private set
     var documentTabs: Boolean by mutableStateOf(EditorDefaults.SHOW_DOC_TABS)
     var autoFocus: Boolean by mutableStateOf(false)
+        private set
+    var previewJavaScript: Boolean by mutableStateOf(EditorDefaults.PREVIEW_JAVASCRIPT)
+        private set
+    var previewRemoteContent: Boolean by mutableStateOf(EditorDefaults.PREVIEW_REMOTE_CONTENT)
         private set
     var content: Content by mutableStateOf(Content())
         private set
@@ -394,15 +401,27 @@ class SoraEditorViewModel(
         }
     }
 
-    fun openPreview(markdown: String) {
+    val previewAvailable: Boolean
+        get() = previewKindFor(openedName) != null
+
+    fun openPreview(source: String) {
         val session = activeSession ?: return
+        val kind = previewKindFor(session.name) ?: return
         preview = PreviewState(
-            markdown = markdown,
+            document = when (kind) {
+                PreviewKind.MARKDOWN -> PreviewDocument.Markdown(source)
+                PreviewKind.HTML -> PreviewDocument.Html(source)
+            },
+            path = session.path,
             title = displayNameOf(session),
-            baseUrl = session.path?.let(::parentOf)?.let { "file://$it/" },
             monoFontId = selectedFont,
+            javaScriptEnabled = previewJavaScript,
+            remoteContentEnabled = previewRemoteContent,
         )
     }
+
+    private fun previewKindFor(name: String?): PreviewKind? =
+        if (name == null) PreviewKind.MARKDOWN else PreviewReaders.kindFor(name)
 
     fun closePreview() {
         preview = null
@@ -516,6 +535,8 @@ class SoraEditorViewModel(
         selectedFont = snapshot.selectedFont
         autoFocus = snapshot.autoFocus
         documentTabs = snapshot.documentTabs
+        previewJavaScript = snapshot.previewJavaScript
+        previewRemoteContent = snapshot.previewRemoteContent
         prefsLoaded = true
         savePrefs()
     }
@@ -540,7 +561,9 @@ class SoraEditorViewModel(
                 selectedTheme = selectedTheme,
                 selectedFont = selectedFont,
                 autoFocus = autoFocus,
-                documentTabs = documentTabs
+                documentTabs = documentTabs,
+                previewJavaScript = previewJavaScript,
+                previewRemoteContent = previewRemoteContent
             )
         )
     }
@@ -646,6 +669,16 @@ class SoraEditorViewModel(
 
     fun toggleTabs() {
         documentTabs = !documentTabs
+        savePrefs()
+    }
+
+    fun togglePreviewJavaScript() {
+        previewJavaScript = !previewJavaScript
+        savePrefs()
+    }
+
+    fun togglePreviewRemoteContent() {
+        previewRemoteContent = !previewRemoteContent
         savePrefs()
     }
 

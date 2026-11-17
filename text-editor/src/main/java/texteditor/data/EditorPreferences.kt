@@ -32,6 +32,8 @@ internal object PrefKeys {
     const val PINNED_FILES = "pinned_files"
     const val AUTO_FOCUS = "auto_focus_editor"
     const val SHOW_DOC_TABS = "show_document_tabs"
+    const val PREVIEW_JAVASCRIPT = "preview_javascript"
+    const val PREVIEW_REMOTE_CONTENT = "preview_remote_content"
 }
 
 internal object EditorDefaults {
@@ -52,6 +54,8 @@ internal object EditorDefaults {
     const val SELECTED_FONT = "fonts/CascadiaCode-Regular.ttf"
     const val AUTO_FOCUS = true
     const val SHOW_DOC_TABS = false
+    const val PREVIEW_JAVASCRIPT = false
+    const val PREVIEW_REMOTE_CONTENT = false
 }
 
 @Immutable
@@ -74,6 +78,8 @@ internal data class EditorPrefsSnapshot(
     val selectedFont: String,
     val autoFocus: Boolean,
     val documentTabs: Boolean,
+    val previewJavaScript: Boolean,
+    val previewRemoteContent: Boolean,
 )
 
 internal class EditorPreferences(private val context: Context) {
@@ -129,7 +135,13 @@ internal class EditorPreferences(private val context: Context) {
                 defaultName = EditorDefaults.SELECTED_FONT,
             ),
             autoFocus = prefs.getBoolean(PrefKeys.AUTO_FOCUS, EditorDefaults.AUTO_FOCUS),
-            documentTabs = prefs.getBoolean(PrefKeys.SHOW_DOC_TABS, EditorDefaults.SHOW_DOC_TABS)
+            documentTabs = prefs.getBoolean(PrefKeys.SHOW_DOC_TABS, EditorDefaults.SHOW_DOC_TABS),
+            previewJavaScript = prefs.getBoolean(
+                PrefKeys.PREVIEW_JAVASCRIPT, EditorDefaults.PREVIEW_JAVASCRIPT
+            ),
+            previewRemoteContent = prefs.getBoolean(
+                PrefKeys.PREVIEW_REMOTE_CONTENT, EditorDefaults.PREVIEW_REMOTE_CONTENT
+            )
         )
     }
 
@@ -153,6 +165,8 @@ internal class EditorPreferences(private val context: Context) {
             putString(PrefKeys.PINNED_FILES, JSONArray(snapshot.pinnedPaths).toString())
             putBoolean(PrefKeys.AUTO_FOCUS, snapshot.autoFocus)
             putBoolean(PrefKeys.SHOW_DOC_TABS, snapshot.documentTabs)
+            putBoolean(PrefKeys.PREVIEW_JAVASCRIPT, snapshot.previewJavaScript)
+            putBoolean(PrefKeys.PREVIEW_REMOTE_CONTENT, snapshot.previewRemoteContent)
         }
     }
 }

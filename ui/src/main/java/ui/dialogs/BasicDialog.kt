@@ -212,7 +212,7 @@ fun TextInputDialog(
         onDismissRequest = onDismissRequest,
         leadingAction = leadingAction,
         trailingActions = trailingActions.map { action ->
-            action.copy(onClick = { if (text.isNotEmpty()) action.onClick(text.trim()) })
+            action.copy(onClick = { action.onClick(text.trim()) })
         },
     ) {
         DialogTextField(

@@ -76,6 +76,7 @@ fun TopBarActions(
     onReload: () -> Unit = {},
     onFileInfo: () -> Unit = {},
     onPreview: () -> Unit = {},
+    previewEnabled: Boolean = true,
     onDocumentOptions: () -> Unit = {},
     canUndo: MutableState<Boolean> = remember { mutableStateOf(false) },
     canRedo: MutableState<Boolean> = remember { mutableStateOf(false) },
@@ -193,7 +194,8 @@ fun TopBarActions(
                         animationSpec = tween(durationMillis = 300),
                         label = "saveButtonMorph",
                     ) { state ->
-                        @Suppress("CascadeIf") if (state == SaveButtonState.IDLE) Icon(
+                        @Suppress("CascadeIf")
+                        if (state == SaveButtonState.IDLE) Icon(
                             Icons.Filled.Save, contentDescription = "Save"
                         )
                         else if (state == SaveButtonState.SAVED) Icon(
@@ -234,6 +236,7 @@ fun TopBarActions(
                     showSearchPanel = showSearchPanel,
                     onShowSearchPanelChange = onShowSearchPanelChange,
                     onPreview = onPreview,
+                    previewEnabled = previewEnabled,
                     onShowLanguagePicker = onShowLanguagePicker,
                     onShowSettingsChange = onShowSettingsChange,
                     onCloseFile = onCloseFile,

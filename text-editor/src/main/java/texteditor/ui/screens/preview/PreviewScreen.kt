@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Base64
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,25 +33,33 @@ import androidx.compose.ui.viewinterop.AndroidView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import texteditor.TextEditorHost
 import texteditor.data.PRELOAD_BG_DARK
 import texteditor.data.registry.FontRegistry
 import ui.SimpleShadow
 
 data class PreviewState(
-    val markdown: String,
+    val document: PreviewDocument,
+    val path: String?,
     val title: String,
-    val baseUrl: String?,
     val monoFontId: String,
+    val javaScriptEnabled: Boolean,
+    val remoteContentEnabled: Boolean,
 )
 
 @Composable
-fun MarkdownPreviewScreen(
+fun PreviewScreen(
     state: PreviewState,
+    host: TextEditorHost,
     onNavigateUp: () -> Unit,
 ) {
     val context = LocalContext.current
-    // Injected after the page loads; null while the font file is still being read.
-    val monoFontCss by produceState<String?>(initialValue = null, state.monoFontId) {
+    val isMarkdown = state.document is PreviewDocument.Markdown
+    val monoFontCss by produceState<String?>(initialValue = null, state.monoFontId, isMarkdown) {
+        if (!isMarkdown) {
+            value = ""
+            return@produceState
+        }
         value = withContext(Dispatchers.IO) {
             FontRegistry.readFontData(context, state.monoFontId)?.let { font ->
                 val base64 = Base64.encodeToString(font.bytes, Base64.NO_WRAP)
@@ -64,7 +71,7 @@ fun MarkdownPreviewScreen(
     }
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color(PRELOAD_BG_DARK),
+        color = if (isMarkdown) Color(PRELOAD_BG_DARK) else Color.White,
         contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -94,17 +101,13 @@ fun MarkdownPreviewScreen(
                     )
                 }
             }
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()) {
                 monoFontCss?.let { css ->
                     AndroidView(
                         factory = { context ->
-                            createPreviewWebView(
-                                context,
-                                state.markdown,
-                                state.title,
-                                state.baseUrl,
-                                css,
-                            )
+                            createPreviewWebView(context, host, state, css)
                         },
                         modifier = Modifier
                             .fillMaxSize()
@@ -124,36 +127,73 @@ fun MarkdownPreviewScreen(
 @SuppressLint("SetJavaScriptEnabled")
 private fun createPreviewWebView(
     context: Context,
-    markdown: String,
-    title: String,
-    baseUrl: String?,
+    host: TextEditorHost,
+    state: PreviewState,
     monoFontCss: String,
 ): WebView {
     val webView = WebView(context)
-    val viewer = viewerUrlFor(webView.settings.userAgentString)
-    webView.setBackgroundColor(PREVIEW_BACKGROUND)
-    webView.settings.javaScriptEnabled = true
-    webView.settings.allowFileAccess = true
     webView.settings.allowContentAccess = false
-    webView.webViewClient = object : WebViewClient() {
-        override fun onPageFinished(view: WebView, url: String?) {
-            if (monoFontCss.isNotEmpty()) {
-                view.evaluateJavascript(
-                    "var s=document.createElement('style');" +
-                            "s.textContent=${jsString(monoFontCss)};" +
-                            "document.head.appendChild(s);",
-                    null,
-                )
+    when (val document = state.document) {
+        is PreviewDocument.Markdown -> {
+            webView.setBackgroundColor(PREVIEW_BACKGROUND)
+            webView.settings.javaScriptEnabled = true
+            webView.settings.allowFileAccess = true
+            webView.webViewClient = PreviewClient(
+                host = host,
+                path = state.path,
+                remoteContentEnabled = state.remoteContentEnabled,
+            ) { view, _ ->
+                injectMarkdown(view, document, state, monoFontCss)
             }
-            view.evaluateJavascript(
-                "window.previewMarkdown(${jsString(markdown)}, ${jsString(title)}, " +
-                        "${jsString(baseUrl)})",
+            webView.loadUrl(viewerUrlFor(webView.settings.userAgentString))
+        }
+
+        is PreviewDocument.Html -> {
+            webView.setBackgroundColor(HTML_BACKGROUND)
+            webView.settings.javaScriptEnabled = state.javaScriptEnabled
+            webView.settings.allowFileAccess = false
+            webView.settings.useWideViewPort = true
+            webView.settings.loadWithOverviewMode = true
+            webView.settings.setSupportZoom(true)
+            webView.settings.builtInZoomControls = true
+            webView.settings.displayZoomControls = false
+            webView.webViewClient = PreviewClient(
+                host = host,
+                path = state.path,
+                remoteContentEnabled = state.remoteContentEnabled,
+            )
+            webView.loadDataWithBaseURL(
+                "$PREVIEW_ORIGIN/",
+                document.source,
+                "text/html",
+                "utf-8",
                 null,
             )
         }
     }
-    webView.loadUrl(viewer)
     return webView
+}
+
+private fun injectMarkdown(
+    view: WebView,
+    document: PreviewDocument.Markdown,
+    state: PreviewState,
+    monoFontCss: String,
+) {
+    if (monoFontCss.isNotEmpty()) {
+        view.evaluateJavascript(
+            "var s=document.createElement('style');" +
+                    "s.textContent=${jsString(monoFontCss)};" +
+                    "document.head.appendChild(s);",
+            null,
+        )
+    }
+    val baseUrl = state.path?.let { "$PREVIEW_ORIGIN/" }
+    view.evaluateJavascript(
+        "window.previewMarkdown(${jsString(document.source)}, ${jsString(state.title)}, " +
+                "${jsString(baseUrl)})",
+        null,
+    )
 }
 
 private fun viewerUrlFor(userAgent: String?): String {
@@ -170,5 +210,8 @@ private fun jsString(value: String?): String =
 private const val VIEWER_URL = "file:///android_asset/viewer/index.html"
 private const val COMPAT_VIEWER_URL = "file:///android_asset/viewer/compat/index.html"
 private const val PREVIEW_BACKGROUND = 0xFF1E1E1E.toInt()
+
+/** A document without its own background should look like it does in a browser, not like us. */
+private const val HTML_BACKGROUND = 0xFFFFFFFF.toInt()
 private const val COMPAT_BELOW_MAJOR = 66
 private val CHROME_VERSION = Regex("""Chrome/(\d+)""")

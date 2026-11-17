@@ -6,6 +6,7 @@ package me.zhanghai.android.files.viewer
 
 import android.content.ContentResolver
 import androidx.activity.result.ActivityResultLauncher
+import java.io.IOException
 import java.io.InputStream
 import java.net.URI
 import java8.nio.file.Files
@@ -16,6 +17,7 @@ import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import me.zhanghai.android.files.file.MimeType
 import texteditor.TextEditorHost
+import texteditor.isSafeRelativePath
 
 object TextEditorHostBridge : TextEditorHost {
     private var createFileLauncher:
@@ -27,6 +29,26 @@ object TextEditorHostBridge : TextEditorHost {
     }
 
     override fun openRead(path: String): InputStream = Files.newInputStream(path.toEditorPath())
+
+    override fun openSibling(path: String, relative: String): InputStream {
+        val directory = path.toEditorPath().parent
+            ?: throw IOException("No directory for ${path.substringAfterLast('/')}")
+        if (!isSafeRelativePath(relative)) throw IOException("Unsafe relative path")
+        val target = directory.resolve(relative).normalize()
+        if (!target.startsWith(directory.normalize())) {
+            throw IOException("Relative path escapes its directory")
+        }
+        val realDirectory = runCatching { directory.toRealPath() }.getOrNull()
+        if (realDirectory != null) {
+            val realTarget = runCatching { target.toRealPath() }.getOrNull()
+                ?: throw IOException("No such file: $relative")
+            if (!realTarget.startsWith(realDirectory)) {
+                throw IOException("Relative path escapes its directory")
+            }
+            return Files.newInputStream(realTarget)
+        }
+        return Files.newInputStream(target)
+    }
 
     fun setCreateFileLauncher(
         launcher: ActivityResultLauncher<Triple<MimeType, String?, Path?>>,

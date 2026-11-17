@@ -197,6 +197,29 @@ fun EditorSettingsScreen(
                                 checked = viewModel.documentTabs, onCheckedChange = null
                             )
                         })
+                    HorizontalDivider(thickness = 0.4.dp, color = DividerDefaults.color.copy(0.8f))
+                    SectionHeader("Preview")
+                    SettingsRow(
+                        label = "JavaSript",
+                        description = "Allow JS inside previewed HTML files to run",
+                        onClick = { viewModel.togglePreviewJavaScript() },
+                        trailing = {
+                            Switch(
+                                checked = viewModel.previewJavaScript, onCheckedChange = null
+                            )
+                        },
+                    )
+                    SettingsRow(
+                        label = "Remote content",
+                        description = "Allow the preview to load resources from the internet",
+                        onClick = { viewModel.togglePreviewRemoteContent() },
+                        trailing = {
+                            Switch(
+                                checked = viewModel.previewRemoteContent,
+                                onCheckedChange = null,
+                            )
+                        },
+                    )
                 }
                 SimpleShadow()
             }

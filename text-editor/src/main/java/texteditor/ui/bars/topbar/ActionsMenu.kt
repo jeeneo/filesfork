@@ -5,6 +5,7 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.automirrored.outlined.InsertDriveFile
 import androidx.compose.material.icons.automirrored.outlined.ShortText
+import androidx.compose.material.icons.automirrored.outlined.WrapText
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.RemoveRedEye
@@ -52,6 +53,7 @@ fun ActionsMenu(
     showSearchPanel: Boolean,
     onShowSearchPanelChange: (Boolean) -> Unit,
     onPreview: () -> Unit,
+    previewEnabled: Boolean = true,
     onShowLanguagePicker: () -> Unit,
     onShowSettingsChange: (Boolean) -> Unit,
     onCloseFile: () -> Unit,
@@ -95,6 +97,7 @@ fun ActionsMenu(
         TopBarAction(
             label = "Preview",
             icon = Icons.Outlined.Language,
+            enabled = previewEnabled,
             onClick = onPreview,
         ),
         TopBarAction(
@@ -137,7 +140,7 @@ fun ActionsMenu(
         ),
         TopBarAction(
             label = "Word wrap",
-            icon = Icons.AutoMirrored.Outlined.ShortText,
+            icon = Icons.AutoMirrored.Outlined.WrapText,
             checked = wordWrap,
             closeMenu = false,
             trailing = { Checkbox(checked = wordWrap, onCheckedChange = null) },
@@ -222,8 +225,8 @@ private fun TopBarActionView(
     inBar: Boolean,
     onDismissMenu: () -> Unit = {},
 ) {
-    val itemTextColor = contentColor.copy(alpha = 0.8f)
-    val itemIconTint = contentColor.copy(alpha = 0.5f)
+    val itemTextColor = contentColor.copy(alpha = if (action.enabled) 0.8f else 0.5f)
+    val itemIconTint = contentColor.copy(alpha = if (action.enabled) 0.5f else 0.3f)
     if (inBar) {
         IconButton(onClick = action.onClick, enabled = action.enabled) {
             Icon(
